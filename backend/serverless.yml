@@ -119,3 +119,19 @@ functions:
           method: GET
           cors: true
           authorizer: aws_iam
+  deregister-target:
+    handler: deregister-target.main
+    events:
+      - http:
+          path: deregister
+          method: POST
+          cors: true
+          authorizer: aws_iam
+  register-target:
+    handler: register-target.main
+    events:
+      - http:
+          path: register
+          method: POST
+          cors: true
+          authorizer: aws_iam
