@@ -16,9 +16,10 @@ export function main(event, context, callback) {
 
   ec2.describeInstances({}, function (err, data) {
     if (err) {
+      console.log("list-instances error", err);
       callback(null, failure({ status: false }));
     } else {
-      callback(null, success(data));
+      callback(null, success(data.Reservations));
     }
   });
 }
