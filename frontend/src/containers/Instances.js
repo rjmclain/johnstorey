@@ -34,9 +34,11 @@ export default class Instances extends Component {
   }
 
   async onInstanceSelected(instanceId) {
-    console.log("onInstanceSelected instanceId", instanceId);
-
     // Deregister old target.
+    console.log("Instances props deployed for deregistration", this.props)
+    this.props.deployed.map( (instance) => 
+      this.props.deregister(instance.instanceId));
+    this.props.setDeployed([]);
 
     // Register new target.
     await invokeApig({
@@ -46,6 +48,7 @@ export default class Instances extends Component {
       queryParams: {},
       body: {id: instanceId, group: config.ec2.TARGET_GROUP }
     })
+    this.props.setDeployed([{ instanceId: instanceId }]);
 
   }
 
@@ -53,9 +56,12 @@ export default class Instances extends Component {
     return (
       <div>
       { this.state.instances.map( instance => (
+        <div>
         <Button className="instance" 
          onClick={(e) => this.onInstanceSelected(instance.Instances[0].InstanceId) }
          key={instance.Instances[0].InstanceId}>{instance.Instances[0].InstanceId}</Button>
+         <br />
+         </div>
       ))}
       </div>
 
