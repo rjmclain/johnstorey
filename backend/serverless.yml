@@ -135,3 +135,11 @@ functions:
           method: POST
           cors: true
           authorizer: aws_iam
+  target-health:
+    handler: target-health.main
+    events:
+      - http:
+          path: target-health
+          method: GET
+          cors: true
+          authorizer: aws_iam
