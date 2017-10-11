@@ -30,10 +30,13 @@ export default class Instances extends Component {
       method: "GET"
     });
 
+    console.log("instance list", instanceList);
+
     instanceList = instanceList.map( (instance) => {
       return {
         key: instance.Instances[0].InstanceId,
-        instanceId: instance.Instances[0].InstanceId
+        instanceId: instance.Instances[0].InstanceId,
+        name: instance.Instances[0].Tags[1].Name
     }});
 
 
@@ -66,6 +69,7 @@ export default class Instances extends Component {
         <Button className="instance" 
          onClick={(e) => this.onInstanceSelected(instance.instanceId) }
          key={ instance.key }>{ instance.instanceId }</Button>
+         <span key={ instance.id }>{ instance.name }</span>
          <br />
          </div>
       ))}
