@@ -34,9 +34,10 @@ export default class Instances extends Component {
   }
 
   async onInstanceSelected(instanceId) {
-    console.log("onInstanceSelected instanceId", instanceId);
-
     // Deregister old target.
+    // console.log("Instances ")
+    // this.props.parentProps.map.deployed( (instance) => 
+    //   this.props.parentProps.deregister(instance.instanceId));
 
     // Register new target.
     await invokeApig({
@@ -53,9 +54,12 @@ export default class Instances extends Component {
     return (
       <div>
       { this.state.instances.map( instance => (
+        <div>
         <Button className="instance" 
          onClick={(e) => this.onInstanceSelected(instance.Instances[0].InstanceId) }
          key={instance.Instances[0].InstanceId}>{instance.Instances[0].InstanceId}</Button>
+         <br />
+         </div>
       ))}
       </div>
 

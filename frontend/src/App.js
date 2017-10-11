@@ -44,7 +44,8 @@ class App extends Component {
     // Pass these to child containers.
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
-      userHasAuthenticated: this.userHasAuthenticated
+      userHasAuthenticated: this.userHasAuthenticated,
+      deployedTargets: []
     };
 
     return (
@@ -53,7 +54,7 @@ class App extends Component {
       <Navbar fluid collapseOnSelect>
       <Navbar.Header>
       <Navbar.Brand>
-      <Link to="/">Scratch</Link>
+      <Link to="/">Insureon</Link>
       </Navbar.Brand>
       <Navbar.Toggle />
       </Navbar.Header>
