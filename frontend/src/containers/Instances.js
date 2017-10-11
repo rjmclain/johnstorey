@@ -35,9 +35,10 @@ export default class Instances extends Component {
 
   async onInstanceSelected(instanceId) {
     // Deregister old target.
-    // console.log("Instances ")
-    // this.props.parentProps.map.deployed( (instance) => 
-    //   this.props.parentProps.deregister(instance.instanceId));
+    console.log("Instances props deployed for deregistration", this.props)
+    this.props.deployed.map( (instance) => 
+      this.props.deregister(instance.instanceId));
+    this.props.setDeployed([]);
 
     // Register new target.
     await invokeApig({
@@ -47,6 +48,7 @@ export default class Instances extends Component {
       queryParams: {},
       body: {id: instanceId, group: config.ec2.TARGET_GROUP }
     })
+    this.props.setDeployed([{ instanceId: instanceId }]);
 
   }
 

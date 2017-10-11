@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { invokeApig, authUser, signOutUser } from "../libs/awsLib";
+import config from "../config";
 import "./Home.css";
 import Instances from "./Instances";
 import Deployed from "./Deployed";
@@ -6,20 +8,24 @@ import Deployed from "./Deployed";
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   deregister: deregister,
-    //   deployed: []
-    // }
+    this.state = {
+      deregister: this.deregister,
+      deployed: []
+    }
   }
 
   async deregister(instanceId) {
-    // await invokeApig({
-    //   path: "/deregister",
-    //   method: "POST",
-    //   headers: {},
-    //   queryParams: {},
-    //   body: {id: instanceId, group: config.ec2.TARGET_GROUP }
-    // })
+    await invokeApig({
+      path: "/deregister",
+      method: "POST",
+      headers: {},
+      queryParams: {},
+      body: {id: instanceId, group: config.ec2.TARGET_GROUP }
+    })
+  }
+
+  setDeployed(deployedList) {
+    this.setState({ deployed: deployedList});
   }
 
   render() {
@@ -29,10 +35,13 @@ export default class Home extends Component {
       <h1>DNN Deployment</h1>
       <br />
       <p>Deployed</p>
-      <Deployed parentProps={this.state} />
+      <Deployed deployed={this.state.deployed} setDeployed={this.setDeployed.bind(this) } />
       <br />
       <p>Deployment Candidates</p>
-      <Instances parentProps={this.state}/>
+      <Instances deployed={this.state.deployed}
+        setDeployed={this.setDeployed.bind(this)}
+        deregister={this.deregister.bind(this)}
+        />
       </div>
       </div>
     );

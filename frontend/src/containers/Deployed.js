@@ -8,8 +8,6 @@ export default class Deployed extends Component {
 
     console.log("Deployed props in ctor", props);
     this.state = {
-      instances: [],
-      deployed: [],
       region: config.ec2.region
     };
   }
@@ -36,31 +34,13 @@ export default class Deployed extends Component {
       return { instanceId: instance.Target.Id };
     });
 
-    // console.log("instanceList", instanceList);
-    this.setState({"deployed": instanceList });
-    // this.props.parentProps.deployed = instanceList;
-  }
-
-  async onInstanceSelected(instanceId) {
-    console.log("onInstanceSelected instanceId", instanceId);
-
-    // Deregister old target.
-
-    // Register new target.
-    await invokeApig({
-      path: "/register",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {instanceId: instanceId, group: config.ec2.TARGET_GROUP }
-    })
-
+    this.props.setDeployed(instanceList);
   }
 
   render() {
     return (
       <div>
-      { this.state.deployed.map( instance => (
+      { this.props.deployed.map( instance => (
         <div>
         <span className="instance" 
          key={instance.instanceId}>
