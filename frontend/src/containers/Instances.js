@@ -25,17 +25,23 @@ export default class Instances extends Component {
 
 
   async refreshInstanceList() {
-    const instance_list = await invokeApig({
+    let instanceList = await invokeApig({
       path: "/list",
       method: "GET"
     });
 
-    this.setState({"instances": instance_list});
+    instanceList = instanceList.map( (instance) => {
+      return {
+        key: instance.Instances[0].InstanceId,
+        instanceId: instance.Instances[0].InstanceId
+    }});
+
+
+    this.setState({"instances": instanceList});
   }
 
   async onInstanceSelected(instanceId) {
     // Deregister old target.
-    console.log("Instances props deployed for deregistration", this.props)
     this.props.deployed.map( (instance) => 
       this.props.deregister(instance.instanceId));
     this.props.setDeployed([]);
@@ -58,8 +64,8 @@ export default class Instances extends Component {
       { this.state.instances.map( instance => (
         <div>
         <Button className="instance" 
-         onClick={(e) => this.onInstanceSelected(instance.Instances[0].InstanceId) }
-         key={instance.Instances[0].InstanceId}>{instance.Instances[0].InstanceId}</Button>
+         onClick={(e) => this.onInstanceSelected(instance.instanceId) }
+         key={ instance.key }>{ instance.instanceId }</Button>
          <br />
          </div>
       ))}

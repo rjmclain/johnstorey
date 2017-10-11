@@ -78,6 +78,9 @@ export async function invokeApig({
     throw new Error("User is not logged in");
   }
 
+  //const newClient = sigV4Client
+  console.log("sigV4Client", sigV4Client);
+
   const newClient = sigV4Client
     .newClient({
       accessKey: AWS.config.credentials.accessKeyId,
@@ -86,6 +89,8 @@ export async function invokeApig({
       region: config.apiGateway.REGION,
       endpoint: config.apiGateway.URL
     });
+
+    console.log("newClient", newClient);
 
     const signedRequest = newClient.signRequest({
       method,

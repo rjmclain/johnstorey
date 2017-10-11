@@ -6,7 +6,6 @@ export default class Deployed extends Component {
   constructor(props) {
     super(props);
 
-    console.log("Deployed props in ctor", props);
     this.state = {
       region: config.ec2.region
     };
@@ -27,10 +26,7 @@ export default class Deployed extends Component {
       method: "GET"
     });
     
-    console.log("deployed_list", deployed_list);
-
     const instanceList = deployed_list.TargetHealthDescriptions.map( (instance) => {
-      console.log("instance in map", instance);
       return { instanceId: instance.Target.Id };
     });
 
@@ -42,7 +38,7 @@ export default class Deployed extends Component {
       <div>
       { this.props.deployed.map( instance => (
         <div>
-        <span className="instance" 
+        <span className="deployed" 
          key={instance.instanceId}>
           {instance.instanceId}
         </span><br />
