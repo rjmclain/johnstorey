@@ -79,7 +79,6 @@ export async function invokeApig({
   }
 
   //const newClient = sigV4Client
-  console.log("sigV4Client", sigV4Client);
 
   const newClient = sigV4Client
     .newClient({
@@ -89,8 +88,6 @@ export async function invokeApig({
       region: config.apiGateway.REGION,
       endpoint: config.apiGateway.URL
     });
-
-    console.log("newClient", newClient);
 
     const signedRequest = newClient.signRequest({
       method,

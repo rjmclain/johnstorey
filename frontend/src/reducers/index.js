@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import exampleReducer from "exampleReducer";
+import blueGreenInstancesReducer from "./blueGreenInstancesReducer";
 
 // Combine all reducers into a single reducer function.
 const rootReducer = combineReducers({
-  exampleReducer,
+  blueGreenInstancesReducer,
 });
 
 export default rootReducer;

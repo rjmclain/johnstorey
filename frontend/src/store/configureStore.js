@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';  
-import rootReducer form "../reducers";
-import rootSaga from "../sagas";
+import rootReducer from "../reducers";
+import rootSaga from "../sagas/index";
 
 // Allow Redux devtools to work with Redux Sagas.
 /* eslint-disable */
@@ -12,7 +12,7 @@ window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
 
 // Returns the store instance. Accepts initial state if provided.
 const configureStore = () => {
-  const createSagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware();
   return {
     ...createStore(rootReducer,
       composeSetup(applyMiddleware(sagaMiddleware))),

@@ -1,4 +1,8 @@
-export default = {
-  param1: [],
-  param2: "Ken Thompson"
+export default {
+  // Blue Green related state.
+  bluegreen: {
+    deployed: [],
+    //instances: []
+    instances: { id: "riker" }
+  }
 };
