@@ -22,14 +22,13 @@ class InstancesContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    instances: state.blueGreenInstancesReducer.bluegreen.instances
+    instances: state.bluegreen.instances
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onDeployClick: () => {
-      console.log("mapDispatchToProps onClick called");
       dispatch({
         type: eventTypes.BLUEGREEN_UPDATE_INSTANCES,
         values:  { id: "three" },

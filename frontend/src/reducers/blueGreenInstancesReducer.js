@@ -5,16 +5,12 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case types.BLUEGREEN_UPDATE_INSTANCES:
       return Object.assign({}, state, {
-        bluegreen: {
-          instances: action.values,
-          deployed: state.bluegreen.deployed
-        }});
-
-    case types.BLUEGREEN_DEREGISTER:
-      return state;
+          instances: action.values
+        });
 
     case types.BLUEGREEN_UPDATE_DEPLOYED:
-      return state;
+      return Object.assign({}, state,
+        { deployed: action.values }) ;
 
     default:
       return state;

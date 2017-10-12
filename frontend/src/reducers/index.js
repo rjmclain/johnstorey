@@ -3,7 +3,7 @@ import blueGreenInstancesReducer from "./blueGreenInstancesReducer";
 
 // Combine all reducers into a single reducer function.
 const rootReducer = combineReducers({
-  blueGreenInstancesReducer,
+  bluegreen: blueGreenInstancesReducer,
 });
 
 export default rootReducer;

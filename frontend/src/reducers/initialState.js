@@ -1,8 +1,8 @@
 export default {
-  // Blue Green related state.
-  bluegreen: {
-    deployed: [],
-    //instances: []
-    instances: { id: "riker" }
-  }
+// Blue Green related state.
+deployed : [],
+//instances: []
+instances : {
+  id: "riker"
+}
 };
