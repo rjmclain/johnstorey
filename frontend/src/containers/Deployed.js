@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import config from "../config";
-import { invokeApig } from "../libs/awsLib";
+import * as blueGreenActions from "../actions/blueGreenActions";
+import * as eventTypes from "../constants/eventTypes";
 
-export default class Deployed extends Component {
+class DeployedPresentation extends Component {
   constructor(props) {
     super(props);
 
@@ -11,41 +13,38 @@ export default class Deployed extends Component {
     };
   }
 
-  async componentDidMount() {
-    try {
-      await this.refreshInstanceList();
-    } catch(e) {
-      alert(e);
-      this.setState({ isLoading: false });
-    }
-  }
-
-  async refreshInstanceList() {
-    const deployed_list = await invokeApig({
-      path: "/target-health",
-      method: "GET"
-    });
-    
-    const instanceList = deployed_list.TargetHealthDescriptions.map( (instance) => {
-      return { instanceId: instance.Target.Id };
-    });
-
-    this.props.setDeployed(instanceList);
+  componentDidMount(){
+    this.props.dispatch(blueGreenActions.fetchDeployed());
   }
 
   render() {
     return (
       <div>
-      { this.props.deployed.map( instance => (
-        <div>
+        {
+        this.props.deployed.map( (instance) => {
+        return(
         <span className="deployed" 
-         key={instance.instanceId}>
-          {instance.instanceId}
-        </span><br />
-         </div>
-      ))}
+         key={ instance.instanceId }>
+          { instance.instanceId }
+        </span>
+        );
+      })}
       </div>
-
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    deployed: state.bluegreen.deployed
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch: dispatch
+  };
+}
+
+const Deployed = connect(mapStateToProps,mapDispatchToProps)(DeployedPresentation);
+export default Deployed;

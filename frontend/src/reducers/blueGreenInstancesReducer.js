@@ -8,9 +8,9 @@ export default function (state = initialState, action) {
           instances: action.values
         });
 
-    case types.BLUEGREEN_UPDATE_DEPLOYED:
+    case types.BLUEGREEN_INSTANCE_DEPLOYED:
       return Object.assign({}, state,
-        { deployed: action.values }) ;
+        { deployed: action.values}) ;
 
     default:
       return state;

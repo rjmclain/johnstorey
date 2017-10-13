@@ -9,7 +9,7 @@ import * as eventTypes from "../constants/eventTypes";
 class InstancesContainer extends Component {
 
   componentDidMount() {
-    this.props.dispatch(blueGreenActions.blueGreenFetchInstances());
+    this.props.dispatch(blueGreenActions.fetchInstances());
   }
 
   render() {
@@ -19,10 +19,11 @@ class InstancesContainer extends Component {
             return (
               <Button
               key={ instance.instanceId }
-              onClick={ this.props.onDeployClick(instance.instanceId) } >
+              onClick={ () => { this.props.onDeployClick(instance.instanceId,
+                this.props.deployed) }} >
               { instance.instanceId }
             </Button>
-          );
+         );
         })}
       </div>
     );
@@ -31,18 +32,16 @@ class InstancesContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    instances: state.bluegreen.instances
+    instances: state.bluegreen.instances,
+    deployed : state.bluegreen.deployed
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
-    onDeployClick: (e) => {
-      dispatch({
-        type: eventTypes.BLUEGREEN_DEPLOY_INSTANCE,
-        value: e
-      });
+    onDeployClick: (instanceId, deployed) => {
+      dispatch(blueGreenActions.deployInstance(instanceId, deployed));
     }
   }
 }
