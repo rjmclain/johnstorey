@@ -3,20 +3,29 @@ import { connect } from "react-redux";
 import "./Instances.css";
 import config from "../config";
 import { Button } from "react-bootstrap";
-import { invokeApig } from "../libs/awsLib";
+import * as blueGreenActions from "../actions/blueGreenActions";
 import * as eventTypes from "../constants/eventTypes";
 
 class InstancesContainer extends Component {
 
+  componentDidMount() {
+    this.props.dispatch(blueGreenActions.blueGreenFetchInstances());
+  }
+
   render() {
     return (
-        <Button
-           key={ this.props.instances.id }
-           onClick={ this.props.onDeployClick }
-        >
-            { this.props.instances.id }
-        </Button>
-    )
+      <div>
+        { this.props.instances.map( (instance) => {
+            return (
+              <Button
+              key={ instance.instanceId }
+              onClick={ this.props.onDeployClick(instance.instanceId) } >
+              { instance.instanceId }
+            </Button>
+          );
+        })}
+      </div>
+    );
   }
 }
 
@@ -28,10 +37,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onDeployClick: () => {
+    dispatch: dispatch,
+    onDeployClick: (e) => {
       dispatch({
-        type: eventTypes.BLUEGREEN_UPDATE_INSTANCES,
-        values:  { id: "three" },
+        type: eventTypes.BLUEGREEN_DEPLOY_INSTANCE,
+        value: e
       });
     }
   }
