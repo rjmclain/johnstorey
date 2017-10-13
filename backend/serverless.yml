@@ -143,3 +143,11 @@ functions:
           method: GET
           cors: true
           authorizer: aws_iam
+  describe-regions:
+    handler: describe-regions.main
+    events:
+      - http:
+          path: describe-regions
+          method: GET
+          cors: true
+          authorizer: aws_iam
