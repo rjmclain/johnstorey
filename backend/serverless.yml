@@ -27,6 +27,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs6.10
+  memorySize: 512 # We are not using the default 1024MB
 
 # you can overwrite defaults here
 #  stage: dev
@@ -149,5 +150,23 @@ functions:
       - http:
           path: describe-regions
           method: GET
+          cors: true
+          authorizer: aws_iam
+  stop-instance:
+    handler: stop-instance.main
+    timeout: 300
+    events:
+      - http:
+          path: stop-instance
+          method: POST
+          cors: true
+          authorizer: aws_iam
+  create-image:
+    handler: create-image.main
+    timeout: 300
+    events:
+      - http:
+          path: create-image
+          method: POST
           cors: true
           authorizer: aws_iam
