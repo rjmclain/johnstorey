@@ -15,19 +15,25 @@ export function main(event, context, callback) {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": true
   };
-          // Set params for snapshot.
-const params = {
-  InstanceId: data.instanceId,
-  /* required */
-  Name: data.amiName,
-  /* required */
-  Description: data.amiDescription
-};
 
-  ec2.createImage(params, function (err, data) {
+  var params = {
+    Name: data.destName,/* required */
+    SourceImageId: data.srcAMI, /* required */
+    SourceRegion: data.srcRegion, /* required */
+    Description: data.destDescription,
+    DryRun: false,
+    Encrypted: false,
+  };
+
+  console.log("copyImage params", params);
+
+  ec2.copyImage(params, function(err, data) {
+    console.log("copyImage data", data);
+    console.log("copyImage err", err);
     if (err) {
+      console.log(err, err.stack); // an error occurred
       callback(null, failure({status: false}));
-    } else {
+    } else  {
       callback(null, success(data));
     }
   });

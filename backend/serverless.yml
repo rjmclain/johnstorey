@@ -170,3 +170,12 @@ functions:
           method: POST
           cors: true
           authorizer: aws_iam
+  copy-image-regions:
+    handler: copy-image-regions.main
+    timeout: 300
+    events:
+      - http:
+          path: copy-image-regions
+          method: POST
+          cors: true
+          authorizer: aws_iam
