@@ -11,4 +11,4 @@ apig-test \
   --api-gateway-region='us-east-1' \
   --path-template='/create-image' \
   --method='POST' \
-  --body='{"instanceId":"i-05611bce03b4f0530","amiName":"TEST_AMI_2017-10-14","amiDescription":"OK_TO_DELETE"}'
+  --body='{"instanceId":"i-05611bce03b4f0530","amiName":"TEST_AMI_2017-10-14","amiDescription":"OK_TO_DELETE","region":"us-east-1"}'

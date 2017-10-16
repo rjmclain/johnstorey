@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { invokeApig, authUser, signOutUser } from "../libs/awsLib";
+import { invokeApig } from "../libs/awsLib";
 import config from "../config";
 import "./Home.css";
 import Instances from "./Instances";

@@ -1,5 +1,5 @@
 // Combine all sagas to a single root saga.
-import { call, put, takeEvery, takeLatest, fork } from "redux-saga/effects";
+import { fork } from "redux-saga/effects";
 import fetchEC2InstancesWatcher from "./fetchEC2InstancesWatcher";
 import fetchDeployedInstancesWatcher from "./fetchDeployedInstancesWatcher";
 import deployTargetWatcher from "./deployTargetWatcher";

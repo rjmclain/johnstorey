@@ -1,21 +1,95 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { connect } from "react-redux";
-import eventTypes from "../constants/eventTypes";
+import { invokeApig } from "../libs/awsLib";
 
 class CreateImageComponentPresentation extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      instanceid: '',
+      region: '',
+      name: '',
+      description: ''
+    };
+
+    this.handleInstanceId = this.handleInstanceId.bind(this);
+    this.handleDescription = this.handleDescription.bind(this);
+    this.handleName = this.handleName.bind(this);
+    this.handleRegion = this.handleRegion.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleInstanceId(event) {
+    this.setState({ instanceid: event.target.value });
+    //this.props.dispatch(createImageActions.instanceId(this.state.instanceid));
+  }
+
+  handleRegion(event) {
+    this.setState({ region: event.target.value });
+  }
+
+  handleName(event) {
+    this.setState({ name: event.target.value });
+    //this.props.dispatch(createImageActions.instanceId(this.state.instanceid));
+  }
+
+  handleDescription(event) {
+    this.setState({ description: event.target.value });
+    //this.props.dispatch(createImageActions.instanceId(this.state.instanceid));
+  }
+
+  async handleSubmit(event) {
+
+    let stopResults = invokeApig({
+      path: "/stop-instance",
+      method: "POST",
+      headers: {},
+      queryParams: {},
+      body: {
+        instanceId: this.state.instanceid,
+    }});
+
+    stopResults.then((data) => {
+
+    let createImage = invokeApig({
+      path: "/create-image",
+      method: "POST",
+      headers: {},
+      queryParams: {},
+      body: {
+        instanceId: this.state.instanceid,
+        amiName: this.state.name,
+        amiDescription : this.state.description,
+        region : this.state.region
+      }
+    });
+
+
+  createImage.then((data) => {
+  });
+
+});
+
+event.preventDefault();
+}
+
   render() {
     return (
     <span>
+
+        <form onSubmit={ this.handleSubmit }>
+
       <div className="row">
         <span align="center" className="col-lg-2">
           Instance Id
         </span>
         <span align="center" className="col-lg-6">
-          <input type="text" value="{this.state.value}" onChange={this.handleChange} />
+          <input type="text" 
+            onChange={ this.handleInstanceId } />
         </span>
         <span align="center" className="col-lg-2">
-          <Button>Create</Button>
+          <Button onClick={ this.handleSubmit }>Create</Button>
         </span>
       </div>
 
@@ -24,7 +98,8 @@ class CreateImageComponentPresentation extends Component {
           Region
         </span>
         <span align="center" className="col-lg-10">
-          <input type="text" value="{this.state.value}" onChange={this.handleChange} />
+          <input type="text"
+            onChange={ this.handleRegion } />
         </span>
       </div>
 
@@ -33,7 +108,8 @@ class CreateImageComponentPresentation extends Component {
           Name
         </span>
         <span align="center" className="col-lg-10">
-          <input type="text" value="{this.state.value}" onChange={this.handleChange} />
+          <input type="text"
+            onChange={ this.handleName } />
         </span>
       </div>
 
@@ -42,30 +118,15 @@ class CreateImageComponentPresentation extends Component {
           Description
         </span>
         <span className="col-lg-10">
-          <input type="text" value="{this.state.value}" onChange={this.handleChange} />
+          <input type="text" 
+            onChange={ this.handleDescription } />
         </span>
 
       </div>
+        </form>
     </span>
     )
   }
 }
 
-
-const mapStateToProps = (state) => {
-  return {
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatch: dispatch,
-    onDeployClick: (instanceId, deployed) => {
-//      dispatch(blueGreenActions.deployInstance(instanceId, deployed));
-    }
-  }
-}
-
-const CreateImageComponent = connect
-  (mapStateToProps,mapDispatchToProps)(CreateImageComponentPresentation);
-export default CreateImageComponent;
+export default CreateImageComponentPresentation;

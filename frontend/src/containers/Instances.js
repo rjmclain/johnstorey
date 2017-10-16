@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./Instances.css";
-import config from "../config";
 import { Button } from "react-bootstrap";
 import * as blueGreenActions from "../actions/blueGreenActions";
-import * as eventTypes from "../constants/eventTypes";
 
 class InstancesContainer extends Component {
 

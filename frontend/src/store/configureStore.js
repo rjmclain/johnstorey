@@ -2,7 +2,6 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';  
 import rootReducer from "../reducers";
 import rootSaga from "../sagas/index";
-import * as blueGreenActions from "../actions/blueGreenActions";
 
 // Allow Redux devtools to work with Redux Sagas.
 /* eslint-disable */

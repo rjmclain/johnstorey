@@ -1,7 +1,7 @@
 import * as types from "../constants/eventTypes";
 import initialState from "./initialState";
 
-export default function (state = initialState, action) {
+export default function (state = initialState.bluegreen, action) {
   switch (action.type) {
     case types.BLUEGREEN_UPDATE_INSTANCES:
       return Object.assign({}, state, {

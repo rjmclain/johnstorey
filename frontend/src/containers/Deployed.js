@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import config from "../config";
 import * as blueGreenActions from "../actions/blueGreenActions";
-import * as eventTypes from "../constants/eventTypes";
 
 class DeployedPresentation extends Component {
   constructor(props) {

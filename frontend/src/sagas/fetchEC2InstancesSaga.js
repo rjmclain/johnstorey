@@ -1,6 +1,5 @@
-import { put, call } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import * as eventTypes from "../constants/eventTypes";
-import config from "../config";
 import { invokeApig } from "../libs/awsLib";
 
 export function* fetchEC2InstancesSaga(action) {
