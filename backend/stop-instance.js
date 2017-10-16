@@ -22,21 +22,7 @@ export function main(event, context, callback) {
         if (err !== null) {
          callback(null, failure({status: false}));
         } else {
-
-  // TODO: Check to see if it really stopped.
-  const waitStoppedParams = {
-    InstanceIds: [ data.instanceId ],
-  };
-
-  ec2.waitFor(
-    'instanceStopped',
-    waitStoppedParams,
-    function(err, data) {
-      if (err) {
-        callback(null, failure({status: false}));
-      }
+          callback(null, success(data));
+        }
       });
-      }
-    }
-  );
 }

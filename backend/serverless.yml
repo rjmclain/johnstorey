@@ -27,7 +27,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs6.10
-  memorySize: 512 # We are not using the default 1024MB
+  memorySize: 128 # We are not using the default 1024MB
 
 # you can overwrite defaults here
 #  stage: dev
@@ -176,6 +176,14 @@ functions:
     events:
       - http:
           path: copy-image-regions
+          method: POST
+          cors: true
+          authorizer: aws_iam
+  describe-instance:
+    handler: describe-instance.main
+    events:
+      - http:
+          path: describe-instance
           method: POST
           cors: true
           authorizer: aws_iam
