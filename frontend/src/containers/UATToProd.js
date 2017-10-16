@@ -4,6 +4,7 @@ import config from "../config";
 import "./Home.css";
 import Instances from "./Instances";
 import Deployed from "./Deployed";
+import CreateImageComponent from "../components/CreateImageComponent";
 
 export default class UATToProd extends Component {
   constructor(props) {
@@ -30,19 +31,14 @@ export default class UATToProd extends Component {
 
   render() {
     return (
-      <div className="Home">
-      <div className="lander">
-      <h1>DNN Deployment</h1>
-      <br />
-      <p>Deployed</p>
-      <Deployed deployed={this.state.deployed} setDeployed={this.setDeployed.bind(this) } />
-      <br />
-      <p>Deployment Candidates</p>
-      <Instances deployed={this.state.deployed}
-        setDeployed={this.setDeployed.bind(this)}
-        deregister={this.deregister.bind(this)}
-        />
-      </div>
+      <div className="container">
+        <h2>Create Image from Instance</h2>
+          <CreateImageComponent />
+
+        <div className="row">
+          <h2>Copy Image to Region</h2>
+        </div>
+
       </div>
     );
   }

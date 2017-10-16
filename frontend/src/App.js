@@ -40,6 +40,13 @@ class App extends Component {
     this.props.history.push("/");
   }
 
+  handleUATToProd = event => {
+    this.props.history.push("/UATToProd");
+  }
+
+  handleDeploy = event => {
+    this.props.history.push("/dashboard");
+  }
   render() {
     // Pass these to child containers.
     const childProps = {
@@ -60,6 +67,21 @@ class App extends Component {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav pullRight>
+
+          {this.state.isAuthenticated
+            ? <NavItem onClick={this.handleUATToProd}>UATToProd</NavItem>
+            : [
+              <RouteNavItem key={2} href="/UATToProd">
+              </RouteNavItem>
+            ]}
+
+          {this.state.isAuthenticated
+            ? <NavItem onClick={this.handleDeploy}>Deploy</NavItem>
+            : [
+              <RouteNavItem key={2} href="/dashboard">
+              </RouteNavItem>
+            ]}
+
           {this.state.isAuthenticated
             ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
             : [
