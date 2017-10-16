@@ -11,4 +11,4 @@ apig-test \
   --api-gateway-region='us-east-1' \
   --path-template='/copy-image-regions' \
   --method='POST' \
-  --body='{"destName":"TEST copied image","srcRegion":"us-west-1","srcAMI":"ami-23f5c743","destDescription":"Test copy"}'
+  --body='{"destName":"TEST copied image","destRegion":"ca-central-1","srcRegion":"us-west-1","srcAMI":"ami-23f5c743","destDescription":"Test copy"}'

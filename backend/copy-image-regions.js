@@ -7,7 +7,7 @@ export function main(event, context, callback) {
 
   AWS
     .config
-    .update({region: "us-east-1"});
+    .update({ region: data.destRegion });
   const ec2 = new AWS.EC2();
 
   // Set response headers to enable CORS.
@@ -25,13 +25,8 @@ export function main(event, context, callback) {
     Encrypted: false,
   };
 
-  console.log("copyImage params", params);
-
   ec2.copyImage(params, function(err, data) {
-    console.log("copyImage data", data);
-    console.log("copyImage err", err);
     if (err) {
-      console.log(err, err.stack); // an error occurred
       callback(null, failure({status: false}));
     } else  {
       callback(null, success(data));
