@@ -9,8 +9,8 @@ class CopyImageComponentPresentation extends Component {
     super(props);
     this.state = {
       destName: '',
-      destRegion: '',
-      srcRegion: '',
+      destRegion: 'us-east-1',
+      srcRegion: 'us-east-1',
       srcAMI: '',
       destDescription: ''
     };
@@ -31,9 +31,8 @@ class CopyImageComponentPresentation extends Component {
     this.setState({ destRegion: event.target.value });
   }
 
-  handleSrcRegion() {
-    console.log("handleSrcRegion event");
-    //this.setState({ srcRegion: event.target.value });
+  handleSrcRegion(event) {
+    this.setState({ srcRegion: event.target.value });
   }
 
   handleSrcAMI(event) {
@@ -59,6 +58,7 @@ class CopyImageComponentPresentation extends Component {
     }});
 
     copyResults.then((data) => {
+      //TODO: Pass this into the next component.
       const newImageId = data.ImageId;
     });
 
@@ -98,7 +98,7 @@ event.preventDefault();
           Destination Region
         </span>
         <span align="center" className="col-lg-10">
-          <RegionsSelect />
+          <RegionsSelect onSelectHandler={ this.handleDestRegion } />
         </span>
       </div>
 
