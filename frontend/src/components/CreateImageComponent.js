@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { invokeApig } from "../libs/awsLib";
+import RegionsSelect from "./RegionsSelect";
 
 class CreateImageComponentPresentation extends Component {
 
@@ -98,8 +99,7 @@ event.preventDefault();
           Region
         </span>
         <span align="center" className="col-lg-10">
-          <input type="text"
-            onChange={ this.handleRegion } />
+          <RegionsSelect onSelectHandler={ this.handleRegion } />
         </span>
       </div>
 
