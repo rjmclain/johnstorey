@@ -187,3 +187,12 @@ functions:
           method: POST
           cors: true
           authorizer: aws_iam
+  fetch-amis:
+    handler: fetch-amis.main
+    timeout: 300
+    events:
+      - http:
+          path: fetch-amis
+          method: POST
+          cors: true
+          authorizer: aws_iam
