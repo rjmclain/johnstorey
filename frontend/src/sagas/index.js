@@ -4,6 +4,7 @@ import fetchEC2InstancesWatcher from "./fetchEC2InstancesWatcher";
 import fetchDeployedInstancesWatcher from "./fetchDeployedInstancesWatcher";
 import deployTargetWatcher from "./deployTargetWatcher";
 import amiSelectFetchAMIsWatcher from "./amiSelectFetchAMIsWatcher";
+import instanceFetchWatcher from './instanceFetchWatcher';
 
 // Register all with a single generator.
 export default function* startForeman() {
@@ -11,4 +12,5 @@ export default function* startForeman() {
   yield fork(fetchDeployedInstancesWatcher);
   yield fork(deployTargetWatcher);
   yield fork(amiSelectFetchAMIsWatcher);
+  yield fork(instanceFetchWatcher);
 }

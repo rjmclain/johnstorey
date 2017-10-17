@@ -2,17 +2,12 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
+import InstanceSelect from "./InstanceSelect";
 
 class CreateImageComponentPresentation extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      instanceid: '',
-      region: '',
-      name: '',
-      description: ''
-    };
 
     this.handleInstanceId = this.handleInstanceId.bind(this);
     this.handleDescription = this.handleDescription.bind(this);
@@ -83,23 +78,26 @@ event.preventDefault();
 
       <div className="row">
         <span align="center" className="col-lg-2">
-          Instance Id
+          Region
         </span>
-        <span align="center" className="col-lg-6">
-          <input type="text" 
-            onChange={ this.handleInstanceId } />
-        </span>
-        <span align="center" className="col-lg-2">
-          <Button onClick={ this.handleSubmit }>Create</Button>
+        <span align="center" className="col-lg-10">
+          <RegionsSelect onSelectHandler={ this.handleRegion } />
         </span>
       </div>
 
       <div className="row">
         <span align="center" className="col-lg-2">
-          Region
+          Instance Id
         </span>
-        <span align="center" className="col-lg-10">
-          <RegionsSelect onSelectHandler={ this.handleRegion } />
+        <span align="center" className="col-lg-6">
+          <InstanceSelect
+            onSelectHandler={ this.handleInstanceId }
+            uniqueId="createimage_instances"
+          />
+        </span>
+        
+        <span align="center" className="col-lg-2">
+          <Button onClick={ this.handleSubmit }>Create</Button>
         </span>
       </div>
 

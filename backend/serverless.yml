@@ -116,8 +116,8 @@ functions:
     handler: list-instances.main
     events:
       - http:
-          path: list
-          method: GET
+          path: list-instances
+          method: POST
           cors: true
           authorizer: aws_iam
   deregister-target:

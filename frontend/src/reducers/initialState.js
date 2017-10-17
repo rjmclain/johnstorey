@@ -16,6 +16,11 @@ createImage: {
 // AMI Select.
 amiSelect: {
   copyImage_srcRegion: [],
+},
+
+// Instances select.
+instanceSelect: {
+  createimage_instances: [],
 }
 
 };
