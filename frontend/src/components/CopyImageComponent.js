@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { invokeApig } from "../libs/awsLib";
+import RegionsSelect from "./RegionsSelect";
 
 class CopyImageComponentPresentation extends Component {
 
@@ -30,8 +31,9 @@ class CopyImageComponentPresentation extends Component {
     this.setState({ destRegion: event.target.value });
   }
 
-  handleSrcRegion(event) {
-    this.setState({ srcRegion: event.target.value });
+  handleSrcRegion() {
+    console.log("handleSrcRegion event");
+    //this.setState({ srcRegion: event.target.value });
   }
 
   handleSrcAMI(event) {
@@ -66,8 +68,17 @@ event.preventDefault();
   render() {
     return (
     <span>
-
         <form onSubmit={ this.handleSubmit }>
+
+      <div className="row">
+        <span className="col-lg-2">
+          Source Region
+        </span>
+        <span className="col-lg-10">
+          <RegionsSelect onSelectHandler={ this.handleSrcRegion } />
+        </span>
+      </div>
+
       <div className="row">
         <span className="col-lg-2">
           Source AMI
@@ -81,15 +92,16 @@ event.preventDefault();
         </span>
       </div>
 
+
       <div className="row">
-        <span className="col-lg-2">
-          Source Region
+        <span align="center" className="col-lg-2">
+          Destination Region
         </span>
-        <span className="col-lg-10">
-          <input type="text" 
-            onChange={ this.handleSrcRegion } />
+        <span align="center" className="col-lg-10">
+          <RegionsSelect />
         </span>
       </div>
+
       <div className="row">
         <span align="center" className="col-lg-2">
           Destination Name
@@ -97,16 +109,6 @@ event.preventDefault();
         <span align="center" className="col-lg-10">
           <input type="text"
             onChange={ this.handleDestName } />
-        </span>
-      </div>
-
-      <div className="row">
-        <span align="center" className="col-lg-2">
-          Destination Region
-        </span>
-        <span align="center" className="col-lg-10">
-          <input type="text"
-            onChange={ this.handleDestRegion } />
         </span>
       </div>
 
