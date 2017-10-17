@@ -27,7 +27,7 @@ export function main(event, context, callback) {
 
   ec2.copyImage(params, function(err, data) {
     if (err) {
-      callback(null, failure({status: false}));
+      callback(null, failure({status: false, err: err}));
     } else  {
       callback(null, success(data));
     }

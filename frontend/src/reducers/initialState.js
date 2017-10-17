@@ -11,6 +11,11 @@ createImage: {
   region: "",
   name: "",
   description: ""
+},
+
+// AMI Select.
+amiSelect: {
+  copyImage_srcRegion: [],
 }
 
 };

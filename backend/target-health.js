@@ -21,7 +21,6 @@ export function main(event, context, callback) {
     if (err) {
       callback(null, failure({ status: false }));
     } else {
-      console.log("describeTargetHealth", data);
       callback(null, success(data));
     }
   });

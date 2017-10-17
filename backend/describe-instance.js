@@ -7,7 +7,6 @@ export function main(event, context, callback) {
 
   AWS
     .config
-    //.update({ region: config.ec2.region });
     .update({ region: data.region });
 
   const ec2 = new AWS.EC2();

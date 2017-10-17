@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
+import AMISelect from "./AMISelect";
+import * as amiSelectActions from "../actions/amiSelectActions";
 
 class CopyImageComponentPresentation extends Component {
 
@@ -32,6 +35,10 @@ class CopyImageComponentPresentation extends Component {
   }
 
   handleSrcRegion(event) {
+
+    this.props.dispatch(amiSelectActions.fetchAMIs(
+      event.target.value,
+      'copyImage_srcRegion'));
     this.setState({ srcRegion: event.target.value });
   }
 
@@ -60,10 +67,13 @@ class CopyImageComponentPresentation extends Component {
     copyResults.then((data) => {
       //TODO: Pass this into the next component.
       const newImageId = data.ImageId;
+    })
+    .catch((err) => {
+      console.log("copyResults err", err);
     });
 
-event.preventDefault();
-}
+    event.preventDefault();
+  }
 
   render() {
     return (
@@ -84,8 +94,9 @@ event.preventDefault();
           Source AMI
         </span>
         <span className="col-lg-10">
-          <input type="text" 
-            onChange={ this.handleSrcAMI } />
+          <AMISelect
+            onSelectHandler={ this.handleSrcAMI } 
+            uniqueId="copyImage_srcRegion" /> 
         </span>
         <span align="center" className="col-lg-2">
           <Button onClick={ this.handleSubmit }>Copy</Button>
@@ -128,4 +139,16 @@ event.preventDefault();
   }
 }
 
-export default CopyImageComponentPresentation;
+const mapStateToProps = (state, ownProps) => {
+  const newProps = {};
+  return newProps;
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch: dispatch,
+  }
+}
+
+const CopyImageComponent = connect(mapStateToProps,mapDispatchToProps)(CopyImageComponentPresentation);
+export default CopyImageComponent;
