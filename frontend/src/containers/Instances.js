@@ -3,26 +3,28 @@ import { connect } from "react-redux";
 import "./Instances.css";
 import { Button } from "react-bootstrap";
 import * as blueGreenActions from "../actions/blueGreenActions";
+import InstanceSelect from "../components/InstanceSelect";
 
 class InstancesContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.handleInstanceId = this.handleInstanceId.bind(this);
+  }
 
   componentDidMount() {
     this.props.dispatch(blueGreenActions.fetchInstances());
   }
 
+  handleInstanceId(event) {
+    this.props.onDeployClick(event.target.value, this.props.deployed);
+  }
+
   render() {
     return (
       <div>
-        { this.props.instances.map( (instance) => {
-            return (
-              <Button
-              key={ instance.instanceId }
-              onClick={ () => { this.props.onDeployClick(instance.instanceId,
-                this.props.deployed) }} >
-              { instance.instanceId }
-            </Button>
-         );
-        })}
+        <InstanceSelect
+          onSelectHandler={ this.handleInstanceId }
+          uniqueId="deployCandidates" />
       </div>
     );
   }

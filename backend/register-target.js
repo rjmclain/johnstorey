@@ -19,8 +19,8 @@ export function main(event, context, callback) {
 
   elbv2.registerTargets(params, function (err, data) {
     if (err) {
-      //callback(null, failure({ status: false }));
-      callback(null, failure(err));
+      callback(null, failure({ status: false, err: err }));
+      //callback(null, failure(err));
     } else {
       callback(null, success(data));
     }

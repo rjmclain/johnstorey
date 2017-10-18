@@ -21,6 +21,7 @@ amiSelect: {
 // Instances select.
 instanceSelect: {
   createimage_instances: [],
+  deployCandidates: []
 }
 
 };
