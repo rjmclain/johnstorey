@@ -82,22 +82,22 @@ class CreateImageComponentPresentation extends Component {
     this.props.dispatch(messageBoxActions.message(
       "Creating image of instance " + this.state.instanceid));
 
-  let createImage = invokeApig({
-    path: "/create-image",
-    method: "POST",
-    headers: {},
-    queryParams: {},
-    body: {
-      instanceId: this.state.instanceid,
-      amiName: this.state.name,
-      amiDescription: this.state.description,
-      region: this.state.region
+    let createImage = invokeApig({
+      path: "/create-image",
+      method: "POST",
+      headers: {},
+      queryParams: {},
+      body: {
+        instanceId: this.state.instanceid,
+        amiName: this.state.name,
+        amiDescription: this.state.description,
+        region: this.state.region
     }
   });
 
   createImage.then((data) => {
     this.props.dispatch(messageBoxActions.message(
-      "Creating image with AMI ID of ", data.ImageId ));
+      "Created image with AMI ID of " + data.ImageId ));
   });
 
   createImage.catch( (err) => { console.log("createImage err", err); });

@@ -12,7 +12,6 @@ class InstanceSelectPresentation extends Component {
   }
 
   componentDidMount() {
-    // TODO Dispatch correct action.
     this.props.dispatch(
       instanceSelectActions.fetchInstances(
         "us-east-1",
