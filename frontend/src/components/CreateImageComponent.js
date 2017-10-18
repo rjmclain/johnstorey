@@ -5,6 +5,7 @@ import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import InstanceSelect from "./InstanceSelect";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
+import * as messageBoxActions from "../actions/messageBoxActions";
 
 class CreateImageComponentPresentation extends Component {
 
@@ -18,11 +19,23 @@ class CreateImageComponentPresentation extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(
+      messageBoxActions.clear()
+    );
+  }
+
   handleInstanceId(event) {
+    this.props.dispatch
+      (messageBoxActions.message
+        ("Instance id " + event.target.value + " chosen."));
+
     this.setState({ instanceid: event.target.value });
   }
 
   handleRegion(event) {
+    this.props.dispatch(messageBoxActions.message("Fetching instances"));
+
     this.props.dispatch(instanceSelectActions.fetchInstances(
       event.target.value,
       'createimage_instances'
@@ -39,6 +52,9 @@ class CreateImageComponentPresentation extends Component {
   }
 
   async handleSubmit(event) {
+    this.props.dispatch(messageBoxActions.message
+      ("Stopping instance " + this.state.instanceid
+      + ". This will take awhile."));
 
     let stopResults = invokeApig({
       path: "/stop-instance",
@@ -49,7 +65,14 @@ class CreateImageComponentPresentation extends Component {
         instanceId: this.state.instanceid,
     }});
 
-stopResults.then((data) => {
+    stopResults.then((data) => {
+
+    sleep(180000)
+      .then( () => {
+
+
+    this.props.dispatch(messageBoxActions.message
+      ("Creating image of instance " + this.state.instanceid));
 
   let createImage = invokeApig({
     path: "/create-image",
@@ -64,14 +87,17 @@ stopResults.then((data) => {
     }
   });
 
-
   createImage.then((data) => {
+    this.props.dispatch(messageBoxActions.message
+      ("Creating image with AMI ID of ", data.ImageId ));
   });
 
   createImage.catch( (err) => { console.log("createImage err", err); });
 });
 
   stopResults.catch( (err) => { console.log("stopResults err", err); });
+
+      });
 
 event.preventDefault();
 }
@@ -131,6 +157,10 @@ event.preventDefault();
     </span>
     )
   }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const mapStateToProps = (state, ownProps) => {

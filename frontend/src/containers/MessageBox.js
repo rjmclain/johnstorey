@@ -9,8 +9,8 @@ class MessageBoxContainer extends Component {
 
   render() {
     return (
-      this.props.messages.map( (message) => {
-        return <p>{ message }</p>;
+      this.props.messages.text.map( (message) => {
+        return <p key={ message.text }>{ message }</p>;
       })
     );
   }

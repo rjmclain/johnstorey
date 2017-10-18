@@ -5,6 +5,7 @@ import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
 import * as amiSelectActions from "../actions/amiSelectActions";
+import * as messageBoxActions from "../actions/messageBoxActions";
 
 class CopyImageComponentPresentation extends Component {
 
@@ -50,6 +51,12 @@ class CopyImageComponentPresentation extends Component {
   }
   
   async handleSubmit(event) {
+    this.props.dispatch(
+      messageBoxActions.message("Copying image "
+        + this.state.srcAMI + " to region "
+        + this.state.destRegion + ".")
+    );
+
     let copyResults = invokeApig({
       path: "/copy-image-regions",
       method: "POST",
@@ -66,6 +73,13 @@ class CopyImageComponentPresentation extends Component {
     copyResults.then((data) => {
       //TODO: Pass this into the next component.
       const newImageId = data.ImageId;
+
+    this.props.dispatch(
+      messageBoxActions.message("Copied image has AMI id of "
+        + newImageId + " in region "
+        + this.state.destRegion + ".")
+    );
+
     })
     .catch((err) => {
       console.log("copyResults err", err);

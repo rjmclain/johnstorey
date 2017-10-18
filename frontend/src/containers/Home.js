@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { invokeApig } from "../libs/awsLib";
 import config from "../config";
 import "./Home.css";
 import Instances from "./Instances";
 import Deployed from "./Deployed";
 import MessageBox from "../containers/MessageBox";
+import * as messageBoxActions from "../actions/messageBoxActions";
 
-export default class Home extends Component {
+class HomePresentation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,14 +17,10 @@ export default class Home extends Component {
     }
   }
 
-  async deregister(instanceId) {
-    await invokeApig({
-      path: "/deregister",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {id: instanceId, group: config.ec2.TARGET_GROUP }
-    })
+  componentDidMount() {
+    this.props.dispatch(
+      messageBoxActions.clear()
+    );
   }
 
   setDeployed(deployedList) {
@@ -41,7 +39,6 @@ export default class Home extends Component {
       <p>Deployment Candidates</p>
       <Instances deployed={this.state.deployed}
         setDeployed={this.setDeployed.bind(this)}
-        deregister={this.deregister.bind(this)}
         />
       <h3>Status Messages</h3>
       <MessageBox />
@@ -50,3 +47,10 @@ export default class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+  };
+}
+const HomeContainer = connect(mapStateToProps)(HomePresentation);
+export default HomeContainer;

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import "./Instances.css";
 import { Button } from "react-bootstrap";
 import * as blueGreenActions from "../actions/blueGreenActions";
+import * as messageBoxActions from "../actions/messageBoxActions";
 import InstanceSelect from "../components/InstanceSelect";
 
 class InstancesContainer extends Component {
@@ -41,7 +42,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     onDeployClick: (instanceId, deployed) => {
-      dispatch(blueGreenActions.deployInstance(instanceId, deployed));
+      dispatch(blueGreenActions.deployInstance(dispatch, instanceId, deployed));
     }
   }
 }

@@ -24,11 +24,12 @@ export function fetchDeployed() {
 
 
 // Deploy a new DNN.
-export function deployInstance(idToDeploy, instancesToRemove = []) {
+export function deployInstance(dispatch, idToDeploy, instancesToRemove = []) {
   return {
     type: types.BLUEGREEN_DEPLOY_INSTANCE,
     values: idToDeploy,
-    remove: instancesToRemove
+    remove: instancesToRemove,
+    dispatch: dispatch
   };
 }
 

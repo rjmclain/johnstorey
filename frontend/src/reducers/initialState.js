@@ -24,6 +24,6 @@ instanceSelect: {
   deployCandidates: []
 },
 
-messages: [ ],
+messages: { text: [] },
 
 };

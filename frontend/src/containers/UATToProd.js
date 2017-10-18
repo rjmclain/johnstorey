@@ -4,6 +4,8 @@ import config from "../config";
 import "./Home.css";
 import CreateImageComponent from "../components/CreateImageComponent";
 import CopyImageComponent from "../components/CopyImageComponent";
+import MessageBox from "../containers/MessageBox";
+import * as messageBoxActions from "../actions/messageBoxActions";
 
 export default class UATToProd extends Component {
   constructor(props) {
@@ -36,6 +38,9 @@ export default class UATToProd extends Component {
 
         <h2>Copy Image to Region</h2>
         <CopyImageComponent />
+
+        <h3>Status Messages</h3>
+        <MessageBox />
 
       </div>
     );

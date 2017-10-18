@@ -3,12 +3,17 @@ import * as eventTypes from "../constants/eventTypes";
 import * as blueGreenActions from "../actions/blueGreenActions";
 import config from "../config";
 import { invokeApig } from "../libs/awsLib";
+import * as messageBoxActions from "../actions/messageBoxActions";
 
 export function * deployTargetSaga(action) {
-  
+ console.log("deployTargetSaga action", action);
+
   try {
     // Undeploy existing targets.
     for (let defunctInstance of action.remove) {
+
+      action.dispatch(messageBoxActions.message(
+        "Undeploying instance" + defunctInstance.instanceId));
 
       yield invokeApig({
         path: "/deregister",
@@ -23,6 +28,10 @@ export function * deployTargetSaga(action) {
     }
 
     // Deploy new target.
+
+    action.dispatch(messageBoxActions.message(
+      "Deploying instance " + action.values));
+
     yield invokeApig({
       path: "/register",
       method: "POST",
