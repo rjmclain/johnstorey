@@ -28,6 +28,7 @@ class InstancesContainer extends Component {
       <div>
         <InstanceSelect
           onSelectHandler={ this.handleInstanceId }
+          updateParent={ () => {} }
           uniqueId="deployCandidates" />
       </div>
     );
