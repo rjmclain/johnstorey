@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Grid, Row, Col, Button } from "react-bootstrap";
 import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
@@ -125,62 +125,67 @@ class CopyImageComponentPresentation extends Component {
   render() {
     return (
     <span>
-        <form onSubmit={ this.handleSubmit }>
+      <form onSubmit={ this.handleSubmit }>
 
-      <div className="row">
-        <span className="col-lg-2">
+    <Grid>
+      <Row>
+        <Col xs={12} md={2}>
           Source Region
-        </span>
-        <span className="col-lg-10">
+        </Col>
+        <Col xs={12} md={10}>
           <RegionsSelect onSelectHandler={ this.handleSrcRegion } />
-        </span>
-      </div>
+        </Col>
+      </Row>
 
-      <div className="row">
-        <span className="col-lg-2">
+      <Row>
+        <Col xs={12} md={2}>
           Source AMI
-        </span>
-        <span className="col-lg-10">
+        </Col>
+        <Col xs={12} md={10}>
           <AMISelect
             onSelectHandler={ this.handleSrcAMI } 
             updateParent={ this.handleChildUpdatedAMI }
             filters={ this.amiFilters() }
             uniqueId="copyImage_srcRegion" /> 
-        </span>
-        <span align="center" className="col-lg-2">
-          <Button onClick={ this.handleSubmit }>Copy</Button>
-        </span>
-      </div>
+        </Col>
+      </Row> 
 
-
-      <div className="row">
-        <span align="center" className="col-lg-2">
+      <Row>
+        <Col xs={12} md={2}>
           Destination Region
-        </span>
-        <span align="center" className="col-lg-10">
+        </Col>
+        <Col xs={12} md={10}>
           <RegionsSelect onSelectHandler={ this.handleDestRegion } />
-        </span>
-      </div>
+        </Col>
+      </Row>
 
-      <div className="row">
-        <span align="center" className="col-lg-2">
+      <Row>
+        <Col xs={12} md={2}>
           Destination Name
-        </span>
-        <span align="center" className="col-lg-10">
+        </Col>
+        <Col xs={12} md={10}>
           <input type="text"
             onChange={ this.handleDestName } />
-        </span>
-      </div>
+        </Col>
+      </Row>
 
-      <div className="row">
-        <span className="col-lg-2">
+      <Row>
+        <Col xs={12} md={2}>
           Destination Description
-        </span>
-        <span className="col-lg-10">
+        </Col>
+        <Col xs={12} md={10}>
           <input type="text" 
             onChange={ this.handleDestDescription } />
-        </span>
-      </div>
+        </Col> 
+      </Row>
+
+      <Row>
+        <Col xs={12} md={12}>
+          <Button onClick={ this.handleSubmit }>Copy</Button>
+        </Col>
+      </Row>
+
+    </Grid>
 
         </form>
     </span>

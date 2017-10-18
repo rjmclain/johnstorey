@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Grid, Row, Col, Button} from "react-bootstrap";
 import { connect } from "react-redux";
 import "./Home.css";
 import Instances from "./Instances";
@@ -27,21 +28,50 @@ class HomePresentation extends Component {
 
   render() {
     return (
-      <div className="Home">
-      <div className="lander">
-      <h1>DNN Deployment</h1>
-      <br />
-      <p>Deployed</p>
-      <Deployed deployed={this.state.deployed} setDeployed={this.setDeployed.bind(this) } />
-      <br />
-      <p>Deployment Candidates</p>
-      <Instances deployed={this.state.deployed}
-        setDeployed={this.setDeployed.bind(this)}
-        />
-      <h3>Status Messages</h3>
-      <MessageBox />
-      </div>
-      </div>
+      <Grid>
+        <Row>
+          <Col xs={12} md={12}>
+            <h1>DNN Deployment</h1>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs={12} md={12}>
+            Deployed
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} md={12}>
+           <Deployed deployed={this.state.deployed} setDeployed={this.setDeployed.bind(this) } />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs={12} md={12}>
+            Deployment Candidates
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} md={12}>
+            <Instances deployed={this.state.deployed}
+              setDeployed={this.setDeployed.bind(this)}
+              />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs={12} md={12}>
+            <h3>Status Messages</h3>
+          </Col>
+        </Row> 
+
+        <Row>
+          <Col xs={12} md={12}>
+            <MessageBox />
+          </Col>
+        </Row> 
+
+      </Grid>
     );
   }
 }

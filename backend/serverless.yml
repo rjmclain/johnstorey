@@ -164,6 +164,15 @@ functions:
           method: POST
           cors: true
           authorizer: aws_iam
+  start-instance:
+    handler: start-instance.main
+    timeout: 300
+    events:
+      - http:
+          path: start-instance
+          method: POST
+          cors: true
+          authorizer: aws_iam
   create-image:
     handler: create-image.main
     timeout: 300

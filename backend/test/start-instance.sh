@@ -9,6 +9,6 @@ apig-test \
   --identity-pool-id='us-east-1:05fb21a0-3c70-4bb3-8699-684e0a1da201' \
   --invoke-url='https://6ae485dpl8.execute-api.us-east-1.amazonaws.com/dev' \
   --api-gateway-region='us-east-1' \
-  --path-template='/stop-instance' \
+  --path-template='/start-instance' \
   --method='POST' \
   --body='{"instanceId":"i-05611bce03b4f0530","region":"us-east-1"}'

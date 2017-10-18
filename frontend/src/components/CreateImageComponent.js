@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Button} from "react-bootstrap";
+import { Grid, Row, Col, Button} from "react-bootstrap";
 import {invokeApig} from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import InstanceSelect from "./InstanceSelect";
@@ -119,8 +119,6 @@ class CreateImageComponentPresentation extends Component {
         }
       });
 
-      console.log("CreateImageComponent createImageResult", createImageResult);
-
         this
           .props
           .dispatch(messageBoxActions.message("Creating image with AMI ID of "
@@ -129,8 +127,6 @@ class CreateImageComponentPresentation extends Component {
 
         const waitForImageResult =
           await waitFor.waitForImageAvailable(createImageResult, this.state.region);
-
-        console.log("waitImageResult", waitForImageResult);
 
         let resultMessage = "";
         (waitForImageResult !== "false")
@@ -158,56 +154,56 @@ class CreateImageComponentPresentation extends Component {
 
   render() {
     return (
-      <span>
-
+      <Grid>
         <form onSubmit={this.handleSubmit}>
 
-          <div className="row">
-            <span align="center" className="col-lg-2">
+          <Row>
+            <Col xs={12} md={2}>
               Region
-            </span>
-            <span align="center" className="col-lg-10">
+            </Col>
+            <Col xs={12} md={10}>
               <RegionsSelect onSelectHandler={this.handleRegion}/>
-            </span>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row">
-            <span align="center" className="col-lg-2">
+          <Row>
+            <Col xs={12} md={2}>
               Instance Id
-            </span>
-            <span align="center" className="col-lg-6">
+            </Col>
+            <Col xs={12} md={10}>
               <InstanceSelect
                 onSelectHandler={this.handleInstanceId}
                 updateParent={this.handleInstanceSelectChanged}
                 filters={this.instanceFilters()}
                 uniqueId="createimage_instances"/>
-            </span>
+            </Col>
+          </Row>
 
-            <span align="center" className="col-lg-2">
-              <Button onClick={this.handleSubmit}>Create</Button>
-            </span>
-          </div>
-
-          <div className="row">
-            <span align="center" className="col-lg-2">
+          <Row>
+            <Col xs={12} md={2}>
               Name
-            </span>
-            <span align="center" className="col-lg-10">
+            </Col>
+            <Col xs={12} md={10}>
               <input type="text" onChange={this.handleName}/>
-            </span>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row">
-            <span className="col-lg-2">
+          <Row>
+            <Col xs={12} md={2}>
               Description
-            </span>
-            <span className="col-lg-10">
+            </Col>
+            <Col xs={12} md={10}>
               <input type="text" onChange={this.handleDescription}/>
-            </span>
+            </Col>
+          </Row>
 
-          </div>
+          <Row>
+            <Col xs={12} md={12}>
+              <Button onClick={this.handleSubmit}>Create</Button>
+            </Col>
+          </Row>
         </form>
-      </span>
+      </Grid> 
     )
   }
 }
