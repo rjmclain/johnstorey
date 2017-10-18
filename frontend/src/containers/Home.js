@@ -4,6 +4,7 @@ import config from "../config";
 import "./Home.css";
 import Instances from "./Instances";
 import Deployed from "./Deployed";
+import MessageBox from "../containers/MessageBox";
 
 export default class Home extends Component {
   constructor(props) {
@@ -42,6 +43,8 @@ export default class Home extends Component {
         setDeployed={this.setDeployed.bind(this)}
         deregister={this.deregister.bind(this)}
         />
+      <h3>Status Messages</h3>
+      <MessageBox />
       </div>
       </div>
     );

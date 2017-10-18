@@ -22,6 +22,8 @@ amiSelect: {
 instanceSelect: {
   createimage_instances: [],
   deployCandidates: []
-}
+},
+
+messages: [ ],
 
 };
