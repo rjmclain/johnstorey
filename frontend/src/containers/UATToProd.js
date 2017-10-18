@@ -5,7 +5,6 @@ import "./Home.css";
 import CreateImageComponent from "../components/CreateImageComponent";
 import CopyImageComponent from "../components/CopyImageComponent";
 import MessageBox from "../containers/MessageBox";
-import * as messageBoxActions from "../actions/messageBoxActions";
 
 export default class UATToProd extends Component {
   constructor(props) {

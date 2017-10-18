@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./Instances.css";
-import { Button } from "react-bootstrap";
 import * as blueGreenActions from "../actions/blueGreenActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
 import InstanceSelect from "../components/InstanceSelect";
@@ -17,6 +16,10 @@ class InstancesContainer extends Component {
   }
 
   handleInstanceId(event) {
+    this.props.dispatch(
+      messageBoxActions.message("Registering target "
+        + event.target.value));
+
     this.props.onDeployClick(event.target.value, this.props.deployed);
   }
 

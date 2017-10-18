@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { invokeApig } from "../libs/awsLib";
-import config from "../config";
 import "./Home.css";
 import Instances from "./Instances";
 import Deployed from "./Deployed";

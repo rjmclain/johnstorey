@@ -1,6 +1,5 @@
 import AWS from "aws-sdk";
 import {success, failure} from "./libs/response-lib";
-import config from "./config.js";
 
 export function main(event, context, callback) {
   const data = JSON.parse(event.body);

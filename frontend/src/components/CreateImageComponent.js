@@ -27,17 +27,15 @@ class CreateImageComponentPresentation extends Component {
   }
 
   handleInstanceId(event) {
-    this.props.dispatch
-      (messageBoxActions.message
-        ("Instance id " + event.target.value + " chosen."));
+    this.props.dispatch(messageBoxActions.message(
+      "Instance id " + event.target.value + " chosen."));
 
     this.setState({ instanceid: event.target.value });
   }
 
   handleInstanceSelectChanged(instanceId) {
-    this.props.dispatch
-      (messageBoxActions.message
-        ("Instance id " + instanceId + " chosen."));
+    this.props.dispatch(messageBoxActions.message(
+      "Instance id " + instanceId + " chosen."));
 
     this.setState({ instanceid: instanceId });
   }
@@ -61,9 +59,10 @@ class CreateImageComponentPresentation extends Component {
   }
 
   async handleSubmit(event) {
-    this.props.dispatch(messageBoxActions.message
-      ("Stopping instance " + this.state.instanceid
-      + ". This will take awhile."));
+    this.props.dispatch(
+      messageBoxActions.message(
+        "Stopping instance " + this.state.instanceid
+        + ". This will take awhile."));
 
     let stopResults = invokeApig({
       path: "/stop-instance",
@@ -80,8 +79,8 @@ class CreateImageComponentPresentation extends Component {
       .then( () => {
 
 
-    this.props.dispatch(messageBoxActions.message
-      ("Creating image of instance " + this.state.instanceid));
+    this.props.dispatch(messageBoxActions.message(
+      "Creating image of instance " + this.state.instanceid));
 
   let createImage = invokeApig({
     path: "/create-image",
@@ -97,8 +96,8 @@ class CreateImageComponentPresentation extends Component {
   });
 
   createImage.then((data) => {
-    this.props.dispatch(messageBoxActions.message
-      ("Creating image with AMI ID of ", data.ImageId ));
+    this.props.dispatch(messageBoxActions.message(
+      "Creating image with AMI ID of ", data.ImageId ));
   });
 
   createImage.catch( (err) => { console.log("createImage err", err); });
