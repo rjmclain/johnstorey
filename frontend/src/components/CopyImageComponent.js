@@ -79,13 +79,12 @@ class CopyImageComponentPresentation extends Component {
     }});
 
     copyResults.then((data) => {
-      //TODO: Pass this into the next component.
       const newImageId = data.ImageId;
 
     this.props.dispatch(
       messageBoxActions.message("Copied image has AMI id of "
         + newImageId + " in region "
-        + this.state.destRegion + ".")
+        + this.state.destRegion + ". Sleeping 5 minutes, then will try to create new instance.")
     );
 
         const waitForImageResult =
@@ -191,6 +190,10 @@ class CopyImageComponentPresentation extends Component {
     </span>
     )
   }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const mapStateToProps = (state, ownProps) => {
