@@ -18,6 +18,16 @@ class AMISelectPresentation extends Component {
       this.props.uniqueId));
   }
 
+  componentDidUpdate() {
+    // Handle redux state changes needing propagation upstream.
+    let newValue = "";
+    if (this.props[this.props.uniqueId].length != 0) {
+      newValue = this.props[this.props.uniqueId][0].ImageId;
+      this.props.updateParent(newValue);
+    }
+  }
+
+
   handleOnChange (event) {
     this.props.onSelectHandler(event);
     this.props.dispatch(amiSelectActions.fetchAMIs(event.target.value,

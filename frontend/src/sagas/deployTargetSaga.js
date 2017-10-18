@@ -6,8 +6,6 @@ import { invokeApig } from "../libs/awsLib";
 import * as messageBoxActions from "../actions/messageBoxActions";
 
 export function * deployTargetSaga(action) {
- console.log("deployTargetSaga action", action);
-
   try {
     // Undeploy existing targets.
     for (let defunctInstance of action.remove) {

@@ -21,6 +21,7 @@ class CopyImageComponentPresentation extends Component {
 
     this.handleSrcRegion = this.handleSrcRegion.bind(this);
     this.handleSrcAMI = this.handleSrcAMI.bind(this);
+    this.handleChildUpdatedAMI = this.handleChildUpdatedAMI.bind(this);
     this.handleDestName = this.handleDestName.bind(this);
     this.handleDestRegion = this.handleDestRegion.bind(this);
     this.handleDestDescription = this.handleDestDescription.bind(this);
@@ -44,6 +45,10 @@ class CopyImageComponentPresentation extends Component {
 
   handleSrcAMI(event) {
     this.setState({ srcAMI: event.target.value });
+  }
+
+  handleChildUpdatedAMI(amiId) {
+    this.setState({ srcAMI: amiId });
   }
 
   handleDestDescription(event) {
@@ -109,6 +114,7 @@ class CopyImageComponentPresentation extends Component {
         <span className="col-lg-10">
           <AMISelect
             onSelectHandler={ this.handleSrcAMI } 
+            updateParent={ this.handleChildUpdatedAMI }
             uniqueId="copyImage_srcRegion" /> 
         </span>
         <span align="center" className="col-lg-2">

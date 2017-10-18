@@ -13,6 +13,7 @@ class CreateImageComponentPresentation extends Component {
     super(props);
 
     this.handleInstanceId = this.handleInstanceId.bind(this);
+    this.handleInstanceSelectChanged = this.handleInstanceSelectChanged.bind(this);
     this.handleDescription = this.handleDescription.bind(this);
     this.handleName = this.handleName.bind(this);
     this.handleRegion = this.handleRegion.bind(this);
@@ -31,6 +32,14 @@ class CreateImageComponentPresentation extends Component {
         ("Instance id " + event.target.value + " chosen."));
 
     this.setState({ instanceid: event.target.value });
+  }
+
+  handleInstanceSelectChanged(instanceId) {
+    this.props.dispatch
+      (messageBoxActions.message
+        ("Instance id " + instanceId + " chosen."));
+
+    this.setState({ instanceid: instanceId });
   }
 
   handleRegion(event) {
@@ -124,6 +133,7 @@ event.preventDefault();
         <span align="center" className="col-lg-6">
           <InstanceSelect
             onSelectHandler={ this.handleInstanceId }
+            updateParent={ this.handleInstanceSelectChanged }
             uniqueId="createimage_instances"
           />
         </span>

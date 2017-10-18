@@ -19,6 +19,15 @@ class InstanceSelectPresentation extends Component {
         this.props.uniqueId));
   }
 
+  componentDidUpdate() {
+    // Handle redux state changes needing propagation upstream.
+    let newValue = "";
+    if (this.props[this.props.uniqueId].length !== 0) {
+      newValue = this.props[this.props.uniqueId][0].Instances[0].InstanceId;
+      this.props.updateParent(newValue);
+    }
+  }
+
   render() {
     return (
           <span>
