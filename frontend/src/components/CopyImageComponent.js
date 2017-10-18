@@ -35,7 +35,6 @@ class CopyImageComponentPresentation extends Component {
   }
 
   handleSrcRegion(event) {
-
     this.props.dispatch(amiSelectActions.fetchAMIs(
       event.target.value,
       'copyImage_srcRegion'));

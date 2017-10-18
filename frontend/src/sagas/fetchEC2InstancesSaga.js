@@ -5,7 +5,7 @@ import { invokeApig } from "../libs/awsLib";
 export function* fetchEC2InstancesSaga(action) {
   try {
     const instances = yield invokeApig({
-      path: "/list",
+      path: "/list-instances",
       method: "GET"
     });
 

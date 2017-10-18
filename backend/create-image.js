@@ -26,7 +26,7 @@ const params = {
 
   ec2.createImage(params, function (err, data) {
     if (err) {
-      callback(null, failure({status: false}));
+      callback(null, failure({status: false, error: err}));
     } else {
       callback(null, success(data));
     }

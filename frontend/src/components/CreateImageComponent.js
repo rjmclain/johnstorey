@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import InstanceSelect from "./InstanceSelect";
+import * as instanceSelectActions from "../actions/instanceSelectActions";
 
 class CreateImageComponentPresentation extends Component {
 
@@ -18,21 +20,22 @@ class CreateImageComponentPresentation extends Component {
 
   handleInstanceId(event) {
     this.setState({ instanceid: event.target.value });
-    //this.props.dispatch(createImageActions.instanceId(this.state.instanceid));
   }
 
   handleRegion(event) {
+    this.props.dispatch(instanceSelectActions.fetchInstances(
+      event.target.value,
+      'createimage_instances'
+    ))
     this.setState({ region: event.target.value });
   }
 
   handleName(event) {
     this.setState({ name: event.target.value });
-    //this.props.dispatch(createImageActions.instanceId(this.state.instanceid));
   }
 
   handleDescription(event) {
     this.setState({ description: event.target.value });
-    //this.props.dispatch(createImageActions.instanceId(this.state.instanceid));
   }
 
   async handleSubmit(event) {
@@ -46,26 +49,29 @@ class CreateImageComponentPresentation extends Component {
         instanceId: this.state.instanceid,
     }});
 
-    stopResults.then((data) => {
+stopResults.then((data) => {
 
-    let createImage = invokeApig({
-      path: "/create-image",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {
-        instanceId: this.state.instanceid,
-        amiName: this.state.name,
-        amiDescription : this.state.description,
-        region : this.state.region
-      }
-    });
+  let createImage = invokeApig({
+    path: "/create-image",
+    method: "POST",
+    headers: {},
+    queryParams: {},
+    body: {
+      instanceId: this.state.instanceid,
+      amiName: this.state.name,
+      amiDescription: this.state.description,
+      region: this.state.region
+    }
+  });
 
 
   createImage.then((data) => {
   });
 
+  createImage.catch( (err) => { console.log("createImage err", err); });
 });
+
+  stopResults.catch( (err) => { console.log("stopResults err", err); });
 
 event.preventDefault();
 }
@@ -127,4 +133,16 @@ event.preventDefault();
   }
 }
 
-export default CreateImageComponentPresentation;
+const mapStateToProps = (state, ownProps) => {
+  const newProps = {};
+  return newProps;
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch: dispatch,
+  }
+}
+
+const CreateImageComponent = connect(mapStateToProps,mapDispatchToProps)(CreateImageComponentPresentation);
+export default CreateImageComponent;
