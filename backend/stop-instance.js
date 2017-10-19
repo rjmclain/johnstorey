@@ -7,7 +7,7 @@ export function main(event, context, callback) {
 
   AWS
     .config
-    .update({region: "us-east-1"});
+    .update({region: data.region });
   const ec2 = new AWS.EC2();
 
   // Set response headers to enable CORS.

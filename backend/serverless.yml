@@ -196,3 +196,12 @@ functions:
           method: POST
           cors: true
           authorizer: aws_iam
+  wait-for:
+    handler: wait-for.main
+    timeout: 300
+    events:
+      - http:
+          path: wait-for
+          method: POST
+          cors: true
+          authorizer: aws_iam

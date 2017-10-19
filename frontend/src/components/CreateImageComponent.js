@@ -6,6 +6,7 @@ import RegionsSelect from "./RegionsSelect";
 import InstanceSelect from "./InstanceSelect";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
+import * as waitFor from "../containers/waitFor";
 
 class CreateImageComponentPresentation extends Component {
 
@@ -66,8 +67,7 @@ class CreateImageComponentPresentation extends Component {
 
     this
       .props
-      .dispatch(instanceSelectActions.fetchInstances(event.target.value,
-        'createimage_instances', this.instanceFilters()))
+      .dispatch(instanceSelectActions.fetchInstances(event.target.value, 'createimage_instances', this.instanceFilters()))
     this.setState({region: event.target.value});
   }
 
@@ -94,39 +94,38 @@ class CreateImageComponentPresentation extends Component {
       }
     });
 
-    stopResults.then((data) => {
+    let stopResult = waitFor.waitForStopped(this.state.instanceid);
 
-      sleep(180000).then(() => {
+    stopResult.then((data) => {
 
-        this
-          .props
-          .dispatch(messageBoxActions.message("Creating image of instance " + this.state.instanceid));
+      this
+        .props
+        .dispatch(messageBoxActions.message("Creating image of instance " + this.state.instanceid));
 
-        let createImage = invokeApig({
-          path: "/create-image",
-          method: "POST",
-          headers: {},
-          queryParams: {},
-          body: {
-            instanceId: this.state.instanceid,
-            amiName: this.state.name,
-            amiDescription: this.state.description,
-            region: this.state.region
-          }
-        });
-
-        createImage.then((data) => {
-          this
-            .props
-            .dispatch(messageBoxActions.message("Created image with AMI ID of " + data.ImageId));
-        });
-
-        createImage.catch((err) => {
-          console.log("createImage err", err);
-        });
+      let createImage = invokeApig({
+        path: "/create-image",
+        method: "POST",
+        headers: {},
+        queryParams: {},
+        body: {
+          instanceId: this.state.instanceid,
+          amiName: this.state.name,
+          amiDescription: this.state.description,
+          region: this.state.region
+        }
       });
 
-      stopResults.catch((err) => {
+      createImage.then((data) => {
+        this
+          .props
+          .dispatch(messageBoxActions.message("Created image with AMI ID of " + data.ImageId));
+      });
+
+      createImage.catch((err) => {
+        console.log("createImage err", err);
+      });
+
+      stopResult.catch((err) => {
         console.log("stopResults err", err);
       });
 
@@ -200,10 +199,6 @@ class CreateImageComponentPresentation extends Component {
       </span>
     )
   }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const mapStateToProps = (state, ownProps) => {
