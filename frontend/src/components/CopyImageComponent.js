@@ -37,9 +37,11 @@ class CopyImageComponentPresentation extends Component {
   }
 
   handleSrcRegion(event) {
+    const filters = this.amiFilters();
     this.props.dispatch(amiSelectActions.fetchAMIs(
       event.target.value,
-      'copyImage_srcRegion'));
+      'copyImage_srcRegion',
+      filters)); 
     this.setState({ srcRegion: event.target.value });
   }
 
@@ -93,6 +95,20 @@ class CopyImageComponentPresentation extends Component {
     event.preventDefault();
   }
 
+  amiFilters() {
+    return [
+        {
+          Name: "state",
+          Values: [ "available" ],
+        }
+      ];
+  }
+
+  shouldComponentUpdate(nextProps) {
+    // This only works without real logic because text boxes are not controlled.
+    return false;
+  }
+
   render() {
     return (
     <span>
@@ -115,6 +131,7 @@ class CopyImageComponentPresentation extends Component {
           <AMISelect
             onSelectHandler={ this.handleSrcAMI } 
             updateParent={ this.handleChildUpdatedAMI }
+            filters={ this.amiFilters() }
             uniqueId="copyImage_srcRegion" /> 
         </span>
         <span align="center" className="col-lg-2">

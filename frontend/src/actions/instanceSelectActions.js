@@ -1,11 +1,12 @@
 import * as types from "../constants/eventTypes";
 
 // Fetch the AMI list.
-export function fetchInstances(region, uniqueId) {
+export function fetchInstances(region, uniqueId, filters) {
   return {
     type: types.INSTANCESELECT_FETCH_INSTANCES,
     values: region,
-    uniqueId: uniqueId
+    uniqueId: uniqueId,
+    filters: filters
   }
 }
 

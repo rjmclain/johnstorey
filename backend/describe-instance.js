@@ -18,7 +18,8 @@ export function main(event, context, callback) {
   
   // Get the instance status and return it.
   ec2.describeInstances({
-    InstanceIds: [ data.instanceId ]
+    InstanceIds: [ data.instanceId ],
+    Filters: data.filters,
   }, function(err, data) {
     if (err) {
       callback(null, failure({ status: false }));

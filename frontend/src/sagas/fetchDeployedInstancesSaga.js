@@ -10,8 +10,9 @@ export function* fetchDeployedInstancesSaga(action) {
       method: "GET"
     });
 
-    const instanceList = instances.TargetHealthDescriptions.map( (instance) => {
-      return { instanceId: instance.Target.Id };
+    const instanceList = instances.TargetHealthDescriptions.map(
+      (instance) => {
+        return { instanceId: instance.Target.Id };
     });
 
     yield put(blueGreenActions.instanceDeployed(instanceList));

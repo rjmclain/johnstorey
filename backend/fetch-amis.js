@@ -17,7 +17,8 @@ export function main(event, context, callback) {
   };
 
   ec2.describeImages({
-    Owners: [ "self" ]
+    Owners: [ "self" ],
+    Filters: data.filters,
   }, function (err, data) {
     if (err) {
       callback(null, failure({ status: false }));

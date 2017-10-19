@@ -20,8 +20,14 @@ amiSelect: {
 
 // Instances select.
 instanceSelect: {
-  createimage_instances: [],
-  deployCandidates: []
+  createimage_instances: {
+    instances: [], // data from AWS.
+    filters: [],   // filters on data for AWS.
+  },
+  deployCandidates: {
+    instances: [],
+    filters: [],
+  },
 },
 
 messages: { text: [] },

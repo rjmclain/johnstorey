@@ -12,6 +12,7 @@ export function * amiSelectFetchAMIsSaga(action) {
         queryParams: {},
         body: {
           region: action.values,
+          filters: action.filters
         }
       });
 

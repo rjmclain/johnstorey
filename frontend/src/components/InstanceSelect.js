@@ -7,23 +7,28 @@ class InstanceSelectPresentation extends Component {
     super(props);
 
     let initialValues = {};
-    initialValues[props.uniqueId] = [];
+    initialValues[props.uniqueId] = {
+      instances: [],
+      filters: [],
+    };
     this.state = initialValues;
   }
 
   componentDidMount() {
+    const filters = this.props.filters;
     this.props.dispatch(
       instanceSelectActions.fetchInstances(
         "us-east-1",
-        this.props.uniqueId));
+        this.props.uniqueId,
+        filters));
   }
 
   componentDidUpdate() {
     // Handle redux state changes needing propagation upstream.
     let newValue = "";
-    if (this.props[this.props.uniqueId].length !== 0) {
-      newValue = this.props[this.props.uniqueId][0].Instances[0].InstanceId;
-      this.props.updateParent(newValue);
+    if (this.props[this.props.uniqueId].instances.length !== 0) {
+      newValue = this.props[this.props.uniqueId].instances[0].Instances[0].InstanceId;
+    this.props.updateParent(newValue);
     }
   }
 
@@ -32,7 +37,7 @@ class InstanceSelectPresentation extends Component {
           <span>
           <select onChange={ this.props.onSelectHandler }>
             { 
-              this.props[this.props.uniqueId].map( (instance) => {
+              this.props[this.props.uniqueId].instances.map( (instance) => {
                 return (
                   <option key={ instance.Instances[0].InstanceId }
                     value={ instance.Instances[0].InstanceId }>
@@ -47,7 +52,7 @@ class InstanceSelectPresentation extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const newProps = {};
+  let newProps = {} ;
   newProps[ownProps.uniqueId] = state.instanceSelect[ownProps.uniqueId];
   return newProps;
 }

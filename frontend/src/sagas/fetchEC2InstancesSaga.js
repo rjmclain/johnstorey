@@ -6,7 +6,11 @@ export function* fetchEC2InstancesSaga(action) {
   try {
     const instances = yield invokeApig({
       path: "/list-instances",
-      method: "GET"
+      method: "GET",
+      header: {},
+      queryParams: {},
+      body: {
+      },
     });
 
     const instanceList = instances.map( (instance) => {

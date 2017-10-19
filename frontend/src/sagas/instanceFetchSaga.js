@@ -12,6 +12,7 @@ export function * instanceFetchSaga(action) {
         queryParams: {},
         body: {
           region: action.values,
+          filters: action.filters
         }
       });
 

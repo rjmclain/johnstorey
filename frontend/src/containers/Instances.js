@@ -11,10 +11,6 @@ class InstancesContainer extends Component {
     this.handleInstanceId = this.handleInstanceId.bind(this);
   }
 
-  componentDidMount() {
-    this.props.dispatch(blueGreenActions.fetchInstances());
-  }
-
   handleInstanceId(event) {
     this.props.dispatch(
       messageBoxActions.message("Registering target "
@@ -23,13 +19,25 @@ class InstancesContainer extends Component {
     this.props.onDeployClick(event.target.value, this.props.deployed);
   }
 
+  // Filter the AMI instances we want.
+  instanceFilters() {
+    return [ 
+      {
+        Name: "instance-state-name",
+        Values: [ "running" ]
+      }
+    ];
+  } 
+
   render() {
     return (
       <div>
         <InstanceSelect
           onSelectHandler={ this.handleInstanceId }
           updateParent={ () => {} }
-          uniqueId="deployCandidates" />
+          uniqueId="deployCandidates"
+          filters={ this.instanceFilters() }
+          />
       </div>
     );
   }

@@ -15,7 +15,8 @@ class AMISelectPresentation extends Component {
 
   componentDidMount() {
     this.props.dispatch(amiSelectActions.fetchAMIs("us-east-1",
-      this.props.uniqueId));
+      this.props.uniqueId,
+      this.props.filters));
   }
 
   componentDidUpdate() {
@@ -27,11 +28,11 @@ class AMISelectPresentation extends Component {
     }
   }
 
-
   handleOnChange (event) {
     this.props.onSelectHandler(event);
     this.props.dispatch(amiSelectActions.fetchAMIs(event.target.value,
-      this.props.uniqueId));
+      this.props.uniqueId,
+      this.filters));
   }
 
   render() {
