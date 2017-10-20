@@ -10,7 +10,7 @@ export default {
     TARGET_GROUP: "arn:aws:elasticloadbalancing:us-east-1:369929617152:targetgroup/INSUREON-bluegreen/f862b85a7b65164f"
   },
   apiGateway: {
-    URL: "https://6ae485dpl8.execute-api.us-east-1.amazonaws.com/dev",
+    URL: "https://5508tzhref.execute-api.us-east-1.amazonaws.com/dev",
     REGION: "us-east-1"
   }
 };

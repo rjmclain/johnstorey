@@ -13,6 +13,10 @@ class CreateImageComponentPresentation extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      region: "us-east-1",
+    };
+
     this.handleInstanceId = this
       .handleInstanceId
       .bind(this);
@@ -82,7 +86,8 @@ class CreateImageComponentPresentation extends Component {
   async handleSubmit(event) {
     this
       .props
-      .dispatch(messageBoxActions.message("Stopping instance " + this.state.instanceid + ". This will take awhile."));
+      .dispatch(messageBoxActions.message("Stopping instance "
+        + this.state.instanceid + ". This will take awhile."));
 
     let stopResults = invokeApig({
       path: "/stop-instance",
@@ -94,15 +99,14 @@ class CreateImageComponentPresentation extends Component {
       }
     });
 
-    let stopResult = waitFor.waitForStopped(this.state.instanceid);
-
-    stopResult.then((data) => {
+    let stopResult = await waitFor.waitForStopped(this.state.instanceid,
+      this.state.region);
 
       this
         .props
         .dispatch(messageBoxActions.message("Creating image of instance " + this.state.instanceid));
 
-      let createImage = invokeApig({
+      let createImageResult = await invokeApig({
         path: "/create-image",
         method: "POST",
         headers: {},
@@ -115,21 +119,28 @@ class CreateImageComponentPresentation extends Component {
         }
       });
 
-      createImage.then((data) => {
+      console.log("CreateImageComponent createImageResult", createImageResult);
+
         this
           .props
-          .dispatch(messageBoxActions.message("Created image with AMI ID of " + data.ImageId));
-      });
+          .dispatch(messageBoxActions.message("Creating image with AMI ID of "
+            + createImageResult
+            + ". Will notify here when image is available."));
 
-      createImage.catch((err) => {
-        console.log("createImage err", err);
-      });
+        const waitForImageResult =
+          await waitFor.waitForImageAvailable(createImageResult, this.state.region);
 
-      stopResult.catch((err) => {
-        console.log("stopResults err", err);
-      });
+        console.log("waitImageResult", waitForImageResult);
 
-    });
+        let resultMessage = "";
+        (waitForImageResult !== "false")
+        ? resultMessage = "WARNING: Image " + createImageResult + " failed to become available."
+        : resultMessage = "Image " + createImageResult + " is now in state "
+          + waitForImageResult.status + ".";
+
+        this
+          .props
+          .dispatch(messageBoxActions.message(resultMessage));
 
     event.preventDefault();
   }

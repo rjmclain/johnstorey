@@ -1,18 +1,9 @@
-import AWS from "aws-sdk";
 import { success, failure } from "./libs/response-lib";
+import AWS from "aws-sdk";
 
 export function main(event, context, callback) {
   const data = JSON.parse(event.body);
-  console.log("list-instances enter");
-
-  console.log("list-instances data", data);
   var ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
-
-  // Set response headers to enable CORS.
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Credentials": true
-  };
 
   AWS
     .config

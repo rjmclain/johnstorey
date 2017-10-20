@@ -74,6 +74,10 @@ export async function invokeApig({
   queryParams = {},
   body
 }) {
+
+  console.log("apiG path", path);
+  console.log("apiG body", body);
+
   if (!await authUser()) {
     throw new Error("User is not logged in");
   }
@@ -110,5 +114,8 @@ export async function invokeApig({
       throw new Error(await results.text());
     }
 
-    return results.json();
+    let data = await results.json();
+    console.log("apiG returning ", data);
+    return data;
+    //return results.json();
 }

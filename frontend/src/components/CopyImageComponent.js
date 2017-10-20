@@ -6,6 +6,7 @@ import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
 import * as amiSelectActions from "../actions/amiSelectActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
+import * as waitFor from "../containers/waitFor";
 
 class CopyImageComponentPresentation extends Component {
 
@@ -87,6 +88,18 @@ class CopyImageComponentPresentation extends Component {
         + this.state.destRegion + ".")
     );
 
+        const waitForImageResult =
+          waitFor.waitForImageAvailable(newImageId, this.state.destRegion);
+
+        let resultMessage = "";
+        (waitForImageResult !== "false")
+        ? resultMessage = "WARNING: Image " + newImageId + " failed to become available."
+        : resultMessage = "Image " + newImageId + " is now in state "
+          + waitForImageResult.status + ".";
+
+        this
+          .props
+          .dispatch(messageBoxActions.message(resultMessage));
     })
     .catch((err) => {
       console.log("copyResults err", err);

@@ -27,6 +27,8 @@ custom:
 provider:
   name: aws
   runtime: nodejs6.10
+  region: us-east-1
+  stage: dev
   memorySize: 128 # We are not using the default 1024MB
 
 # you can overwrite defaults here
@@ -58,7 +60,8 @@ iamRoleStatements:
 #    variable1: value1
 
 # you can add packaging information here
-#package:
+package:
+  individually: true
 #  include:
 #    - include-me.js
 #    - include-me-dir/**
@@ -193,15 +196,6 @@ functions:
     events:
       - http:
           path: fetch-amis
-          method: POST
-          cors: true
-          authorizer: aws_iam
-  wait-for:
-    handler: wait-for.main
-    timeout: 300
-    events:
-      - http:
-          path: wait-for
           method: POST
           cors: true
           authorizer: aws_iam
