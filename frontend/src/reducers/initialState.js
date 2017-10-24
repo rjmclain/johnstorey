@@ -17,6 +17,7 @@ createImage: {
 amiSelect: {
   copyImage_srcRegion: [],
   startInstance_amis: [],
+  startInstance_amis_currentAMI: '',
 },
 
 // Instances select.

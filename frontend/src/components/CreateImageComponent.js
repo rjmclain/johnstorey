@@ -89,7 +89,7 @@ class CreateImageComponentPresentation extends Component {
       .dispatch(messageBoxActions.message("Stopping instance "
         + this.state.instanceid + ". This will take awhile."));
 
-    let stopResults = invokeApig({
+    invokeApig({
       path: "/stop-instance",
       method: "POST",
       headers: {},
@@ -99,7 +99,7 @@ class CreateImageComponentPresentation extends Component {
       }
     });
 
-    let stopResult = await waitFor.waitForStopped(this.state.instanceid,
+    await waitFor.waitForStopped(this.state.instanceid,
       this.state.region);
 
       this

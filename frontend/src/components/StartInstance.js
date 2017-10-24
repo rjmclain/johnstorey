@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  Grid, 
+  Grid,
   Row,
   Col,
   Button,
@@ -11,6 +11,8 @@ import * as amiSelectActions from '../actions/amiSelectActions';
 import QuestionModal from './QuestionModal';
 import RegionsSelect from './RegionsSelect';
 import AMISelect from './AMISelect';
+import { invokeApig } from '../libs/awsLib';
+import * as waitFor from '../containers/waitFor';
 
 class StartInstancePresentation extends Component {
   constructor(props) {
@@ -21,13 +23,14 @@ class StartInstancePresentation extends Component {
     this.onNegativeResponse = this.onNegativeResponse.bind(this);
     this.handleRegionUpdate = this.handleRegionUpdate.bind(this);
     this.handleAMI = this.handleAMI.bind(this);
-    this.handleChildUpdateAMI = this.handleChildUpdateAMI(this);
+    this.handleChildUpdateAMI = this.handleChildUpdateAMI.bind(this);
     this.amiFilters = this.amiFilters.bind(this);
     this.handleName = this.handleName.bind(this);
     this.handleDescription = this.handleDescription.bind(this);
     this.handleVersion = this.handleVersion.bind(this);
 
     this.state = {
+      componentDidMount: false,
       showWarning: false,
       region: 'us-east-1',
       amiId: '',
@@ -41,8 +44,31 @@ class StartInstancePresentation extends Component {
     this.setState({showWarning: true});
   }
 
-  onPositiveResponse(e) {
+  async onPositiveResponse(e) {
     this.setState({showWarning: false});
+
+    console.log('StartInstance positive state', this.state);
+    console.log('StartInstance positive props', this.props);
+
+    // Trigger instance start.
+    const invokeResponse = await invokeApig({
+      path: '/run-instance',
+      method: 'POST',
+      headers: {},
+      queryParams: {},
+      body: {
+        region: this.state.region,
+        imageId: this.props.currentAMI,
+        instanceSize: 't2.micro',
+        subnetId: 'subnet-2978cc15',
+        instanceName: this.state.name,
+        description: this.state.description,
+        version: this.state.version,
+      }
+    });
+
+    // TODO: waitFor.instance
+    //waitFor.InstanceAvailable
   }
 
   onNegativeResponse(e) {
@@ -73,15 +99,24 @@ class StartInstancePresentation extends Component {
 
     handleChildUpdateAMI(amiId) {
       this.setState({ amiId: amiId });
-    } 
-    amiFilters() {
-      return [
-        {
-          Name: "state",
-          Values: [ "available" ],
-        }
-      ];
     }
+
+    componentDidMount() {
+      this.setState({ componentDidMount: true });
+    }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
+
+  amiFilters() {
+    return [
+      {
+        Name: "state",
+        Values: ["available"],
+      }
+    ];
+  }
 
   handleName(event){
     this.setState({ name: event.target.value });
@@ -90,10 +125,11 @@ class StartInstancePresentation extends Component {
   handleDescription(event){
     this.setState({ description: event.target.value });
   }
-  
+
   handleVersion(event){
     this.setState({ version: event.target.value });
   }
+
   render() {
     let modal = null;
     if (this.state.showWarning === true) {
@@ -106,6 +142,17 @@ class StartInstancePresentation extends Component {
           onNegativeResponse={ this.onNegativeResponse }
         />
     }
+
+    let amiSelectPlaceholder = 'No AMIs available.';
+    if (this.state.componentDidMount === true) {
+          amiSelectPlaceholder = <AMISelect
+            onSelectHandler={ this.handleAMI }
+            updateParent={ this.handleChildUpdateAMI }
+            filters={ this.amiFilters() }
+            uniqueId="startInstance_amis"
+          />
+    }
+
     return (
      <span>
      { modal }
@@ -132,12 +179,7 @@ class StartInstancePresentation extends Component {
           AMI
          </Col>
          <Col xs={12} md={6}>
-          <AMISelect
-            onSelectHandler={ this.handleAMI }
-            updateParent={ this.handleChildUpdateAMI }
-            filters={ this.amiFilters() }
-            uniqueId="startInstance_amis"
-          />
+          { amiSelectPlaceholder }
         </Col>
        </Row>
 
@@ -146,7 +188,26 @@ class StartInstancePresentation extends Component {
           Name
         </Col>
          <Col xs={12} md={6}>
-          <input type="text" onChange={ this.handleName }/>
+          <input type="text" value={ this.state.name }
+            onChange={ this.handleName } />
+        </Col>
+       </Row>
+
+       <Row className="show-grid">
+         <Col xs={12} md={4} mdPush={2}>
+          Size
+        </Col>
+         <Col xs={12} md={6}>
+          t2.micro
+        </Col>
+       </Row>
+
+       <Row className="show-grid">
+         <Col xs={12} md={4} mdPush={2}>
+          Subnet
+        </Col>
+         <Col xs={12} md={6}>
+          subnet-2978cc15
         </Col>
        </Row>
 
@@ -155,7 +216,8 @@ class StartInstancePresentation extends Component {
           Description
         </Col>
          <Col xs={12} md={6}>
-          <input type="text" onChange={ this.handleDescription } />
+          <input type="text" value={ this.state.description }
+            onChange={ this.handleDescription } />
         </Col>
        </Row>
 
@@ -164,7 +226,7 @@ class StartInstancePresentation extends Component {
           Version Tag
         </Col>
          <Col xs={12} md={6}>
-          <input type="text" onChange={ this.handleVersion } />
+          <input type="text" value={ this.state.version } onChange={ this.handleVersion } />
         </Col>
        </Row>
 
@@ -184,9 +246,11 @@ class StartInstancePresentation extends Component {
   }
 }
 
-// mapStateToProps() {
-//   return {};
-// }
+const mapStateToProps = (state) => {
+  return {
+    currentAMI: state.amiSelect.startInstance_amis_currentAMI,
+  };
+}
 
 // mapDispatchToState() {
 //   return {
@@ -194,5 +258,5 @@ class StartInstancePresentation extends Component {
 //   };
 // }
 
-const StartInstance = connect()(StartInstancePresentation);
+const StartInstance = connect(mapStateToProps)(StartInstancePresentation);
 export default StartInstance;

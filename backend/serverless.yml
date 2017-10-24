@@ -174,11 +174,11 @@ functions:
           cors: true
           authorizer: aws_iam
   run-instance:
-    handler: run-instances.main
+    handler: run-instance.main
     timeout: 300
     events:
       - http:
-          path: run-instances
+          path: run-instance
           method: POST
           cors: true
           authorizer: aws_iam

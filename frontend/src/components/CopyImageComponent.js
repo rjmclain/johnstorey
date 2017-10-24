@@ -57,7 +57,7 @@ class CopyImageComponentPresentation extends Component {
   handleDestDescription(event) {
     this.setState({ destDescription: event.target.value });
   }
-  
+
   async handleSubmit(event) {
     this.props.dispatch(
       messageBoxActions.message("Copying image "

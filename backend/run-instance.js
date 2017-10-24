@@ -10,11 +10,14 @@ export function main(event, context, callback) {
   const ec2 = new AWS.EC2();
 
   const params = {
-    ImageId: data.imageid,
+    ImageId: data.imageId,
     MaxCount: 1,
     MinCount: 1,
+    InstanceType: data.instanceSize,
+    SubnetId: data.subnetId,
     TagSpecifications: [
       {
+        ResourceType: 'instance',
         Tags: [
           {
             Key: 'Name',
@@ -32,6 +35,8 @@ export function main(event, context, callback) {
       }
     ]
   };
+
+  console.log('run-instances params', params);
 
   // Stop the instance.
   ec2.runInstances(
