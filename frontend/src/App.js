@@ -40,6 +40,10 @@ class App extends Component {
     this.props.history.push("/");
   }
 
+  handleStartInstance = event => {
+    this.props.history.push("/start-instance");
+  }
+
   handleUATToProd = event => {
     this.props.history.push("/UATToProd");
   }
@@ -67,11 +71,17 @@ class App extends Component {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav pullRight>
+          {this.state.isAuthenticated
+            ? <NavItem onClick={this.handleStartInstance}>Start Instance</NavItem>
+            : [
+              <RouteNavItem key={4} href="/start-instance">
+              </RouteNavItem>
+            ]}
 
           {this.state.isAuthenticated
             ? <NavItem onClick={this.handleUATToProd}>UATToProd</NavItem>
             : [
-              <RouteNavItem key={2} href="/UATToProd">
+              <RouteNavItem key={3} href="/UATToProd">
               </RouteNavItem>
             ]}
 
