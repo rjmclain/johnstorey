@@ -104,7 +104,8 @@ class CreateImageComponentPresentation extends Component {
 
       this
         .props
-        .dispatch(messageBoxActions.message("Creating image of instance " + this.state.instanceid));
+        .dispatch(messageBoxActions.message("Creating image of instance " 
+          + this.state.instanceid));
 
       let createImageResult = await invokeApig({
         path: "/create-image",
@@ -119,24 +120,24 @@ class CreateImageComponentPresentation extends Component {
         }
       });
 
-        this
-          .props
-          .dispatch(messageBoxActions.message("Creating image with AMI ID of "
-            + createImageResult
-            + ". Will notify here when image is available."));
+      this
+        .props
+        .dispatch(messageBoxActions.message("Creating image with AMI ID of "
+          + createImageResult.ImageId
+          + ". Will notify here when image is available."));
 
-        const waitForImageResult =
-          await waitFor.waitForImageAvailable(createImageResult, this.state.region);
+      const waitForImageResult =
+        await waitFor.waitForImageAvailable(createImageResult, this.state.region);
 
-        let resultMessage = "";
-        (waitForImageResult !== "false")
+      let resultMessage = "";
+      (waitForImageResult !== "false")
         ? resultMessage = "WARNING: Image " + createImageResult + " failed to become available."
         : resultMessage = "Image " + createImageResult + " is now in state "
-          + waitForImageResult.status + ".";
+        + waitForImageResult.status + ".";
 
-        this
-          .props
-          .dispatch(messageBoxActions.message(resultMessage));
+      this
+        .props
+        .dispatch(messageBoxActions.message(resultMessage));
 
     event.preventDefault();
   }
