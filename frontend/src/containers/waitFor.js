@@ -148,7 +148,7 @@ async function checkAvailable(amiId, region) {
         },
       ],
       region: region,
-      amiId: amiId.ImageId,
+      amiId: amiId,
     },
   });
 

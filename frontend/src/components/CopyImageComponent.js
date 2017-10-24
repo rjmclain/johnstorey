@@ -65,7 +65,7 @@ class CopyImageComponentPresentation extends Component {
         + this.state.destRegion + ".")
     );
 
-    let copyResults = invokeApig({
+    let copyResults = await invokeApig({
       path: "/copy-image-regions",
       method: "POST",
       headers: {},
@@ -78,31 +78,27 @@ class CopyImageComponentPresentation extends Component {
         destDescription: this.state.destDescription
     }});
 
-    copyResults.then((data) => {
-      const newImageId = data.ImageId;
+    const data = copyResults;
+    const newImageId = data.ImageId;
 
     this.props.dispatch(
       messageBoxActions.message("Copied image has AMI id of "
         + newImageId + " in region "
-        + this.state.destRegion + ". Sleeping 5 minutes, then will try to create new instance.")
-    );
+        + this.state.destRegion + ". Waiting for copy to complete."
+      ));
 
-        const waitForImageResult =
-          waitFor.waitForImageAvailable(newImageId, this.state.destRegion);
+    const waitForImageResult =
+      await waitFor.waitForImageAvailable(newImageId, this.state.destRegion);
 
-        let resultMessage = "";
-        (waitForImageResult !== "false")
-        ? resultMessage = "WARNING: Image " + newImageId + " failed to become available."
-        : resultMessage = "Image " + newImageId + " is now in state "
-          + waitForImageResult.status + ".";
+    let resultMessage = "";
+    (waitForImageResult.status === "false")
+      ? resultMessage = "WARNING: Image " + newImageId + " failed to become available."
+      : resultMessage = "Image " + newImageId + " is now in state "
+      + waitForImageResult.status + ".";
 
-        this
-          .props
-          .dispatch(messageBoxActions.message(resultMessage));
-    })
-    .catch((err) => {
-      console.log("copyResults err", err);
-    });
+    this
+      .props
+      .dispatch(messageBoxActions.message(resultMessage));
 
     event.preventDefault();
   }

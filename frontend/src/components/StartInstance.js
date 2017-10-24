@@ -90,7 +90,7 @@ class StartInstancePresentation extends Component {
   handleDescription(event){
     this.setState({ description: event.target.value });
   }
- 
+  
   handleVersion(event){
     this.setState({ version: event.target.value });
   }

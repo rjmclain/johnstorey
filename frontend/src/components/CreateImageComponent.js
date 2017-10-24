@@ -127,10 +127,8 @@ class CreateImageComponentPresentation extends Component {
           + ". Will notify here when image is available."));
 
       const waitForImageResult =
-        await waitFor.waitForImageAvailable(createImageResult, this.state.region);
-
-        console.log('CreateImageComponent waitForImageResult',
-        waitForImageResult);
+        await waitFor.waitForImageAvailable(createImageResult.ImageId,
+           this.state.region);
 
       let resultMessage = "";
       (waitForImageResult.status === "false")
