@@ -4,6 +4,8 @@ import initialState from "./initialState";
 export default function (state = initialState.amiSelect, action) {
   switch (action.type) {
     case types.AMISELECT_AMIS_FETCHED:
+    console.log('amiSelectReducers action', action);
+
       let newValues = {};
       newValues[action.uniqueId] = action.values;
 
@@ -12,6 +14,8 @@ export default function (state = initialState.amiSelect, action) {
       } else {
         newValues[action.uniqueId + '_currentAMI'] = '';
       }
+
+      console.log('amiSelectReducers newValues', newValues);
 
       return Object.assign({}, state, newValues);
 

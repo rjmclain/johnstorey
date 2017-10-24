@@ -45,9 +45,6 @@ class StartInstancePresentation extends Component {
   async onPositiveResponse(e) {
     this.setState({showWarning: false});
 
-    console.log('StartInstance positive state', this.state);
-    console.log('StartInstance positive props', this.props);
-
     // Trigger instance start.
     const invokeResponse = await invokeApig({
       path: '/run-instance',
@@ -73,22 +70,22 @@ class StartInstancePresentation extends Component {
     this.setState({showWarning: false});
   }
 
-    handleRegionUpdate(event) {
-      this
-        .props
-        .dispatch(messageBoxActions.message('Fetching instances'));
+  handleRegionUpdate(event) {
+    this
+      .props
+      .dispatch(messageBoxActions.message('Fetching images.'));
 
-      this
-        .props
-        .dispatch(
-          amiSelectActions.fetchAMIs(
-            this.state.region,
-            'startinstance_amis',
-            this.amiFilters()
-          )
-        );
+    this.setState({ region: event.target.value });
 
-      this.setState({ region: event.target.value });
+    this
+      .props
+      .dispatch(
+      amiSelectActions.fetchAMIs(
+        event.target.value,
+        'startInstance_amis',
+        this.amiFilters()
+      ));
+
     }
 
     componentDidMount() {
@@ -147,7 +144,7 @@ class StartInstancePresentation extends Component {
      <Grid>
        <Row className="show-grid">
          <Col xs={12} md={12}>
-          <h2>Create Image from Instance</h2>
+          <h2>Start Production Instance</h2>
         </Col>
        </Row>
 
