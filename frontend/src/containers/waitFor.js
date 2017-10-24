@@ -77,62 +77,52 @@ export async function waitForImageAvailable(amiId, region) {
   // Chrome.
 
   let result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 1", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 2", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 3", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 4", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 5", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 6", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 7", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 8", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 9", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
   result = await checkAvailable(amiId, region);
-  console.log("waitForIMageAvailable result 10", result);
-  if (result.status === "available") {
+  if (result.status === "true") {
     return result; 
   }
 
@@ -141,40 +131,30 @@ export async function waitForImageAvailable(amiId, region) {
 }
 
 async function checkAvailable(amiId, region) {
-  console.log("checkAvailable amiId", amiId);
-  console.log("checkAvailable region", region);
-
   let callResult = { status: "wot wot!" }; 
 
   await sleep(60000);
 
   callResult = await invokeApig({
-    path: "/describe-images",
+    path: "/describe-image",
     method: "POST",
     headers: {},
     queryParams: {},
     body: {
-      Filters: [
+      filters: [
         {
           Name: 'state',
           Values: [ 'available' ],
         },
       ],
       region: region,
-      params: {
-        "ImageIds": [amiId.ImageId],
-      }
-    }
+      amiId: amiId.ImageId,
+    },
   });
 
-  console.log("waitFor image available callResult", callResult);
-
-  const state = callResult.Reservations[0].Instances[0].State.Name;
-  const code = callResult.Reservations[0].Instances[0].State.Code; 
-
-  if (code === 80) {
-    return { status: "true", code: code, state: state };
+  if (callResult.Images.length !== 0) {
+    return { status: "true", state: callResult };
   }
 
-  return { status: "false", code: code, state: state }
+  return { status: "false", state: null };
 }

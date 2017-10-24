@@ -208,6 +208,14 @@ functions:
           method: POST
           cors: true
           authorizer: aws_iam
+  describe-image:
+    handler: describe-image.main
+    events:
+      - http:
+          path: describe-image
+          method: POST
+          cors: true
+          authorizer: aws_iam
   fetch-amis:
     handler: fetch-amis.main
     timeout: 300

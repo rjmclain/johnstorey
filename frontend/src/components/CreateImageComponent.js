@@ -129,11 +129,14 @@ class CreateImageComponentPresentation extends Component {
       const waitForImageResult =
         await waitFor.waitForImageAvailable(createImageResult, this.state.region);
 
+        console.log('CreateImageComponent waitForImageResult',
+        waitForImageResult);
+
       let resultMessage = "";
-      (waitForImageResult !== "false")
-        ? resultMessage = "WARNING: Image " + createImageResult + " failed to become available."
-        : resultMessage = "Image " + createImageResult + " is now in state "
-        + waitForImageResult.status + ".";
+      (waitForImageResult.status === "false")
+        ? resultMessage = "WARNING: Image " + this.state.instance.id + " failed to become available."
+        : resultMessage = "Image "
+          + this.state.instanceid + " is now in state available.";
 
       this
         .props
