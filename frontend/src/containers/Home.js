@@ -37,7 +37,7 @@ class HomePresentation extends Component {
 
         <Row>
           <Col xs={12} md={12}>
-            Deployed
+            <h2>Deployed</h2>
           </Col>
         </Row>
         <Row>
@@ -48,7 +48,7 @@ class HomePresentation extends Component {
 
         <Row>
           <Col xs={12} md={12}>
-            Deployment Candidates
+            <h2>Deploy</h2>
           </Col>
         </Row>
         <Row>
@@ -61,7 +61,7 @@ class HomePresentation extends Component {
 
         <Row>
           <Col xs={12} md={12}>
-            <h3>Status Messages</h3>
+            <h2>Status Messages</h2>
           </Col>
         </Row> 
 

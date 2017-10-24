@@ -1,6 +1,11 @@
 .instance {
   margin-top: 10px;
-  background-color: #EA1620;
-  font-weight: bold;
   height: 50px;
+  text-align: right;
+}
+
+.deploy-button {
+  text-align: left;
+  background-color: red;
+  font-weight: bold;
 }

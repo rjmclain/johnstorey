@@ -1,13 +1,26 @@
-.Home .lander {
+.body {
   padding: 80px 0;
   text-align: center;
 }
 
-.Home .lander h1 {
+h1 {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
+  text-align: center;
 }
 
-.Home .lander p {
+h2 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  text-align: center;
+}
+
+.deployed {
   color: #999;
+  text-align: center;
+}
+
+p {
+  color: #999;
+  text-align: center;
 }

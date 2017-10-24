@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Row, Col, Button } from 'react-bootstrap';
 import "./Instances.css";
 import * as blueGreenActions from "../actions/blueGreenActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
@@ -32,12 +33,23 @@ class InstancesContainer extends Component {
   render() {
     return (
       <div>
-        <InstanceSelect
-          onSelectHandler={ this.handleInstanceId }
-          updateParent={ () => {} }
-          uniqueId="deployCandidates"
-          filters={ this.instanceFilters() }
-          />
+        <Row className="instance">
+          <Col xs={8} md={8}>
+            <InstanceSelect
+              onSelectHandler={this.handleInstanceId}
+              updateParent={() => { }}
+              uniqueId="deployCandidates"
+              filters={this.instanceFilters()}
+            />
+          </Col>
+          <Col xs={2} md={2}>
+            <Button className="deploy-button">
+              Deploy Now
+            </Button>
+          </Col>
+          <Col xs={2} md={2}>
+          </Col>
+        </Row>
       </div>
     );
   }
