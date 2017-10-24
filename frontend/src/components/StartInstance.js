@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import QuestionModal from './questionModal';
 import {
-  Grid,
+  Grid, 
   Row,
   Col,
   Button,
 } from 'react-bootstrap';
+import * as messageBoxActions from '../actions/messageBoxActions';
+import * as amiSelectActions from '../actions/amiSelectActions';
+import QuestionModal from './QuestionModal';
+import RegionsSelect from './RegionsSelect';
+import AMISelect from './AMISelect';
 
 class StartInstancePresentation extends Component {
   constructor(props) {
@@ -15,9 +19,21 @@ class StartInstancePresentation extends Component {
     this.onHandleSubmit = this.onHandleSubmit.bind(this);
     this.onPositiveResponse = this.onPositiveResponse.bind(this);
     this.onNegativeResponse = this.onNegativeResponse.bind(this);
+    this.handleRegionUpdate = this.handleRegionUpdate.bind(this);
+    this.handleAMI = this.handleAMI.bind(this);
+    this.handleChildUpdateAMI = this.handleChildUpdateAMI(this);
+    this.amiFilters = this.amiFilters.bind(this);
+    this.handleName = this.handleName.bind(this);
+    this.handleDescription = this.handleDescription.bind(this);
+    this.handleVersion = this.handleVersion.bind(this);
 
     this.state = {
       showWarning: false,
+      region: 'us-east-1',
+      amiId: '',
+      name: '',
+      description: '',
+      version: '',
     };
   }
 
@@ -33,19 +49,63 @@ class StartInstancePresentation extends Component {
     this.setState({showWarning: false});
   }
 
+    handleRegionUpdate(event) {
+      this
+        .props
+        .dispatch(messageBoxActions.message('Fetching instances'));
+
+      this
+        .props
+        .dispatch(
+          amiSelectActions.fetchAMIs(
+            this.state.region,
+            'startinstance_amis',
+            this.amiFilters()
+          )
+        );
+
+      this.setState({ region: event.target.value });
+    }
+
+    handleAMI(event)  {
+      this.setState({ amiId: event.target.value });
+    }
+
+    handleChildUpdateAMI(amiId) {
+      this.setState({ amiId: amiId });
+    } 
+    amiFilters() {
+      return [
+        {
+          Name: "state",
+          Values: [ "available" ],
+        }
+      ];
+    }
+
+  handleName(event){
+    this.setState({ name: event.target.value });
+  }
+
+  handleDescription(event){
+    this.setState({ description: event.target.value });
+  }
+ 
+  handleVersion(event){
+    this.setState({ version: event.target.value });
+  }
   render() {
     let modal = null;
     if (this.state.showWarning === true) {
       modal = <QuestionModal
-          header="Ask"
-          body="When you ask a silly question, do you get a silly answer?"
+          header="Warning"
+          body="Do you really want to start an instance on AWS?"
           positive="Yes"
           onPositiveResponse={ this.onPositiveResponse }
           negative="No"
           onNegativeResponse={ this.onNegativeResponse }
         />
     }
-
     return (
      <span>
      { modal }
@@ -61,7 +121,9 @@ class StartInstancePresentation extends Component {
           Region
          </Col>
          <Col xs={12} md={6}>
-          <input type="text" />
+          <RegionsSelect
+            onSelectHandler={ this.handleRegionUpdate }
+          />
         </Col>
        </Row>
 
@@ -70,7 +132,12 @@ class StartInstancePresentation extends Component {
           AMI
          </Col>
          <Col xs={12} md={6}>
-          <input type="text" />
+          <AMISelect
+            onSelectHandler={ this.handleAMI }
+            updateParent={ this.handleChildUpdateAMI }
+            filters={ this.amiFilters() }
+            uniqueId="startInstance_amis"
+          />
         </Col>
        </Row>
 
@@ -79,7 +146,7 @@ class StartInstancePresentation extends Component {
           Name
         </Col>
          <Col xs={12} md={6}>
-          <input type="text" />
+          <input type="text" onChange={ this.handleName }/>
         </Col>
        </Row>
 
@@ -88,7 +155,7 @@ class StartInstancePresentation extends Component {
           Description
         </Col>
          <Col xs={12} md={6}>
-          <input type="text" />
+          <input type="text" onChange={ this.handleDescription } />
         </Col>
        </Row>
 
@@ -97,7 +164,7 @@ class StartInstancePresentation extends Component {
           Version Tag
         </Col>
          <Col xs={12} md={6}>
-          <input type="text" />
+          <input type="text" onChange={ this.handleVersion } />
         </Col>
        </Row>
 
