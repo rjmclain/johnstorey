@@ -21,8 +21,6 @@ class CopyImageComponentPresentation extends Component {
     };
 
     this.handleSrcRegion = this.handleSrcRegion.bind(this);
-    this.handleSrcAMI = this.handleSrcAMI.bind(this);
-    this.handleChildUpdatedAMI = this.handleChildUpdatedAMI.bind(this);
     this.handleDestName = this.handleDestName.bind(this);
     this.handleDestRegion = this.handleDestRegion.bind(this);
     this.handleDestDescription = this.handleDestDescription.bind(this);
@@ -46,14 +44,6 @@ class CopyImageComponentPresentation extends Component {
     this.setState({ srcRegion: event.target.value });
   }
 
-  handleSrcAMI(event) {
-    this.setState({ srcAMI: event.target.value });
-  }
-
-  handleChildUpdatedAMI(amiId) {
-    this.setState({ srcAMI: amiId });
-  }
-
   handleDestDescription(event) {
     this.setState({ destDescription: event.target.value });
   }
@@ -61,7 +51,7 @@ class CopyImageComponentPresentation extends Component {
   async handleSubmit(event) {
     this.props.dispatch(
       messageBoxActions.message("Copying image "
-        + this.state.srcAMI + " to region "
+        + this.props.currentAMI + " to region "
         + this.state.destRegion + ".")
     );
 
@@ -74,7 +64,7 @@ class CopyImageComponentPresentation extends Component {
         destName: this.state.destName,
         destRegion: this.state.destRegion,
         srcRegion: this.state.srcRegion,
-        srcAMI: this.state.srcAMI,
+        srcAMI: this.props.currentAMI,
         destDescription: this.state.destDescription
     }});
 
@@ -138,8 +128,6 @@ class CopyImageComponentPresentation extends Component {
         </Col>
         <Col xs={12} md={10}>
           <AMISelect
-            onSelectHandler={ this.handleSrcAMI } 
-            updateParent={ this.handleChildUpdatedAMI }
             filters={ this.amiFilters() }
             uniqueId="copyImage_srcRegion" /> 
         </Col>
@@ -193,8 +181,9 @@ function sleep(ms) {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const newProps = {};
-  return newProps;
+  return {
+    currentAMI: state.amiSelect.copyImage_srcRegion_currentAMI,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

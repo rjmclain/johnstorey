@@ -18,6 +18,7 @@ amiSelect: {
   copyImage_srcRegion: [],
   startInstance_amis: [],
   startInstance_amis_currentAMI: '',
+  copyImage_srcRegion_currentAMI: '',
 },
 
 // Instances select.

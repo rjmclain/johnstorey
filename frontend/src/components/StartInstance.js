@@ -22,8 +22,6 @@ class StartInstancePresentation extends Component {
     this.onPositiveResponse = this.onPositiveResponse.bind(this);
     this.onNegativeResponse = this.onNegativeResponse.bind(this);
     this.handleRegionUpdate = this.handleRegionUpdate.bind(this);
-    this.handleAMI = this.handleAMI.bind(this);
-    this.handleChildUpdateAMI = this.handleChildUpdateAMI.bind(this);
     this.amiFilters = this.amiFilters.bind(this);
     this.handleName = this.handleName.bind(this);
     this.handleDescription = this.handleDescription.bind(this);
@@ -93,14 +91,6 @@ class StartInstancePresentation extends Component {
       this.setState({ region: event.target.value });
     }
 
-    handleAMI(event)  {
-      this.setState({ amiId: event.target.value });
-    }
-
-    handleChildUpdateAMI(amiId) {
-      this.setState({ amiId: amiId });
-    }
-
     componentDidMount() {
       this.setState({ componentDidMount: true });
     }
@@ -146,8 +136,6 @@ class StartInstancePresentation extends Component {
     let amiSelectPlaceholder = 'No AMIs available.';
     if (this.state.componentDidMount === true) {
           amiSelectPlaceholder = <AMISelect
-            onSelectHandler={ this.handleAMI }
-            updateParent={ this.handleChildUpdateAMI }
             filters={ this.amiFilters() }
             uniqueId="startInstance_amis"
           />

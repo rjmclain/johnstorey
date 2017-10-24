@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Select from 'react-select';
 import { connect } from "react-redux";
 import * as amiSelectActions from "../actions/amiSelectActions";
@@ -7,7 +8,6 @@ class AMISelectPresentation extends Component {
   constructor(props) {
     super(props);
 
-    console.log('AMISelect constructor props', props);
 
     let initialValues = {};
     initialValues[props.uniqueId] = [];
@@ -18,6 +18,7 @@ class AMISelectPresentation extends Component {
     this.state = initialValues;
 
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.onAMISelect = this.onAMISelect.bind(this);
   }
 
   componentDidMount() {
@@ -27,27 +28,30 @@ class AMISelectPresentation extends Component {
   }
 
   componentDidUpdate() {
-    console.log('AMISelect componentDidUpdate props', this.props);
     // Handle redux state changes needing propagation upstream.
     let newValue = "";
     if (this.props[this.props.uniqueId].length !== 0) {
       newValue = this.props[this.props.uniqueId][0].ImageId;
-      console.log('newValue ', newValue);
-      //this.props.updateParent(newValue);
     }
   }
 
   handleOnChange (event) {
-    this.props.onSelectHandler(event);
     this.props.dispatch(amiSelectActions.fetchAMIs(event.target.value,
       this.props.uniqueId,
       this.filters));
   }
 
+  onAMISelect(event) {
+    this.props.dispatch(amiSelectActions.setAMI(
+      event.target.value,
+      this.props.uniqueId
+    ));
+  }
+
   render() {
     return (
           <span>
-          <select onChange={ this.props.onSelectHandler }>
+          <select onChange={ this.onAMISelect }>
             { 
               this.props[this.props.uniqueId].map( (AMI) => {
                 return (

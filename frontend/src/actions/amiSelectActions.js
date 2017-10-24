@@ -18,3 +18,12 @@ export function amisFetched(amis, uniqueId) {
     uniqueId: uniqueId
   }
 }
+
+// Set current AMI.
+export function setAMI(amiId, uniqueId) {
+  return {
+    type: types.AMISELECT_SET_AMI,
+    values: amiId,
+    uniqueId: uniqueId
+  };
+}
