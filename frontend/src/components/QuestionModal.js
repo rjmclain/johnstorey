@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
 import {
   Modal,
   Button,
 } from 'react-bootstrap';
+import * as messageBoxActions from '../actions/messageBoxActions';
 
 class QuestionModalPresentation extends Component {
   constructor(props) {

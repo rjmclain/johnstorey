@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 //import * as messageBoxActions from "../actions/messageBoxActions";
 
 class MessageBoxContainer extends Component {
-  componentDidMount() {
-  //  this.props.dispatch(messageBoxActions.clearMessages());
-  }
 
   render() {
     return (

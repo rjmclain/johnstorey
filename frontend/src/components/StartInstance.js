@@ -6,6 +6,7 @@ import {
   Col,
   Button,
 } from 'react-bootstrap';
+import MessageBox from '../containers/MessageBox';
 import * as messageBoxActions from '../actions/messageBoxActions';
 import * as amiSelectActions from '../actions/amiSelectActions';
 import QuestionModal from './QuestionModal';
@@ -45,6 +46,9 @@ class StartInstancePresentation extends Component {
   async onPositiveResponse(e) {
     this.setState({showWarning: false});
 
+    this.props.dispatch(messageBoxActions.message(
+      'Starting new instance.'));
+
     // Trigger instance start.
     const invokeResponse = await invokeApig({
       path: '/run-instance',
@@ -61,6 +65,11 @@ class StartInstancePresentation extends Component {
         version: this.state.version,
       }
     });
+
+    console.log('invokeResponse ', invokeResponse);
+
+    this.props.dispatch(messageBoxActions.message('New instance id is '
+      + invokeResponse.Instances[0].InstanceId));
 
     // TODO: waitFor.instance
     //waitFor.InstanceAvailable
@@ -90,6 +99,8 @@ class StartInstancePresentation extends Component {
 
     componentDidMount() {
       this.setState({ componentDidMount: true });
+
+      messageBoxActions.clear();
     }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -224,6 +235,17 @@ class StartInstancePresentation extends Component {
           </Button>
          </Col>
        </Row>
+
+      <Row className="show-grid">
+        <Col xs={12} md={12}>
+          Status
+        </Col>
+      </Row>
+      <Row className="show-grid">
+        <Col xs={12} md={12}>
+          <MessageBox />
+        </Col>
+      </Row>
 
      </Grid>
      </span>
