@@ -17,23 +17,7 @@ class DeployedPresentation extends Component {
     this.props.dispatch(blueGreenActions.fetchDeployed());
   }
 
-  render() {
-    return (
-      <div>
-        {
-        this.props.deployed.map( (instance) => {
-        return(
-          <Row>
-            <Col className="deployed" xs={12} md={12}
-              key={instance.instanceId} >
-          {instance.instanceId}
-            </Col>
-          </Row>
-        );
-      })}
-      </div>
-    );
-  }
+  render() { return ''; }
 }
 
 const mapStateToProps = (state) => {

@@ -37,18 +37,13 @@ class HomePresentation extends Component {
 
         <Row>
           <Col xs={12} md={12}>
-            <h2>Deployed</h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={12}>
            <Deployed deployed={this.state.deployed} setDeployed={this.setDeployed.bind(this) } />
           </Col>
         </Row>
 
         <Row>
           <Col xs={12} md={12}>
-            <h2>Deploy</h2>
+            <h2>Deploy Candidates</h2>
           </Col>
         </Row>
         <Row>

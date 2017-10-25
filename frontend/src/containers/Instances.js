@@ -13,6 +13,9 @@ class InstancesContainer extends Component {
   }
 
   handleInstanceId(event) {
+    console.log('handleInstanceId event.target.value', event.target.value);
+    console.log('handleInstanceId props', this.props);
+
     this.props.dispatch(
       messageBoxActions.message("Registering target "
         + event.target.value));
@@ -47,7 +50,7 @@ class InstancesContainer extends Component {
         <Row>
           <Col xs={9} md={9} ></Col>
           <Col xs={3} md={3} >
-            <Button className="deploy-button">
+            <Button onClick={ this.handleInstanceId } className="deploy-button">
               Deploy Now
             </Button>
           </Col>

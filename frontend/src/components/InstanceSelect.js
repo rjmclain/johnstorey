@@ -37,6 +37,11 @@ class InstanceSelectPresentation extends Component {
     }
   }
 
+  onRowSelect(row, isSelect, e) {
+    console.log('e', e);
+    console.log('e.target.value', e.target.value);
+  }
+
   render() {
     let ReactBsTable = require('react-bootstrap-table');
     let BootstrapTable = ReactBsTable.BootstrapTable;
@@ -46,26 +51,42 @@ class InstanceSelectPresentation extends Component {
     let bootStrapTable = 'No instances available.';
     let renderableInstances = [];
     if (this.props[this.props.uniqueId].instances.length !== 0) {
+      let x = 0;
       renderableInstances = this.props[this.props.uniqueId].instances.map(
         (instance) => {
-          console.log('instance', instance);
+
+          // Determined if deployed.
+          let deployedState = '';
+          if (this.props.deployed
+            && this.props.deployed.length != 0
+            && this.props.deployed[0].instanceId
+              === instance.Instances[0].InstanceId) {
+                deployedState = 'Deployed';
+              }
+
           const mapped = {
             id: instance.Instances[0].InstanceId,
             name: findTag('Name', instance.Instances[0]),
             version: findTag('Version', instance.Instances[0]), 
             state: instance.Instances[0].State.Name,
+            deployed: deployedState,
           };
+          x++;
           return mapped;
       });
-          console.log('renderableInstances', renderableInstances);
 
-        const selectRowProp = { mode: 'radio' };
+        const selectRowProp = {
+          mode: 'radio',
+          clickToSelect: true,
+          onSelect: this.onRowSelect,
+        };
+
         bootStrapTable = (
             <BootstrapTable data={renderableInstances} selectRow={ selectRowProp } triped hover>
               <TableHeaderColumn isKey dataField='id'>ID</TableHeaderColumn>
               <TableHeaderColumn dataField='name'>Name</TableHeaderColumn>
               <TableHeaderColumn dataField='version'>Version</TableHeaderColumn>
-              <TableHeaderColumn dataField='state'>State</TableHeaderColumn>
+              <TableHeaderColumn dataField='deployed'>Deployed</TableHeaderColumn>
             </BootstrapTable>
         );
     }
@@ -86,16 +107,18 @@ function findTag(tagName, instance) {
         return tag.Value 
       }
     });
-
-    console.log('result 1', result);
   }
 
   return (result.length == 0) ? '' : result[0].Value;
 }
 
 const mapStateToProps = (state, ownProps) => {
-  let newProps = {} ;
+  let newProps = {
+    deployed: state.bluegreen.deployed,
+  } ;
+
   newProps[ownProps.uniqueId] = state.instanceSelect[ownProps.uniqueId];
+
   return newProps;
 }
 
