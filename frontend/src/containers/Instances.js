@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Row, Col, Button } from 'react-bootstrap';
 import "./Instances.css";
+import InstanceSelect from "../components/InstanceSelect";
 import * as blueGreenActions from "../actions/blueGreenActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
-import InstanceSelect from "../components/InstanceSelect";
 
 class InstancesContainer extends Component {
   constructor(props) {
@@ -31,10 +31,11 @@ class InstancesContainer extends Component {
   } 
 
   render() {
+
     return (
       <div>
         <Row className="instance">
-          <Col xs={8} md={8}>
+          <Col xs={12} md={12}>
             <InstanceSelect
               onSelectHandler={this.handleInstanceId}
               updateParent={() => { }}
@@ -42,7 +43,10 @@ class InstancesContainer extends Component {
               filters={this.instanceFilters()}
             />
           </Col>
-          <Col xs={2} md={2}>
+        </Row>
+        <Row>
+          <Col xs={9} md={9} ></Col>
+          <Col xs={3} md={3} >
             <Button className="deploy-button">
               Deploy Now
             </Button>

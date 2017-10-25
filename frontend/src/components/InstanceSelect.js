@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
+// Table.
+import { BottstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 
 class InstanceSelectPresentation extends Component {
@@ -33,22 +38,59 @@ class InstanceSelectPresentation extends Component {
   }
 
   render() {
+    let ReactBsTable = require('react-bootstrap-table');
+    let BootstrapTable = ReactBsTable.BootstrapTable;
+    let TableHeaderColumn = ReactBsTable.TableHeaderColumn;
+
+    // Create table.
+    let bootStrapTable = 'No instances available.';
+    let renderableInstances = [];
+    if (this.props[this.props.uniqueId].instances.length !== 0) {
+      renderableInstances = this.props[this.props.uniqueId].instances.map(
+        (instance) => {
+          console.log('instance', instance);
+          const mapped = {
+            id: instance.Instances[0].InstanceId,
+            name: findTag('Name', instance.Instances[0]),
+            version: findTag('Version', instance.Instances[0]), 
+            state: instance.Instances[0].State.Name,
+          };
+          return mapped;
+      });
+          console.log('renderableInstances', renderableInstances);
+
+        const selectRowProp = { mode: 'radio' };
+        bootStrapTable = (
+            <BootstrapTable data={renderableInstances} selectRow={ selectRowProp } triped hover>
+              <TableHeaderColumn isKey dataField='id'>ID</TableHeaderColumn>
+              <TableHeaderColumn dataField='name'>Name</TableHeaderColumn>
+              <TableHeaderColumn dataField='version'>Version</TableHeaderColumn>
+              <TableHeaderColumn dataField='state'>State</TableHeaderColumn>
+            </BootstrapTable>
+        );
+    }
+
     return (
-          <span>
-          <select onChange={ this.props.onSelectHandler }>
-            { 
-              this.props[this.props.uniqueId].instances.map( (instance) => {
-                return (
-                  <option key={ instance.Instances[0].InstanceId }
-                    value={ instance.Instances[0].InstanceId }>
-                    { instance.Instances[0].InstanceId }
-                  </option>
-                );
-            })}
-          </select>
-          </span>
+        <span>
+          { bootStrapTable }
+        </span>
     );
   }
+}
+
+function findTag(tagName, instance) {
+  let result = [];
+  if (instance.Tags) {
+    result = instance.Tags.filter( (tag) => {
+      if (tag.Key === tagName) {
+        return tag.Value 
+      }
+    });
+
+    console.log('result 1', result);
+  }
+
+  return (result.length == 0) ? '' : result[0].Value;
 }
 
 const mapStateToProps = (state, ownProps) => {
