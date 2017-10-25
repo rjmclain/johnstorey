@@ -66,13 +66,24 @@ class StartInstancePresentation extends Component {
       }
     });
 
-    console.log('invokeResponse ', invokeResponse);
-
+    console.log('invokeResponse', invokeResponse);
+    const instanceId = invokeResponse.Instances[0].InstanceId;
     this.props.dispatch(messageBoxActions.message('New instance id is '
-      + invokeResponse.Instances[0].InstanceId));
+      + instanceId
+      + '. Waiting for it to become available.'));
 
-    // TODO: waitFor.instance
-    //waitFor.InstanceAvailable
+    const waitForResponse =
+      await waitFor.instanceAvailable(instanceId, this.state.region);
+
+    console.log('waitForResponse', waitForResponse);
+
+    let resultMessage = "";
+    (waitForResponse.status === "false")
+      ? resultMessage = "WARNING: Instance " + instanceId + " failed to become 'running'."
+      : resultMessage = "Instance " + instanceId + " is now in state 'running'."
+      ;
+
+    this.props.dispatch(messageBoxActions.message(resultMessage));
   }
 
   onNegativeResponse(e) {

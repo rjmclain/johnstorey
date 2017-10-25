@@ -158,3 +158,56 @@ async function checkAvailable(amiId, region) {
 
   return { status: "false", state: null };
 }
+
+// Wait for instance available.
+export async function instanceAvailable(instanceId, region) {
+  console.log('instanceAvailable instanceId', instanceId);
+  console.log('instanceAvailable region', region);
+  for (let x = 0; x < 10; ++x) {
+    let result = await checkInstanceAvailable(instanceId, region);
+
+    console.log('instanceAvailable #' + x + ' result: ', result);
+
+    if (result.status === "true") {
+      return result;
+    }
+  }
+  return { status: "false", error: "Error never "};
+}
+
+// Check if instance is available.
+async function checkInstanceAvailable(instanceId, region) {
+  console.log('checkInstanceAvailable instanceId', instanceId);
+  console.log('checkInstanceAvailable region', region);
+
+  let callResult = {}; 
+
+    await sleep(30000);
+
+    callResult = await invokeApig({
+        path: "/describe-instance",
+        method: "POST",
+        headers: {},
+        queryParams: {},
+        body: {
+          region: region,
+          instanceId: instanceId ,
+          filters: [
+            {
+              Name: "instance-id",
+              Values: [ instanceId ],
+            }
+         ]
+        }
+    });
+
+    // TODO: Handle when callResult.Reservations is an empty array.
+    const status = callResult.Reservations[0].Instances[0].State.Name; 
+    const code   = callResult.Reservations[0].Instances[0].State.Code; 
+
+      if (code === 16) {
+        return { status: "true", code: code, state: status };
+      }
+
+      return { status: "false", code: code, state: status }
+}
