@@ -17,6 +17,8 @@ class InstanceSelectPresentation extends Component {
       filters: [],
     };
     this.state = initialValues;
+    
+    this.onRowSelect = this.onRowSelect.bind(this);
   }
 
   componentDidMount() {
@@ -38,8 +40,7 @@ class InstanceSelectPresentation extends Component {
   }
 
   onRowSelect(row, isSelect, e) {
-    console.log('e', e);
-    console.log('e.target.value', e.target.value);
+    this.props.dispatch(instanceSelectActions.selected(row.id, this.props.uniqueId));
   }
 
   render() {
@@ -50,8 +51,8 @@ class InstanceSelectPresentation extends Component {
     // Create table.
     let bootStrapTable = 'No instances available.';
     let renderableInstances = [];
+
     if (this.props[this.props.uniqueId].instances.length !== 0) {
-      let x = 0;
       renderableInstances = this.props[this.props.uniqueId].instances.map(
         (instance) => {
 
@@ -71,7 +72,7 @@ class InstanceSelectPresentation extends Component {
             state: instance.Instances[0].State.Name,
             deployed: deployedState,
           };
-          x++;
+
           return mapped;
       });
 

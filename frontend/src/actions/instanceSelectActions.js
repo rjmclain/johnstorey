@@ -18,3 +18,12 @@ export function instancesFetched(instances, uniqueId) {
     uniqueId: uniqueId
   }
 }
+
+// Instance selected.
+export function selected(instanceId, uniqueId) {
+  return {
+    type: types.INSTANCESELECT_SELECTED,
+    values: instanceId,
+    uniqueId: uniqueId,
+  }
+}

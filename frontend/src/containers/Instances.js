@@ -4,6 +4,7 @@ import { Row, Col, Button } from 'react-bootstrap';
 import "./Instances.css";
 import InstanceSelect from "../components/InstanceSelect";
 import * as blueGreenActions from "../actions/blueGreenActions";
+import * as instanceSelectActions from '../actions/instanceSelectActions';
 import * as messageBoxActions from "../actions/messageBoxActions";
 
 class InstancesContainer extends Component {
@@ -13,14 +14,11 @@ class InstancesContainer extends Component {
   }
 
   handleInstanceId(event) {
-    console.log('handleInstanceId event.target.value', event.target.value);
-    console.log('handleInstanceId props', this.props);
-
     this.props.dispatch(
       messageBoxActions.message("Registering target "
-        + event.target.value));
-
-    this.props.onDeployClick(event.target.value, this.props.deployed);
+        + this.props.instanceToDeploy));
+    
+    this.props.onDeployClick(this.props.instanceToDeploy, this.props.deployed);
   }
 
   // Filter the AMI instances we want.
@@ -65,7 +63,8 @@ class InstancesContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     instances: state.bluegreen.instances,
-    deployed : state.bluegreen.deployed
+    deployed : state.bluegreen.deployed,
+    instanceToDeploy: state.instanceSelect.deployCandidates.toDeploy,
   };
 }
 

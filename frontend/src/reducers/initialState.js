@@ -3,6 +3,7 @@ export default {
 bluegreen: {
   deployed : [],
   instances: [],
+  instanceToDeploy: ''
 },
 
 // Create image.
