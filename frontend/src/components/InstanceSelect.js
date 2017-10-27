@@ -17,7 +17,7 @@ class InstanceSelectPresentation extends Component {
       filters: [],
     };
     this.state = initialValues;
-    
+
     this.onRowSelect = this.onRowSelect.bind(this);
   }
 
@@ -68,7 +68,7 @@ class InstanceSelectPresentation extends Component {
           const mapped = {
             id: instance.Instances[0].InstanceId,
             name: findTag('Name', instance.Instances[0]),
-            version: findTag('Version', instance.Instances[0]), 
+            version: findTag('Version', instance.Instances[0]),
             state: instance.Instances[0].State.Name,
             deployed: deployedState,
           };

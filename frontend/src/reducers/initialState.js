@@ -1,39 +1,39 @@
 export default {
-// Blue Green related state.
-bluegreen: {
-  deployed : [],
-  instances: [],
-  instanceToDeploy: ''
-},
-
-// Create image.
-createImage: {
-  instanceid: "",
-  region: "",
-  name: "",
-  description: ""
-},
-
-// AMI Select.
-amiSelect: {
-  copyImage_srcRegion: [],
-  startInstance_amis: [],
-  startInstance_amis_currentAMI: '',
-  copyImage_srcRegion_currentAMI: '',
-},
-
-// Instances select.
-instanceSelect: {
-  createimage_instances: {
-    instances: [], // data from AWS.
-    filters: [],   // filters on data for AWS.
-  },
-  deployCandidates: {
+  // Blue Green related state.
+  bluegreen: {
+    deployed: [],
     instances: [],
-    filters: [],
+    instanceToDeploy: ""
   },
-},
 
-messages: { text: [] },
+  // Create image.
+  createImage: {
+    instanceid: "",
+    region: "",
+    name: "",
+    description: ""
+  },
 
+  // AMI Select.
+  amiSelect: {
+    copyImage_srcRegion: [],
+    startInstance_amis: [],
+    startInstance_amis_currentAMI: "",
+    copyImage_srcRegion_currentAMI: ""
+  },
+
+  // Instances select.
+  instanceSelect: {
+    createimage_instances: {
+      instances: [], // data from AWS.
+      filters: [] // filters on data for AWS.
+    },
+    deployCandidates: {
+      instances: [],
+      filters: [],
+      toDeplop: ""
+    }
+  },
+
+  messages: { text: [] }
 };
