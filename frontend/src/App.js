@@ -7,7 +7,6 @@ import { authUser, signOutUser } from "./libs/awsLib";
 import "./App.css";
 
 class App extends Component {
-  
   constructor(props) {
     super(props);
 
@@ -22,8 +21,7 @@ class App extends Component {
       if (await authUser()) {
         this.userHasAuthenticated(true);
       }
-    }
-    catch(e) {
+    } catch (e) {
       alert(e);
     }
 
@@ -32,25 +30,29 @@ class App extends Component {
 
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated });
-  }
+  };
 
   handleLogout = event => {
     signOutUser();
     this.userHasAuthenticated(false);
     this.props.history.push("/");
-  }
+  };
 
   handleStartInstance = event => {
     this.props.history.push("/start-instance");
-  }
+  };
 
-  handleUATToProd = event => {
-    this.props.history.push("/UATToProd");
-  }
+  handleCopyImage = event => {
+    this.props.history.push("/copy-image");
+  };
+
+  handleCreateImage = event => {
+    this.props.history.push("/create-image");
+  };
 
   handleDeploy = event => {
     this.props.history.push("/dashboard");
-  }
+  };
   render() {
     // Pass these to child containers.
     const childProps = {
@@ -60,53 +62,62 @@ class App extends Component {
     };
 
     return (
-      !this.state.isAuthenticating &&
-      <div className="App Container">
-      <Navbar fluid collapseOnSelect>
-      <Navbar.Header>
-      <Navbar.Brand>
-      <Link to="/">Insureon</Link>
-      </Navbar.Brand>
-      <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        <Nav pullRight>
-          {this.state.isAuthenticated
-            ? <NavItem onClick={this.handleStartInstance}>Start Instance</NavItem>
-            : [
-              <RouteNavItem key={4} href="/start-instance">
-              </RouteNavItem>
-            ]}
+      !this.state.isAuthenticating && (
+        <div className="App Container">
+          <Navbar fluid collapseOnSelect>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <Link to="/">Insureon</Link>
+              </Navbar.Brand>
+              <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse>
+              <Nav pullRight>
+                {this.state.isAuthenticated ? (
+                  <NavItem onClick={this.handleStartInstance}>
+                    Start Instance
+                  </NavItem>
+                ) : (
+                  [<RouteNavItem key={5} href="/start-instance" />]
+                )}
 
-          {this.state.isAuthenticated
-            ? <NavItem onClick={this.handleUATToProd}>UATToProd</NavItem>
-            : [
-              <RouteNavItem key={3} href="/UATToProd">
-              </RouteNavItem>
-            ]}
+                {this.state.isAuthenticated ? (
+                  <NavItem onClick={this.handleCopyImage}>Copy Image</NavItem>
+                ) : (
+                  [<RouteNavItem key={4} href="/copy-image" />]
+                )}
 
-          {this.state.isAuthenticated
-            ? <NavItem onClick={this.handleDeploy}>Deploy</NavItem>
-            : [
-              <RouteNavItem key={2} href="/dashboard">
-              </RouteNavItem>
-            ]}
+                {this.state.isAuthenticated ? (
+                  <NavItem onClick={this.handleCreateImage}>
+                    Create Image
+                  </NavItem>
+                ) : (
+                  [<RouteNavItem key={3} href="/create-image" />]
+                )}
 
-          {this.state.isAuthenticated
-            ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
-            : [
-              <RouteNavItem key={1} href="/">
-                Login
-              </RouteNavItem>
-            ]}
-        </Nav>
-      </Navbar.Collapse>
-      </Navbar>
-      <Routes childProps={childProps} />
-      </div>
+                {this.state.isAuthenticated ? (
+                  <NavItem onClick={this.handleDeploy}>Deploy</NavItem>
+                ) : (
+                  [<RouteNavItem key={2} href="/dashboard" />]
+                )}
+
+                {this.state.isAuthenticated ? (
+                  <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                ) : (
+                  [
+                    <RouteNavItem key={1} href="/">
+                      Login
+                    </RouteNavItem>
+                  ]
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+          <Routes childProps={childProps} />
+        </div>
+      )
     );
   }
-
 }
 
 export default withRouter(App);

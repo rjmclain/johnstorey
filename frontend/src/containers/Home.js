@@ -29,12 +29,6 @@ class HomePresentation extends Component {
       <Grid>
         <Row>
           <Col xs={12} md={12}>
-            <h1>DNN Deployment</h1>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={12} md={12}>
             <Deployed
               deployed={this.state.deployed}
               setDeployed={this.setDeployed.bind(this)}
@@ -54,12 +48,6 @@ class HomePresentation extends Component {
               setDeployed={this.setDeployed.bind(this)}
               uniqueId="deployCandidates"
             />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={12} md={12}>
-            <h2>Status Messages</h2>
           </Col>
         </Row>
 

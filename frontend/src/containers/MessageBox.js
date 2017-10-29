@@ -3,27 +3,31 @@ import { connect } from "react-redux";
 //import * as messageBoxActions from "../actions/messageBoxActions";
 
 class MessageBoxContainer extends Component {
-
   render() {
     return (
-      this.props.messages.text.map( (message) => {
-        return <p key={ message.text }>{ message }</p>;
-      })
+      <span>
+        <h2>Messages</h2>
+        {this.props.messages.text.map(message => {
+          return <p key={message.text}>{message}</p>;
+        })}
+      </span>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    messages: state.message,
+    messages: state.message
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    dispatch: dispatch,
+    dispatch: dispatch
   };
-}
+};
 
-const MessageBox = connect(mapStateToProps,mapDispatchToProps)(MessageBoxContainer);
+const MessageBox = connect(mapStateToProps, mapDispatchToProps)(
+  MessageBoxContainer
+);
 export default MessageBox;
