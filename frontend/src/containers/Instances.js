@@ -21,7 +21,18 @@ class InstancesContainer extends Component {
       )
     );
 
-    this.props.onDeployClick(this.props.instanceToDeploy, this.props.deployed);
+    this.props.dispatch(messageBoxActions.clear());
+
+    if (this.props.instanceToDeploy != this.props.deployed.instanceId) {
+      this.props.onDeployClick(
+        this.props.instanceToDeploy,
+        this.props.deployed
+      );
+    } else {
+      this.props.dispatch(
+        messageBoxActions.message("Instance already deployed; doing nothing.,")
+      );
+    }
   }
 
   // Filter the AMI instances we want.

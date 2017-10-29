@@ -1,8 +1,10 @@
 import * as types from "../constants/eventTypes";
 import initialState from "./initialState";
 
-export default function (state = initialState.instanceSelect, action) {
+export default function(state = initialState.instanceSelect, action) {
   let newValues = {};
+  const key = action.uniqueId;
+  let newState = {};
 
   switch (action.type) {
     case types.INSTANCESELECT_INSTANCES_FETCHED:
@@ -11,13 +13,15 @@ export default function (state = initialState.instanceSelect, action) {
       return Object.assign({}, state, newValues);
 
     case types.INSTANCESELECT_SELECTED:
-      console.log('INSTANCESELECT_SELECTED state', state);
-      console.log('INSTANCESELECT_SELECTED action', action);
-      const key = action.uniqueId;
       newValues[key] = state[key];
-      console.log('INSTANCESELECT_SELECTED newValues1', newValues);
       newValues[key].toDeploy = action.values;
-      const newState = Object.assign({}, state, newValues);
+      newState = Object.assign({}, state, newValues);
+      return newState;
+
+    case types.INSTANCESELECT_ISDEPLOYED:
+      newValues[key] = state[key];
+      newValues[key].isDeployed = action.values;
+      newState = Object.assign({}, state, newValues);
       return newState;
 
     default:

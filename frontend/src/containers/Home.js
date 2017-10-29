@@ -13,17 +13,15 @@ class HomePresentation extends Component {
     this.state = {
       deregister: this.deregister,
       deployed: []
-    }
+    };
   }
 
   componentDidMount() {
-    this.props.dispatch(
-      messageBoxActions.clear()
-    );
+    this.props.dispatch(messageBoxActions.clear());
   }
 
   setDeployed(deployedList) {
-    this.setState({ deployed: deployedList});
+    this.setState({ deployed: deployedList });
   }
 
   render() {
@@ -37,7 +35,10 @@ class HomePresentation extends Component {
 
         <Row>
           <Col xs={12} md={12}>
-           <Deployed deployed={this.state.deployed} setDeployed={this.setDeployed.bind(this) } />
+            <Deployed
+              deployed={this.state.deployed}
+              setDeployed={this.setDeployed.bind(this)}
+            />
           </Col>
         </Row>
 
@@ -48,9 +49,11 @@ class HomePresentation extends Component {
         </Row>
         <Row>
           <Col xs={12} md={12}>
-            <Instances deployed={this.state.deployed}
+            <Instances
+              deployed={this.state.deployed}
               setDeployed={this.setDeployed.bind(this)}
-              />
+              uniqueId="deployCandidates"
+            />
           </Col>
         </Row>
 
@@ -58,22 +61,20 @@ class HomePresentation extends Component {
           <Col xs={12} md={12}>
             <h2>Status Messages</h2>
           </Col>
-        </Row> 
+        </Row>
 
         <Row>
           <Col xs={12} md={12}>
             <MessageBox />
           </Col>
-        </Row> 
-
+        </Row>
       </Grid>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-  };
-}
+const mapStateToProps = state => {
+  return {};
+};
 const HomeContainer = connect(mapStateToProps)(HomePresentation);
 export default HomeContainer;
