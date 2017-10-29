@@ -58,7 +58,8 @@ class CopyImageComponentPresentation extends Component {
           this.props.currentAMI +
           " to region " +
           this.state.destRegion +
-          "."
+          ".",
+        "copyImage"
       )
     );
 
@@ -85,7 +86,8 @@ class CopyImageComponentPresentation extends Component {
           newImageId +
           " in region " +
           this.state.destRegion +
-          ". Waiting for copy to complete."
+          ". Waiting for copy to complete.",
+        "copyImage"
       )
     );
 
@@ -105,7 +107,7 @@ class CopyImageComponentPresentation extends Component {
           waitForImageResult.status +
           ".");
 
-    this.props.dispatch(messageBoxActions.message(resultMessage));
+    this.props.dispatch(messageBoxActions.message(resultMessage, "copyImage"));
 
     event.preventDefault();
   }
@@ -184,7 +186,7 @@ class CopyImageComponentPresentation extends Component {
             </Row>
 
             <Row>
-              <MessageBox />
+              <MessageBox uniqueId="copyImage" />
             </Row>
           </Grid>
         </form>

@@ -5,13 +5,16 @@ import config from "../config";
 import { invokeApig } from "../libs/awsLib";
 import * as messageBoxActions from "../actions/messageBoxActions";
 
-export function * deployTargetSaga(action) {
+export function* deployTargetSaga(action) {
   try {
     // Undeploy existing targets.
     for (let defunctInstance of action.remove) {
-
-      action.dispatch(messageBoxActions.message(
-        "Undeploying instance" + defunctInstance.instanceId));
+      action.dispatch(
+        messageBoxActions.message(
+          "Undeploying instance" + defunctInstance.instanceId,
+          "blueGreen"
+        )
+      );
 
       yield invokeApig({
         path: "/deregister",
@@ -26,9 +29,12 @@ export function * deployTargetSaga(action) {
     }
 
     // Deploy new target.
-
-    action.dispatch(messageBoxActions.message(
-      "Deploying instance " + action.values));
+    action.dispatch(
+      messageBoxActions.message(
+        "Deploying instance " + action.values,
+        "blueGreen"
+      )
+    );
 
     yield invokeApig({
       path: "/register",
@@ -41,10 +47,10 @@ export function * deployTargetSaga(action) {
       }
     });
 
-    yield put(blueGreenActions.instanceDeployed(
-      [{ instanceId: action.values}] ));
-
+    yield put(
+      blueGreenActions.instanceDeployed([{ instanceId: action.values }])
+    );
   } catch (e) {
-    yield put({type: eventTypes.BLUEGREEN_EC2_CALL_FAILED, error: e});
+    yield put({ type: eventTypes.BLUEGREEN_EC2_CALL_FAILED, error: e });
   }
 }

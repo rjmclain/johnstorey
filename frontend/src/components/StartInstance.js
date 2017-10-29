@@ -41,7 +41,9 @@ class StartInstancePresentation extends Component {
   async onPositiveResponse(e) {
     this.setState({ showWarning: false });
 
-    this.props.dispatch(messageBoxActions.message("Starting new instance."));
+    this.props.dispatch(
+      messageBoxActions.message("Starting new instance.", "startInstance")
+    );
 
     // Trigger instance start.
     const invokeResponse = await invokeApig({
@@ -66,7 +68,8 @@ class StartInstancePresentation extends Component {
       messageBoxActions.message(
         "New instance id is " +
           instanceId +
-          ". Waiting for it to become available."
+          ". Waiting for it to become available.",
+        "startInstance"
       )
     );
 
@@ -84,7 +87,9 @@ class StartInstancePresentation extends Component {
       : (resultMessage =
           "Instance " + instanceId + " is now in state 'running'.");
 
-    this.props.dispatch(messageBoxActions.message(resultMessage));
+    this.props.dispatch(
+      messageBoxActions.message(resultMessage, "startInstance")
+    );
   }
 
   onNegativeResponse(e) {
@@ -92,7 +97,9 @@ class StartInstancePresentation extends Component {
   }
 
   handleRegionUpdate(event) {
-    this.props.dispatch(messageBoxActions.message("Fetching images."));
+    this.props.dispatch(
+      messageBoxActions.message("Fetching images.", "startInstance")
+    );
 
     this.setState({ region: event.target.value });
 
@@ -108,7 +115,7 @@ class StartInstancePresentation extends Component {
   componentDidMount() {
     this.setState({ componentDidMount: true });
 
-    messageBoxActions.clear();
+    messageBoxActions.clear("startInstance");
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -243,15 +250,9 @@ class StartInstancePresentation extends Component {
               <Button onClick={e => this.onHandleSubmit(e)}>Create</Button>
             </Col>
           </Row>
-
           <Row className="show-grid">
             <Col xs={12} md={12}>
-              Status
-            </Col>
-          </Row>
-          <Row className="show-grid">
-            <Col xs={12} md={12}>
-              <MessageBox />
+              <MessageBox uniqueId="startInstance" />
             </Col>
           </Row>
         </Grid>

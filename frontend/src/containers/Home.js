@@ -17,7 +17,7 @@ class HomePresentation extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(messageBoxActions.clear());
+    this.props.dispatch(messageBoxActions.clear("blueGreen"));
   }
 
   setDeployed(deployedList) {
@@ -53,7 +53,7 @@ class HomePresentation extends Component {
 
         <Row>
           <Col xs={12} md={12}>
-            <MessageBox />
+            <MessageBox uniqueId="blueGreen" />
           </Col>
         </Row>
       </Grid>

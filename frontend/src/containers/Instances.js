@@ -17,11 +17,12 @@ class InstancesContainer extends Component {
   handleInstanceId(event) {
     this.props.dispatch(
       messageBoxActions.message(
-        "Registering target " + this.props.instanceToDeploy
+        "Registering target " + this.props.instanceToDeploy,
+        "blueGreen"
       )
     );
 
-    this.props.dispatch(messageBoxActions.clear());
+    this.props.dispatch(messageBoxActions.clear("blueGreen"));
 
     if (this.props.instanceToDeploy != this.props.deployed.instanceId) {
       this.props.onDeployClick(
@@ -30,7 +31,10 @@ class InstancesContainer extends Component {
       );
     } else {
       this.props.dispatch(
-        messageBoxActions.message("Instance already deployed; doing nothing.,")
+        messageBoxActions.message(
+          "Instance already deployed; doing nothing.",
+          "blueGreen"
+        )
       );
     }
   }

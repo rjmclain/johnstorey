@@ -31,9 +31,14 @@ export default {
     deployCandidates: {
       instances: [],
       filters: [],
-      toDeplop: ""
+      toDeploy: ""
     }
   },
 
-  messages: { text: [] }
+  messages: {
+    createImage: [],
+    copyImage: [],
+    startInstance: [],
+    blueGreen: []
+  }
 };

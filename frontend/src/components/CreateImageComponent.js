@@ -33,13 +33,14 @@ class CreateImageComponentPresentation extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(messageBoxActions.clear());
+    this.props.dispatch(messageBoxActions.clear("createImage"));
   }
 
   handleInstanceId(event) {
     this.props.dispatch(
       messageBoxActions.message(
-        "Instance id " + event.target.value + " chosen."
+        "Instance id " + event.target.value + " chosen.",
+        "createImage"
       )
     );
 
@@ -48,14 +49,19 @@ class CreateImageComponentPresentation extends Component {
 
   handleInstanceSelectChanged(instanceId) {
     this.props.dispatch(
-      messageBoxActions.message("Instance id " + instanceId + " chosen.")
+      messageBoxActions.message(
+        "Instance id " + instanceId + " chosen.",
+        "createImage"
+      )
     );
 
     this.setState({ instanceid: instanceId });
   }
 
   handleRegion(event) {
-    this.props.dispatch(messageBoxActions.message("Fetching instances"));
+    this.props.dispatch(
+      messageBoxActions.message("Fetching instances", "createImage")
+    );
 
     this.props.dispatch(
       instanceSelectActions.fetchInstances(
@@ -80,7 +86,8 @@ class CreateImageComponentPresentation extends Component {
       messageBoxActions.message(
         "Stopping instance " +
           this.state.instanceid +
-          ". This will take awhile."
+          ". This will take awhile.",
+        "createImage"
       )
     );
 
@@ -98,7 +105,8 @@ class CreateImageComponentPresentation extends Component {
 
     this.props.dispatch(
       messageBoxActions.message(
-        "Creating image of instance " + this.state.instanceid
+        "Creating image of instance " + this.state.instanceid,
+        "createImage"
       )
     );
 
@@ -137,7 +145,9 @@ class CreateImageComponentPresentation extends Component {
       : (resultMessage =
           "Image " + this.state.instanceid + " is now in state available.");
 
-    this.props.dispatch(messageBoxActions.message(resultMessage));
+    this.props.dispatch(
+      messageBoxActions.message(resultMessage, "createImage")
+    );
 
     event.preventDefault();
   }
@@ -205,7 +215,7 @@ class CreateImageComponentPresentation extends Component {
           </Row>
 
           <Row>
-            <MessageBox />
+            <MessageBox uniqueId="createImage" />
           </Row>
         </form>
       </Grid>
