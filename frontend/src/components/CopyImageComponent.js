@@ -5,19 +5,19 @@ import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
 import * as amiSelectActions from "../actions/amiSelectActions";
+import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
 import * as waitFor from "../containers/waitFor";
 
 class CopyImageComponentPresentation extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      destName: '',
-      destRegion: 'us-east-1',
-      srcRegion: 'us-east-1',
-      srcAMI: '',
-      destDescription: ''
+      destName: "",
+      destRegion: "us-east-1",
+      srcRegion: "us-east-1",
+      srcAMI: "",
+      destDescription: ""
     };
 
     this.handleSrcRegion = this.handleSrcRegion.bind(this);
@@ -37,10 +37,13 @@ class CopyImageComponentPresentation extends Component {
 
   handleSrcRegion(event) {
     const filters = this.amiFilters();
-    this.props.dispatch(amiSelectActions.fetchAMIs(
-      event.target.value,
-      'copyImage_srcRegion',
-      filters)); 
+    this.props.dispatch(
+      amiSelectActions.fetchAMIs(
+        event.target.value,
+        "copyImage_srcRegion",
+        filters
+      )
+    );
     this.setState({ srcRegion: event.target.value });
   }
 
@@ -50,9 +53,13 @@ class CopyImageComponentPresentation extends Component {
 
   async handleSubmit(event) {
     this.props.dispatch(
-      messageBoxActions.message("Copying image "
-        + this.props.currentAMI + " to region "
-        + this.state.destRegion + ".")
+      messageBoxActions.message(
+        "Copying image " +
+          this.props.currentAMI +
+          " to region " +
+          this.state.destRegion +
+          "."
+      )
     );
 
     let copyResults = await invokeApig({
@@ -66,40 +73,50 @@ class CopyImageComponentPresentation extends Component {
         srcRegion: this.state.srcRegion,
         srcAMI: this.props.currentAMI,
         destDescription: this.state.destDescription
-    }});
+      }
+    });
 
     const data = copyResults;
     const newImageId = data.ImageId;
 
     this.props.dispatch(
-      messageBoxActions.message("Copied image has AMI id of "
-        + newImageId + " in region "
-        + this.state.destRegion + ". Waiting for copy to complete."
-      ));
+      messageBoxActions.message(
+        "Copied image has AMI id of " +
+          newImageId +
+          " in region " +
+          this.state.destRegion +
+          ". Waiting for copy to complete."
+      )
+    );
 
-    const waitForImageResult =
-      await waitFor.waitForImageAvailable(newImageId, this.state.destRegion);
+    const waitForImageResult = await waitFor.waitForImageAvailable(
+      newImageId,
+      this.state.destRegion
+    );
 
     let resultMessage = "";
-    (waitForImageResult.status === "false")
-      ? resultMessage = "WARNING: Image " + newImageId + " failed to become available."
-      : resultMessage = "Image " + newImageId + " is now in state "
-      + waitForImageResult.status + ".";
+    waitForImageResult.status === "false"
+      ? (resultMessage =
+          "WARNING: Image " + newImageId + " failed to become available.")
+      : (resultMessage =
+          "Image " +
+          newImageId +
+          " is now in state " +
+          waitForImageResult.status +
+          ".");
 
-    this
-      .props
-      .dispatch(messageBoxActions.message(resultMessage));
+    this.props.dispatch(messageBoxActions.message(resultMessage));
 
     event.preventDefault();
   }
 
   amiFilters() {
     return [
-        {
-          Name: "state",
-          Values: [ "available" ],
-        }
-      ];
+      {
+        Name: "state",
+        Values: ["available"]
+      }
+    ];
   }
 
   shouldComponentUpdate(nextProps) {
@@ -109,70 +126,70 @@ class CopyImageComponentPresentation extends Component {
 
   render() {
     return (
-    <span>
-      <form onSubmit={ this.handleSubmit }>
+      <span>
+        <form onSubmit={this.handleSubmit}>
+          <Grid>
+            <Row>
+              <Col xs={12} md={2}>
+                Source Region
+              </Col>
+              <Col xs={12} md={10}>
+                <RegionsSelect onSelectHandler={this.handleSrcRegion} />
+              </Col>
+            </Row>
 
-    <Grid>
-      <Row>
-        <Col xs={12} md={2}>
-          Source Region
-        </Col>
-        <Col xs={12} md={10}>
-          <RegionsSelect onSelectHandler={ this.handleSrcRegion } />
-        </Col>
-      </Row>
+            <Row>
+              <Col xs={12} md={2}>
+                Source AMI
+              </Col>
+              <Col xs={12} md={10}>
+                <AMISelect
+                  filters={this.amiFilters()}
+                  uniqueId="copyImage_srcRegion"
+                />
+              </Col>
+            </Row>
 
-      <Row>
-        <Col xs={12} md={2}>
-          Source AMI
-        </Col>
-        <Col xs={12} md={10}>
-          <AMISelect
-            filters={ this.amiFilters() }
-            uniqueId="copyImage_srcRegion" /> 
-        </Col>
-      </Row> 
+            <Row>
+              <Col xs={12} md={2}>
+                Destination Region
+              </Col>
+              <Col xs={12} md={10}>
+                <RegionsSelect onSelectHandler={this.handleDestRegion} />
+              </Col>
+            </Row>
 
-      <Row>
-        <Col xs={12} md={2}>
-          Destination Region
-        </Col>
-        <Col xs={12} md={10}>
-          <RegionsSelect onSelectHandler={ this.handleDestRegion } />
-        </Col>
-      </Row>
+            <Row>
+              <Col xs={12} md={2}>
+                Destination Name
+              </Col>
+              <Col xs={12} md={10}>
+                <input type="text" onChange={this.handleDestName} />
+              </Col>
+            </Row>
 
-      <Row>
-        <Col xs={12} md={2}>
-          Destination Name
-        </Col>
-        <Col xs={12} md={10}>
-          <input type="text"
-            onChange={ this.handleDestName } />
-        </Col>
-      </Row>
+            <Row>
+              <Col xs={12} md={2}>
+                Destination Description
+              </Col>
+              <Col xs={12} md={10}>
+                <input type="text" onChange={this.handleDestDescription} />
+              </Col>
+            </Row>
 
-      <Row>
-        <Col xs={12} md={2}>
-          Destination Description
-        </Col>
-        <Col xs={12} md={10}>
-          <input type="text" 
-            onChange={ this.handleDestDescription } />
-        </Col> 
-      </Row>
+            <Row>
+              <Col xs={12} md={12}>
+                <Button onClick={this.handleSubmit}>Copy</Button>
+              </Col>
+            </Row>
 
-      <Row>
-        <Col xs={12} md={12}>
-          <Button onClick={ this.handleSubmit }>Copy</Button>
-        </Col>
-      </Row>
-
-    </Grid>
-
+            <Row>
+              <MessageBox />
+            </Row>
+          </Grid>
         </form>
-    </span>
-    )
+      </span>
+    );
   }
 }
 
@@ -182,15 +199,17 @@ function sleep(ms) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    currentAMI: state.amiSelect.copyImage_srcRegion_currentAMI,
-  }
-}
+    currentAMI: state.amiSelect.copyImage_srcRegion_currentAMI
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    dispatch: dispatch,
-  }
-}
+    dispatch: dispatch
+  };
+};
 
-const CopyImageComponent = connect(mapStateToProps,mapDispatchToProps)(CopyImageComponentPresentation);
+const CopyImageComponent = connect(mapStateToProps, mapDispatchToProps)(
+  CopyImageComponentPresentation
+);
 export default CopyImageComponent;

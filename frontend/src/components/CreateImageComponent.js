@@ -1,40 +1,30 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import { Grid, Row, Col, Button} from "react-bootstrap";
-import {invokeApig} from "../libs/awsLib";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Grid, Row, Col, Button } from "react-bootstrap";
+import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import InstanceSelect from "./InstanceSelect";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
+import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
 import * as waitFor from "../containers/waitFor";
 
 class CreateImageComponentPresentation extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      region: "us-east-1",
+      region: "us-east-1"
     };
 
-    this.handleInstanceId = this
-      .handleInstanceId
-      .bind(this);
-    this.handleInstanceSelectChanged = this
-      .handleInstanceSelectChanged
-      .bind(this);
-    this.handleDescription = this
-      .handleDescription
-      .bind(this);
-    this.handleName = this
-      .handleName
-      .bind(this);
-    this.handleRegion = this
-      .handleRegion
-      .bind(this);
-    this.handleSubmit = this
-      .handleSubmit
-      .bind(this);
+    this.handleInstanceId = this.handleInstanceId.bind(this);
+    this.handleInstanceSelectChanged = this.handleInstanceSelectChanged.bind(
+      this
+    );
+    this.handleDescription = this.handleDescription.bind(this);
+    this.handleName = this.handleName.bind(this);
+    this.handleRegion = this.handleRegion.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -43,51 +33,56 @@ class CreateImageComponentPresentation extends Component {
   }
 
   componentDidMount() {
-    this
-      .props
-      .dispatch(messageBoxActions.clear());
+    this.props.dispatch(messageBoxActions.clear());
   }
 
   handleInstanceId(event) {
-    this
-      .props
-      .dispatch(messageBoxActions.message("Instance id " + event.target.value + " chosen."));
+    this.props.dispatch(
+      messageBoxActions.message(
+        "Instance id " + event.target.value + " chosen."
+      )
+    );
 
-    this.setState({instanceid: event.target.value});
+    this.setState({ instanceid: event.target.value });
   }
 
   handleInstanceSelectChanged(instanceId) {
-    this
-      .props
-      .dispatch(messageBoxActions.message("Instance id " + instanceId + " chosen."));
+    this.props.dispatch(
+      messageBoxActions.message("Instance id " + instanceId + " chosen.")
+    );
 
-    this.setState({instanceid: instanceId});
+    this.setState({ instanceid: instanceId });
   }
 
   handleRegion(event) {
-    this
-      .props
-      .dispatch(messageBoxActions.message("Fetching instances"));
+    this.props.dispatch(messageBoxActions.message("Fetching instances"));
 
-    this
-      .props
-      .dispatch(instanceSelectActions.fetchInstances(event.target.value, 'createimage_instances', this.instanceFilters()))
-    this.setState({region: event.target.value});
+    this.props.dispatch(
+      instanceSelectActions.fetchInstances(
+        event.target.value,
+        "createimage_instances",
+        this.instanceFilters()
+      )
+    );
+    this.setState({ region: event.target.value });
   }
 
   handleName(event) {
-    this.setState({name: event.target.value});
+    this.setState({ name: event.target.value });
   }
 
   handleDescription(event) {
-    this.setState({description: event.target.value});
+    this.setState({ description: event.target.value });
   }
 
   async handleSubmit(event) {
-    this
-      .props
-      .dispatch(messageBoxActions.message("Stopping instance "
-        + this.state.instanceid + ". This will take awhile."));
+    this.props.dispatch(
+      messageBoxActions.message(
+        "Stopping instance " +
+          this.state.instanceid +
+          ". This will take awhile."
+      )
+    );
 
     invokeApig({
       path: "/stop-instance",
@@ -99,46 +94,50 @@ class CreateImageComponentPresentation extends Component {
       }
     });
 
-    await waitFor.waitForStopped(this.state.instanceid,
-      this.state.region);
+    await waitFor.waitForStopped(this.state.instanceid, this.state.region);
 
-      this
-        .props
-        .dispatch(messageBoxActions.message("Creating image of instance " 
-          + this.state.instanceid));
+    this.props.dispatch(
+      messageBoxActions.message(
+        "Creating image of instance " + this.state.instanceid
+      )
+    );
 
-      let createImageResult = await invokeApig({
-        path: "/create-image",
-        method: "POST",
-        headers: {},
-        queryParams: {},
-        body: {
-          instanceId: this.state.instanceid,
-          amiName: this.state.name,
-          amiDescription: this.state.description,
-          region: this.state.region
-        }
-      });
+    let createImageResult = await invokeApig({
+      path: "/create-image",
+      method: "POST",
+      headers: {},
+      queryParams: {},
+      body: {
+        instanceId: this.state.instanceid,
+        amiName: this.state.name,
+        amiDescription: this.state.description,
+        region: this.state.region
+      }
+    });
 
-      this
-        .props
-        .dispatch(messageBoxActions.message("Creating image with AMI ID of "
-          + createImageResult.ImageId
-          + ". Will notify here when image is available."));
+    this.props.dispatch(
+      messageBoxActions.message(
+        "Creating image with AMI ID of " +
+          createImageResult.ImageId +
+          ". Will notify here when image is available."
+      )
+    );
 
-      const waitForImageResult =
-        await waitFor.waitForImageAvailable(createImageResult.ImageId,
-           this.state.region);
+    const waitForImageResult = await waitFor.waitForImageAvailable(
+      createImageResult.ImageId,
+      this.state.region
+    );
 
-      let resultMessage = "";
-      (waitForImageResult.status === "false")
-        ? resultMessage = "WARNING: Image " + this.state.instance.id + " failed to become available."
-        : resultMessage = "Image "
-          + this.state.instanceid + " is now in state available.";
+    let resultMessage = "";
+    waitForImageResult.status === "false"
+      ? (resultMessage =
+          "WARNING: Image " +
+          this.state.instance.id +
+          " failed to become available.")
+      : (resultMessage =
+          "Image " + this.state.instanceid + " is now in state available.");
 
-      this
-        .props
-        .dispatch(messageBoxActions.message(resultMessage));
+    this.props.dispatch(messageBoxActions.message(resultMessage));
 
     event.preventDefault();
   }
@@ -158,13 +157,12 @@ class CreateImageComponentPresentation extends Component {
     return (
       <Grid>
         <form onSubmit={this.handleSubmit}>
-
           <Row>
             <Col xs={12} md={2}>
               Region
             </Col>
             <Col xs={12} md={10}>
-              <RegionsSelect onSelectHandler={this.handleRegion}/>
+              <RegionsSelect onSelectHandler={this.handleRegion} />
             </Col>
           </Row>
 
@@ -177,7 +175,8 @@ class CreateImageComponentPresentation extends Component {
                 onSelectHandler={this.handleInstanceId}
                 updateParent={this.handleInstanceSelectChanged}
                 filters={this.instanceFilters()}
-                uniqueId="createimage_instances"/>
+                uniqueId="createimage_instances"
+              />
             </Col>
           </Row>
 
@@ -186,7 +185,7 @@ class CreateImageComponentPresentation extends Component {
               Name
             </Col>
             <Col xs={12} md={10}>
-              <input type="text" onChange={this.handleName}/>
+              <input type="text" onChange={this.handleName} />
             </Col>
           </Row>
 
@@ -195,7 +194,7 @@ class CreateImageComponentPresentation extends Component {
               Description
             </Col>
             <Col xs={12} md={10}>
-              <input type="text" onChange={this.handleDescription}/>
+              <input type="text" onChange={this.handleDescription} />
             </Col>
           </Row>
 
@@ -204,20 +203,26 @@ class CreateImageComponentPresentation extends Component {
               <Button onClick={this.handleSubmit}>Create</Button>
             </Col>
           </Row>
+
+          <Row>
+            <MessageBox />
+          </Row>
         </form>
-      </Grid> 
-    )
+      </Grid>
+    );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const newProps = {};
   return newProps;
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return {dispatch: dispatch}
-}
+const mapDispatchToProps = dispatch => {
+  return { dispatch: dispatch };
+};
 
-const CreateImageComponent = connect(mapStateToProps, mapDispatchToProps)(CreateImageComponentPresentation);
+const CreateImageComponent = connect(mapStateToProps, mapDispatchToProps)(
+  CreateImageComponentPresentation
+);
 export default CreateImageComponent;

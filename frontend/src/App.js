@@ -74,11 +74,11 @@ class App extends Component {
             <Navbar.Collapse>
               <Nav pullRight>
                 {this.state.isAuthenticated ? (
-                  <NavItem onClick={this.handleStartInstance}>
-                    Start Instance
+                  <NavItem onClick={this.handleCreateImage}>
+                    Create Image
                   </NavItem>
                 ) : (
-                  [<RouteNavItem key={5} href="/start-instance" />]
+                  [<RouteNavItem key={3} href="/create-image" />]
                 )}
 
                 {this.state.isAuthenticated ? (
@@ -88,15 +88,15 @@ class App extends Component {
                 )}
 
                 {this.state.isAuthenticated ? (
-                  <NavItem onClick={this.handleCreateImage}>
-                    Create Image
+                  <NavItem onClick={this.handleStartInstance}>
+                    Start Instance
                   </NavItem>
                 ) : (
-                  [<RouteNavItem key={3} href="/create-image" />]
+                  [<RouteNavItem key={5} href="/start-instance" />]
                 )}
 
                 {this.state.isAuthenticated ? (
-                  <NavItem onClick={this.handleDeploy}>Deploy</NavItem>
+                  <NavItem onClick={this.handleDeploy}>Blue Green</NavItem>
                 ) : (
                   [<RouteNavItem key={2} href="/dashboard" />]
                 )}

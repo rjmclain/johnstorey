@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-//import * as messageBoxActions from "../actions/messageBoxActions";
 
 class MessageBoxContainer extends Component {
   render() {
