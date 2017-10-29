@@ -74,12 +74,7 @@ class AMISelectPresentation extends Component {
 
     if (amiItems.length !== 0) {
       renderableAMIs = this.props[this.props.uniqueId].map(ami => {
-        let name = findTag("Name", ami);
-        if (name.length !== 0 && name !== "") {
-          name = name[0].Value;
-        } else {
-          name = "";
-        }
+        const name = ami.Name;
 
         let version = findTag("Version", ami);
         if (version.length !== 0 && version !== "") {
