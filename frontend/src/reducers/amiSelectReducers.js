@@ -1,27 +1,23 @@
 import * as types from "../constants/eventTypes";
 import initialState from "./initialState";
 
-export default function (state = initialState.amiSelect, action) {
+export default function(state = initialState.amiSelect, action) {
   switch (action.type) {
     case types.AMISELECT_AMIS_FETCHED:
-    console.log('amiSelectReducers action', action);
-
       let newValues = {};
       newValues[action.uniqueId] = action.values;
 
       if (action.values.length > 0) {
-        newValues[action.uniqueId + '_currentAMI'] = action.values[0].ImageId;
+        newValues[action.uniqueId + "_currentAMI"] = action.values[0].ImageId;
       } else {
-        newValues[action.uniqueId + '_currentAMI'] = '';
+        newValues[action.uniqueId + "_currentAMI"] = "";
       }
-
-      console.log('amiSelectReducers newValues', newValues);
 
       return Object.assign({}, state, newValues);
 
     case types.AMISELECT_SET_AMI:
       newValues = {};
-      newValues[action.uniqueId + '_currentAMI'] = action.values;
+      newValues[action.uniqueId + "_currentAMI"] = action.values;
       return Object.assign({}, state, newValues);
 
     default:

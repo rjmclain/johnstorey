@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
-import Select from 'react-select';
+// Table.
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import "../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
+
+import Select from "react-select";
 import { connect } from "react-redux";
 import * as amiSelectActions from "../actions/amiSelectActions";
 
@@ -8,23 +12,27 @@ class AMISelectPresentation extends Component {
   constructor(props) {
     super(props);
 
-
     let initialValues = {};
     initialValues[props.uniqueId] = [];
 
-    const propsAMIKey = props.uniqueId + '_currentAMI';
-    initialValues[propsAMIKey] = '';
+    const propsAMIKey = props.uniqueId + "_currentAMI";
+    initialValues[propsAMIKey] = "";
 
     this.state = initialValues;
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.onAMISelect = this.onAMISelect.bind(this);
+    this.onRowSelect = this.onRowSelect.bind(this);
   }
 
   componentDidMount() {
-    this.props.dispatch(amiSelectActions.fetchAMIs("us-east-1",
-      this.props.uniqueId,
-      this.props.filters));
+    this.props.dispatch(
+      amiSelectActions.fetchAMIs(
+        "us-east-1",
+        this.props.uniqueId,
+        this.props.filters
+      )
+    );
   }
 
   componentDidUpdate() {
@@ -35,49 +43,112 @@ class AMISelectPresentation extends Component {
     }
   }
 
-  handleOnChange (event) {
-    this.props.dispatch(amiSelectActions.fetchAMIs(event.target.value,
-      this.props.uniqueId,
-      this.filters));
+  handleOnChange(event) {
+    this.props.dispatch(
+      amiSelectActions.fetchAMIs(
+        event.target.value,
+        this.props.uniqueId,
+        this.filters
+      )
+    );
   }
 
   onAMISelect(event) {
-    this.props.dispatch(amiSelectActions.setAMI(
-      event.target.value,
-      this.props.uniqueId
-    ));
+    this.props.dispatch(
+      amiSelectActions.setAMI(event.target.value, this.props.uniqueId)
+    );
+  }
+
+  onRowSelect(row, isSelect, e) {
+    this.props.dispatch(amiSelectActions.setAMI(row.id, this.props.uniqueId));
   }
 
   render() {
-    return (
-          <span>
-          <select onChange={ this.onAMISelect }>
-            { 
-              this.props[this.props.uniqueId].map( (AMI) => {
-                return (
-                  <option key={ AMI.ImageId } value={ AMI.ImageId }>
-                    { AMI.ImageId }
-                  </option>
-                );
-            })}
-          </select>
-          </span>
-    );
+    // Create table.
+    let bootStrapTable = "No AMIs available.";
+    let renderableInstances = [];
+
+    const amiItems = this.props[this.props.uniqueId];
+    let amiTable = "No AMIs available.";
+    let renderableAMIs = [];
+
+    if (amiItems.length !== 0) {
+      renderableAMIs = this.props[this.props.uniqueId].map(ami => {
+        let name = findTag("Name", ami);
+        if (name.length !== 0 && name !== "") {
+          name = name[0].Value;
+        } else {
+          name = "";
+        }
+
+        let version = findTag("Version", ami);
+        if (version.length !== 0 && version !== "") {
+          version = version[0].Value;
+        } else {
+          version = "";
+        }
+
+        const mapped = {
+          id: ami.ImageId,
+          name: name,
+          version: version
+        };
+
+        return mapped;
+      });
+
+      const selectRowProp = {
+        mode: "radio",
+        clickToSelect: true,
+        onSelect: this.onRowSelect
+      };
+
+      amiTable = (
+        <BootstrapTable
+          data={renderableAMIs}
+          selectRow={selectRowProp}
+          tripde
+          hover
+        >
+          <TableHeaderColumn isKey dataField="id">
+            ID
+          </TableHeaderColumn>
+          <TableHeaderColumn dataField="name">Name</TableHeaderColumn>
+          <TableHeaderColumn dataField="version">Version</TableHeaderColumn>
+        </BootstrapTable>
+      );
+    }
+
+    return <span>{amiTable}</span>;
+  }
+}
+
+function findTag(tagName, image) {
+  let result = [{ Key: tagName, Value: "" }];
+  if (image.Tags) {
+    result = image.Tags.filter(tag => {
+      if (tag.Key === tagName) {
+        return tag.Value;
+      }
+    });
+    return result;
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const newProps = {};
   newProps[ownProps.uniqueId] = state.amiSelect[ownProps.uniqueId];
-  newProps[ownProps.uniqueId + '_currentAMI'] = '';
+  newProps[ownProps.uniqueId + "_currentAMI"] = "";
   return newProps;
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    dispatch: dispatch,
-  }
-}
+    dispatch: dispatch
+  };
+};
 
-const AMISelect = connect(mapStateToProps,mapDispatchToProps)(AMISelectPresentation);
+const AMISelect = connect(mapStateToProps, mapDispatchToProps)(
+  AMISelectPresentation
+);
 export default AMISelect;
