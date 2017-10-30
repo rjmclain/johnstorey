@@ -186,6 +186,7 @@ class CreateImageComponentPresentation extends Component {
                 updateParent={this.handleInstanceSelectChanged}
                 filters={this.instanceFilters()}
                 uniqueId="createimage_instances"
+                region={this.state.region}
               />
             </Col>
           </Row>

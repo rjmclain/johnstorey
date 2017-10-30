@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Row, Col, Button, Glyphicon } from "react-bootstrap";
 
 // Table.
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
@@ -19,6 +20,7 @@ class InstanceSelectPresentation extends Component {
     this.state = initialValues;
 
     this.onRowSelect = this.onRowSelect.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +47,16 @@ class InstanceSelectPresentation extends Component {
   onRowSelect(row, isSelect, e) {
     this.props.dispatch(
       instanceSelectActions.selected(row.id, this.props.uniqueId)
+    );
+  }
+
+  handleOnChange(event) {
+    this.props.dispatch(
+      instanceSelectActions.fetchInstances(
+        this.props.region,
+        this.props.uniqueId,
+        this.props.filters
+      )
     );
   }
 
@@ -85,19 +97,38 @@ class InstanceSelectPresentation extends Component {
       };
 
       bootStrapTable = (
-        <BootstrapTable
-          data={renderableInstances}
-          selectRow={selectRowProp}
-          triped
-          hover
-        >
-          <TableHeaderColumn isKey dataField="id">
-            ID
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="name">Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="version">Version</TableHeaderColumn>
-          <TableHeaderColumn dataField="deployed">Deployed</TableHeaderColumn>
-        </BootstrapTable>
+        <span>
+          <Row>
+            <Col xs={11} md={11} />
+            <Col xs={1} md={1}>
+              <Button onClick={this.handleOnChange} pullRight="true">
+                <Glyphicon glyph="refresh" />
+              </Button>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col xs={12} md={12}>
+              <BootstrapTable
+                data={renderableInstances}
+                selectRow={selectRowProp}
+                striped
+                hover
+              >
+                <TableHeaderColumn isKey dataField="id">
+                  ID
+                </TableHeaderColumn>
+                <TableHeaderColumn dataField="name">Name</TableHeaderColumn>
+                <TableHeaderColumn dataField="version">
+                  Version
+                </TableHeaderColumn>
+                <TableHeaderColumn dataField="deployed">
+                  Deployed
+                </TableHeaderColumn>
+              </BootstrapTable>
+            </Col>
+          </Row>
+        </span>
       );
     }
 

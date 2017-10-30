@@ -59,6 +59,7 @@ class InstancesContainer extends Component {
               updateParent={() => {}}
               uniqueId="deployCandidates"
               filters={this.instanceFilters()}
+              region="us-east-1"
             />
           </Col>
         </Row>
