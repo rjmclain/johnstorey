@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 // Table.
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import { Row, Col, Button, Glyphicon } from "react-bootstrap";
 import "../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
 
 import Select from "react-select";
@@ -99,18 +100,35 @@ class AMISelectPresentation extends Component {
       };
 
       amiTable = (
-        <BootstrapTable
-          data={renderableAMIs}
-          selectRow={selectRowProp}
-          tripde
-          hover
-        >
-          <TableHeaderColumn isKey dataField="id">
-            ID
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="name">Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="version">Version</TableHeaderColumn>
-        </BootstrapTable>
+        <span>
+          <Row>
+            <Col xs={11} md={11} />
+            <Col xs={1} md={1}>
+              <Button onClick={this.handleOnChange} pullRight="true">
+                <Glyphicon glyph="refresh" />
+              </Button>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col xs={12} md={12}>
+              <BootstrapTable
+                data={renderableAMIs}
+                selectRow={selectRowProp}
+                striped
+                hover
+              >
+                <TableHeaderColumn isKey dataField="id">
+                  ID
+                </TableHeaderColumn>
+                <TableHeaderColumn dataField="name">Name</TableHeaderColumn>
+                <TableHeaderColumn dataField="version">
+                  Version
+                </TableHeaderColumn>
+              </BootstrapTable>
+            </Col>
+          </Row>
+        </span>
       );
     }
 
