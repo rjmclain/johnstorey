@@ -48,10 +48,10 @@ class InstanceSelectPresentation extends Component {
     this.props.dispatch(
       instanceSelectActions.selected(row.id, this.props.uniqueId)
     );
+    this.props.updateParent(row.id);
   }
 
   handleOnChange(event) {
-    this.props.dispatch(
       instanceSelectActions.fetchInstances(
         this.props.region,
         this.props.uniqueId,
@@ -90,10 +90,14 @@ class InstanceSelectPresentation extends Component {
         return mapped;
       });
 
+      // Notify the parent of the default.
+      this.props.updateParent(renderableInstances[0].id);
+
       const selectRowProp = {
         mode: "radio",
         clickToSelect: true,
-        onSelect: this.onRowSelect
+        onSelect: this.onRowSelect,
+        selected: [renderableInstances[0].id]
       };
 
       bootStrapTable = (

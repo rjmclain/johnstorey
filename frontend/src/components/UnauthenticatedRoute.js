@@ -23,12 +23,15 @@ export default ({ component: C, props: cProps, ...rest }) => {
     <Route
       {...rest}
       render={props =>
-        !cProps.isAuthenticated
-          ? <C {...props} {...cProps} />
-          : <Redirect
-              to={redirect === " " || redirect === null ? "/dashboard" : redirect }
-          />}
+        !cProps.isAuthenticated ? (
+          <C {...props} {...cProps} />
+        ) : (
+          <Redirect
+            to={
+              redirect === " " || redirect === null ? "/create-image" : redirect
+            }
+          />
+        )}
     />
   );
 };
-

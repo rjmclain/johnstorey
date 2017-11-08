@@ -53,7 +53,8 @@ function getCurrentUser() {
 }
 
 function getAwsCredentials(userToken) {
-  const authenticator = `cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
+  const authenticator = `cognito-idp.${config.cognito
+    .REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
 
   AWS.config.update({ region: config.cognito.REGION });
 
@@ -74,48 +75,43 @@ export async function invokeApig({
   queryParams = {},
   body
 }) {
-
-  console.log("apiG path", path);
-  console.log("apiG body", body);
-
   if (!await authUser()) {
     throw new Error("User is not logged in");
   }
 
   //const newClient = sigV4Client
 
-  const newClient = sigV4Client
-    .newClient({
-      accessKey: AWS.config.credentials.accessKeyId,
-      secretKey: AWS.config.credentials.secretAccessKey,
-      sessionToken: AWS.config.credentials.sessionToken,
-      region: config.apiGateway.REGION,
-      endpoint: config.apiGateway.URL
-    });
+  const newClient = sigV4Client.newClient({
+    accessKey: AWS.config.credentials.accessKeyId,
+    secretKey: AWS.config.credentials.secretAccessKey,
+    sessionToken: AWS.config.credentials.sessionToken,
+    region: config.apiGateway.REGION,
+    endpoint: config.apiGateway.URL
+  });
 
-    const signedRequest = newClient.signRequest({
-      method,
-      path,
-      headers,
-      queryParams,
-      body
-    });
+  const signedRequest = newClient.signRequest({
+    method,
+    path,
+    headers,
+    queryParams,
+    body
+  });
 
-    body = body ? JSON.stringify(body) : body;
-    headers = signedRequest.headers;
+  body = body ? JSON.stringify(body) : body;
+  headers = signedRequest.headers;
 
-    const results = await fetch(signedRequest.url, {
-      method,
-      headers,
-      body
-    });
+  const results = await fetch(signedRequest.url, {
+    method,
+    headers,
+    body
+  });
 
-    if (results.status !== 200) {
-      throw new Error(await results.text());
-    }
+  if (results.status !== 200) {
+    throw new Error(await results.text());
+  }
 
-    let data = await results.json();
-    console.log("apiG returning ", data);
-    return data;
-    //return results.json();
+  let data = await results.json();
+  console.log("apiG returning ", data);
+  return data;
+  //return results.json();
 }

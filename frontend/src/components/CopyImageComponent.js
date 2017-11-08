@@ -100,12 +100,7 @@ class CopyImageComponentPresentation extends Component {
     waitForImageResult.status === "false"
       ? (resultMessage =
           "WARNING: Image " + newImageId + " failed to become available.")
-      : (resultMessage =
-          "Image " +
-          newImageId +
-          " is now in state " +
-          waitForImageResult.status +
-          ".");
+      : (resultMessage = "Image " + newImageId + " is now in state available.");
 
     this.props.dispatch(messageBoxActions.message(resultMessage, "copyImage"));
 
