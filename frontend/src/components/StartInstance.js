@@ -10,6 +10,7 @@ import AMISelect from "./AMISelect";
 import { invokeApig } from "../libs/awsLib";
 import * as waitFor from "../containers/waitFor";
 import config from "../config";
+import * as awsHelpers from "../libs/awsHelpers";
 
 class StartInstancePresentation extends Component {
   constructor(props) {
@@ -28,7 +29,6 @@ class StartInstancePresentation extends Component {
       componentDidMount: false,
       showWarning: false,
       region: "us-east-1",
-      amiId: "",
       name: "",
       description: "",
       version: ""
@@ -46,6 +46,14 @@ class StartInstancePresentation extends Component {
       messageBoxActions.message("Starting new instance.", "startInstance")
     );
 
+    // Get AMI data for any version data.
+    this.state.amiId;
+    const image = await awsHelpers.describeImage(
+      this.state.region,
+      this.props.currentAMI,
+      []
+    );
+
     // Trigger instance start.
     const invokeResponse = await invokeApig({
       path: "/run-instance",
@@ -59,7 +67,7 @@ class StartInstancePresentation extends Component {
         subnetId: config.ec2.SUBNET_ID,
         instanceName: this.state.name,
         description: this.state.description,
-        version: this.state.version
+        version: awsHelpers.findTag("Version", image.Images[0].Tags)
       }
     });
 

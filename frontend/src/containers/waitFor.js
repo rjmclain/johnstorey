@@ -40,7 +40,12 @@ async function checkStopped(instanceId, region) {
   const code = callResult.Reservations[0].Instances[0].State.Code;
 
   if (code === 80) {
-    return { status: "true", code: code, state: status };
+    return {
+      status: "true",
+      code: code,
+      instance: callResult.Reservations[0].Instances[0],
+      state: status
+    };
   }
 
   return { status: "false", code: code, state: status };

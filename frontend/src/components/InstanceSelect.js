@@ -6,6 +6,7 @@ import { Row, Col, Button, Glyphicon } from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
 
+import * as awsHelpers from "../libs/awsHelpers";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 
 class InstanceSelectPresentation extends Component {
@@ -80,8 +81,8 @@ class InstanceSelectPresentation extends Component {
 
         const mapped = {
           id: instance.Instances[0].InstanceId,
-          name: findTag("Name", instance.Instances[0]),
-          version: findTag("Version", instance.Instances[0]),
+          name: awsHelpers.findTag("Name", instance.Instances[0].Tags),
+          version: awsHelpers.findTag("Version", instance.Instances[0].Tags),
           state: instance.Instances[0].State.Name,
           deployed: deployedState
         };
@@ -137,20 +138,6 @@ class InstanceSelectPresentation extends Component {
 
     return <span>{bootStrapTable}</span>;
   }
-}
-
-function findTag(tagName, instance) {
-  let result = [];
-  if (instance.Tags) {
-    result = instance.Tags.filter(tag => {
-      if (tag.Key === tagName) {
-        return tag.Value;
-      }
-      return "";
-    });
-  }
-
-  return result.length === 0 ? "" : result[0].Value;
 }
 
 const mapStateToProps = (state, ownProps) => {

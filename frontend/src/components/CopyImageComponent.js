@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid, Row, Col, Button } from "react-bootstrap";
 import { invokeApig } from "../libs/awsLib";
+import * as awsHelpers from "../libs/awsHelpers";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
 import * as amiSelectActions from "../actions/amiSelectActions";
@@ -16,7 +17,6 @@ class CopyImageComponentPresentation extends Component {
       destName: "",
       destRegion: "us-east-1",
       srcRegion: "us-east-1",
-      srcAMI: "",
       destDescription: ""
     };
 
@@ -110,26 +110,26 @@ class CopyImageComponentPresentation extends Component {
         "Adding tracking tags to " + this.state.instanceid
       );
 
-      await invokeApig({
-        path: "/create-tags",
-        method: "POST",
-        headers: {},
-        queryParams: {},
-        body: {
-          region: this.state.destRegion,
-          resources: [newImageId],
-          tags: [
-            {
-              Key: "source-ami-id",
-              Value: this.props.currentAMI
-            },
-            {
-              Key: "source-region",
-              Value: this.state.srcRegion
-            }
-          ]
+      const oldImage = await awsHelpers.describeImage(
+        this.state.srcRegion,
+        this.props.currentAMI,
+        [] // No filters.
+      );
+
+      awsHelpers.createTags(this.state.destRegion, newImageId, [
+        {
+          Key: "source-ami-id",
+          Value: this.props.currentAMI
+        },
+        {
+          Key: "source-region",
+          Value: this.state.srcRegion
+        },
+        {
+          Key: "Version",
+          Value: awsHelpers.findTag("Version", oldImage.Images[0].Tags)
         }
-      });
+      ]);
     }
     event.preventDefault();
   }
@@ -163,8 +163,7 @@ class CopyImageComponentPresentation extends Component {
             </Row>
 
             <Row>
-              <Col xs={12} md={2}>
-              </Col>
+              <Col xs={12} md={2} />
               <Col xs={12} md={10}>
                 <AMISelect
                   filters={this.amiFilters()}

@@ -8,6 +8,7 @@ import * as instanceSelectActions from "../actions/instanceSelectActions";
 import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
 import * as waitFor from "../containers/waitFor";
+import * as awsHelpers from "../libs/awsHelpers";
 
 class CreateImageComponentPresentation extends Component {
   constructor(props) {
@@ -101,7 +102,15 @@ class CreateImageComponentPresentation extends Component {
       }
     });
 
-    await waitFor.waitForStopped(this.state.instanceid, this.state.region);
+    const instanceStopped = await waitFor.waitForStopped(
+      this.state.instanceid,
+      this.state.region
+    );
+
+    const stoppedInstanceVersionTag = awsHelpers.findTag(
+      "Version",
+      instanceStopped.instance.Tags
+    );
 
     this.props.dispatch(
       messageBoxActions.message(
@@ -151,27 +160,22 @@ class CreateImageComponentPresentation extends Component {
 
     // Add tracking tags.
     if (waitForImageResult !== "false") {
+      awsHelpers.createTags(this.state.region, createImageResult.ImageId, [
+        {
+          Key: "source-instance-id",
+          Value: this.state.instanceid
+        },
+        {
+          Key: "source-region",
+          Value: this.state.region
+        },
+        {
+          Key: "Version",
+          Value: stoppedInstanceVersionTag
+        }
+      ]);
     }
-    await invokeApig({
-      path: "/create-tags",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {
-        region: this.state.region,
-        resources: [createImageResult.ImageId],
-        tags: [
-          {
-            Key: "source-instance-id",
-            Value: this.state.instanceid
-          },
-          {
-            Key: "source-region",
-            Value: this.state.region
-          }
-        ]
-      }
-    });
+
     event.preventDefault();
   }
 
