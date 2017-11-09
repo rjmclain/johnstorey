@@ -140,15 +140,38 @@ class CreateImageComponentPresentation extends Component {
     waitForImageResult.status === "false"
       ? (resultMessage =
           "WARNING: Image " +
-          this.state.instance.id +
+          createImageResult.ImageId +
           " failed to become available.")
       : (resultMessage =
-          "Image " + this.state.instanceid + " is now in state available.");
+          "Image " + createImageResult.ImageId + " is now in state available.");
 
     this.props.dispatch(
       messageBoxActions.message(resultMessage, "createImage")
     );
 
+    // Add tracking tags.
+    if (waitForImageResult !== "false") {
+    }
+    await invokeApig({
+      path: "/create-tags",
+      method: "POST",
+      headers: {},
+      queryParams: {},
+      body: {
+        region: this.state.region,
+        resources: [createImageResult.ImageId],
+        tags: [
+          {
+            Key: "source-instance-id",
+            Value: this.state.instanceid
+          },
+          {
+            Key: "source-region",
+            Value: this.state.region
+          }
+        ]
+      }
+    });
     event.preventDefault();
   }
 
