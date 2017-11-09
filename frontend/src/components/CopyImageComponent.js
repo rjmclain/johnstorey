@@ -164,7 +164,6 @@ class CopyImageComponentPresentation extends Component {
 
             <Row>
               <Col xs={12} md={2}>
-                Source AMI
               </Col>
               <Col xs={12} md={10}>
                 <AMISelect

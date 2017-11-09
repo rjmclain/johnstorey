@@ -7,7 +7,10 @@ export default {
   },
   ec2: {
     REGION: "us-east-1",
-    TARGET_GROUP: "arn:aws:elasticloadbalancing:us-east-1:369929617152:targetgroup/INSUREON-bluegreen/f862b85a7b65164f"
+    TARGET_GROUP:
+      "arn:aws:elasticloadbalancing:us-east-1:369929617152:targetgroup/INSUREON-bluegreen/f862b85a7b65164f",
+    INSTANCE_SIZE: "t2.micro",
+    SUBNET_ID: "subnet-2978cc15"
   },
   apiGateway: {
     URL: "https://5508tzhref.execute-api.us-east-1.amazonaws.com/dev",

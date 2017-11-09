@@ -79,11 +79,11 @@ export async function invokeApig({
     throw new Error("User is not logged in");
   }
 
-  console.log("apig path", path);
-  console.log("apig method", method);
-  console.log("apig headers", headers);
-  console.log("apig queryParams", queryParams);
-  console.log("apig body", body);
+  // console.log("apig path", path);
+  // console.log("apig method", method);
+  // console.log("apig headers", headers);
+  // console.log("apig queryParams", queryParams);
+  // console.log("apig body", body);
 
   //const newClient = sigV4Client
 
@@ -117,7 +117,7 @@ export async function invokeApig({
   }
 
   let data = await results.json();
-  console.log("apiG returning ", data);
+  // console.log("apiG returning ", data);
   return data;
   //return results.json();
 }

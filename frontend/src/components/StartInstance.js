@@ -9,6 +9,7 @@ import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
 import { invokeApig } from "../libs/awsLib";
 import * as waitFor from "../containers/waitFor";
+import config from "../config";
 
 class StartInstancePresentation extends Component {
   constructor(props) {
@@ -54,15 +55,14 @@ class StartInstancePresentation extends Component {
       body: {
         region: this.state.region,
         imageId: this.props.currentAMI,
-        instanceSize: "t2.micro",
-        subnetId: "subnet-2978cc15",
+        instanceSize: config.ec2.INSTANCE_SIZE,
+        subnetId: config.ec2.SUBNET_ID,
         instanceName: this.state.name,
         description: this.state.description,
         version: this.state.version
       }
     });
 
-    console.log("invokeResponse", invokeResponse);
     const instanceId = invokeResponse.Instances[0].InstanceId;
     this.props.dispatch(
       messageBoxActions.message(
@@ -77,8 +77,6 @@ class StartInstancePresentation extends Component {
       instanceId,
       this.state.region
     );
-
-    console.log("waitForResponse", waitForResponse);
 
     let resultMessage = "";
     waitForResponse.status === "false"
@@ -179,9 +177,7 @@ class StartInstancePresentation extends Component {
           </Row>
 
           <Row className="show-grid">
-            <Col xs={12} md={4} mdPush={2}>
-              AMI
-            </Col>
+            <Col xs={12} md={4} mdPush={2} />
             <Col xs={12} md={6}>
               {amiSelectPlaceholder}
             </Col>
@@ -196,37 +192,6 @@ class StartInstancePresentation extends Component {
                 type="text"
                 value={this.state.name}
                 onChange={this.handleName}
-              />
-            </Col>
-          </Row>
-
-          <Row className="show-grid">
-            <Col xs={12} md={4} mdPush={2}>
-              Size
-            </Col>
-            <Col xs={12} md={6}>
-              t2.micro
-            </Col>
-          </Row>
-
-          <Row className="show-grid">
-            <Col xs={12} md={4} mdPush={2}>
-              Subnet
-            </Col>
-            <Col xs={12} md={6}>
-              subnet-2978cc15
-            </Col>
-          </Row>
-
-          <Row className="show-grid">
-            <Col xs={12} md={4} mdPush={2}>
-              Description
-            </Col>
-            <Col xs={12} md={6}>
-              <input
-                type="text"
-                value={this.state.description}
-                onChange={this.handleDescription}
               />
             </Col>
           </Row>
