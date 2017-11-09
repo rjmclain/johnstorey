@@ -225,3 +225,12 @@ functions:
           method: POST
           cors: true
           authorizer: aws_iam
+  create-tags:
+    handler: create-tags.main
+    timeout: 300
+    events:
+      - http:
+          path: create-tags
+          method: POST
+          cors: true
+          authorizer: aws_iam

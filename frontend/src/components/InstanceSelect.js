@@ -52,11 +52,10 @@ class InstanceSelectPresentation extends Component {
   }
 
   handleOnChange(event) {
-      instanceSelectActions.fetchInstances(
-        this.props.region,
-        this.props.uniqueId,
-        this.props.filters
-      )
+    instanceSelectActions.fetchInstances(
+      this.props.region,
+      this.props.uniqueId,
+      this.props.filters
     );
   }
 
@@ -73,7 +72,7 @@ class InstanceSelectPresentation extends Component {
         let deployedState = "";
         if (
           this.props.deployed &&
-          this.props.deployed.length != 0 &&
+          this.props.deployed.length !== 0 &&
           this.props.deployed[0].instanceId === instance.Instances[0].InstanceId
         ) {
           deployedState = "Deployed";
@@ -105,7 +104,7 @@ class InstanceSelectPresentation extends Component {
           <Row>
             <Col xs={11} md={11} />
             <Col xs={1} md={1}>
-              <Button onClick={this.handleOnChange} pullRight="true">
+              <Button onClick={this.handleOnChange}>
                 <Glyphicon glyph="refresh" />
               </Button>
             </Col>
@@ -147,10 +146,11 @@ function findTag(tagName, instance) {
       if (tag.Key === tagName) {
         return tag.Value;
       }
+      return "";
     });
   }
 
-  return result.length == 0 ? "" : result[0].Value;
+  return result.length === 0 ? "" : result[0].Value;
 }
 
 const mapStateToProps = (state, ownProps) => {

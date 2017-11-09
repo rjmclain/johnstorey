@@ -1,6 +1,5 @@
 import * as types from "../constants/eventTypes";
 import initialState from "./initialState";
-import * as messageBoxActions from "../actions/messageBoxActions";
 
 export default function(state = initialState.bluegreen, action) {
   switch (action.type) {

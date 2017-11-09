@@ -4,7 +4,6 @@ import { Row, Col, Button } from "react-bootstrap";
 import "./Instances.css";
 import InstanceSelect from "../components/InstanceSelect";
 import * as blueGreenActions from "../actions/blueGreenActions";
-import * as instanceSelectActions from "../actions/instanceSelectActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
 
 class InstancesContainer extends Component {
@@ -24,7 +23,7 @@ class InstancesContainer extends Component {
 
     this.props.dispatch(messageBoxActions.clear("blueGreen"));
 
-    if (this.props.instanceToDeploy != this.props.deployed.instanceId) {
+    if (this.props.instanceToDeploy !== this.props.deployed.instanceId) {
       this.props.onDeployClick(
         this.props.instanceToDeploy,
         this.props.deployed

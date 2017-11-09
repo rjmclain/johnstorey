@@ -5,7 +5,6 @@ import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import { Row, Col, Button, Glyphicon } from "react-bootstrap";
 import "../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
 
-import Select from "react-select";
 import { connect } from "react-redux";
 import * as amiSelectActions from "../actions/amiSelectActions";
 
@@ -38,10 +37,10 @@ class AMISelectPresentation extends Component {
 
   componentDidUpdate() {
     // Handle redux state changes needing propagation upstream.
-    let newValue = "";
-    if (this.props[this.props.uniqueId].length !== 0) {
-      newValue = this.props[this.props.uniqueId][0].ImageId;
-    }
+    // let newValue = "";
+    // if (this.props[this.props.uniqueId].length !== 0) {
+    //   newValue = this.props[this.props.uniqueId][0].ImageId;
+    // }
   }
 
   handleOnChange(event) {
@@ -66,9 +65,6 @@ class AMISelectPresentation extends Component {
 
   render() {
     // Create table.
-    let bootStrapTable = "No AMIs available.";
-    let renderableInstances = [];
-
     const amiItems = this.props[this.props.uniqueId];
     let amiTable = "No AMIs available.";
     let renderableAMIs = [];
@@ -104,7 +100,7 @@ class AMISelectPresentation extends Component {
           <Row>
             <Col xs={11} md={11} />
             <Col xs={1} md={1}>
-              <Button onClick={this.handleOnChange} pullRight="true">
+              <Button onClick={this.handleOnChange}>
                 <Glyphicon glyph="refresh" />
               </Button>
             </Col>
@@ -143,6 +139,7 @@ function findTag(tagName, image) {
       if (tag.Key === tagName) {
         return tag.Value;
       }
+      return "";
     });
     return result;
   }

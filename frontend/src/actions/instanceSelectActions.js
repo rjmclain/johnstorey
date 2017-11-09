@@ -1,6 +1,5 @@
-import * as types from "../constants/eventTypes";
-
 // @flow
+import * as types from "../constants/eventTypes";
 
 // Fetch the AMI list.
 export function fetchInstances(region, uniqueId, filters) {

@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { Row, Col } from 'react-bootstrap';
+import { Component } from "react";
 import { connect } from "react-redux";
 import config from "../config";
 import * as blueGreenActions from "../actions/blueGreenActions";
@@ -13,24 +12,28 @@ class DeployedPresentation extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.dispatch(blueGreenActions.fetchDeployed());
   }
 
-  render() { return ''; }
+  render() {
+    return "";
+  }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     deployed: state.bluegreen.deployed
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch
   };
-}
+};
 
-const Deployed = connect(mapStateToProps,mapDispatchToProps)(DeployedPresentation);
+const Deployed = connect(mapStateToProps, mapDispatchToProps)(
+  DeployedPresentation
+);
 export default Deployed;

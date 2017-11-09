@@ -104,6 +104,33 @@ class CopyImageComponentPresentation extends Component {
 
     this.props.dispatch(messageBoxActions.message(resultMessage, "copyImage"));
 
+    // Add tags to new image.
+    if (waitForImageResult.status !== "false") {
+      messageBoxActions.message(
+        "Adding tracking tags to " + this.state.instanceid
+      );
+
+      await invokeApig({
+        path: "/create-tags",
+        method: "POST",
+        headers: {},
+        queryParams: {},
+        body: {
+          region: this.state.destRegion,
+          resources: [newImageId],
+          tags: [
+            {
+              Key: "source-ami-id",
+              Value: this.props.currentAMI
+            },
+            {
+              Key: "source-region",
+              Value: this.state.srcRegion
+            }
+          ]
+        }
+      });
+    }
     event.preventDefault();
   }
 
@@ -188,10 +215,6 @@ class CopyImageComponentPresentation extends Component {
       </span>
     );
   }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const mapStateToProps = (state, ownProps) => {
