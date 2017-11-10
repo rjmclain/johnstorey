@@ -6,6 +6,7 @@ import InstanceSelect from "./InstanceSelect";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
+import * as blueGreenActions from "../actions/blueGreenActions";
 import * as waitFor from "../containers/waitFor";
 import * as awsHelpers from "../libs/awsHelpers";
 
@@ -33,6 +34,7 @@ class CreateImageComponentPresentation extends Component {
 
   componentDidMount() {
     this.props.dispatch(messageBoxActions.clear("createImage"));
+    this.props.dispatch(blueGreenActions.fetchDeployed());
   }
 
   handleInstanceId(event) {
@@ -77,6 +79,27 @@ class CreateImageComponentPresentation extends Component {
   }
 
   async handleSubmit(event) {
+    // Guard against stopping the currently deployed instance.
+    console.log("props", this.props);
+    console.log("state", this.state);
+    console.log("length", this.props.deployed.length);
+    console.log("instanceId", this.props.deployed[0].instanceId);
+    console.log("instanceId", this.state.instanceId);
+
+    if (
+      this.props.deployed.length !== 0 &&
+      this.props.deployed[0].instanceId === this.state.instanceId
+    ) {
+      console.log("Refusing to stop");
+      this.props.dispatch(
+        messageBoxActions.message(
+          "Sorry! We cannot change the deployed instance. Please choose another.",
+          "createImage"
+        )
+      );
+      return;
+    }
+
     this.props.dispatch(
       messageBoxActions.message(
         "Stopping instance " +
@@ -86,7 +109,7 @@ class CreateImageComponentPresentation extends Component {
       )
     );
 
-    awsHelpers.stopInstance(this.state.region, this.state.instanceId);
+    awsHelpers.stopInstance(this.state.region, this.state.instanceid);
 
     const instanceStopped = await waitFor.waitForStopped(
       this.state.instanceId,
@@ -219,8 +242,10 @@ class CreateImageComponentPresentation extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const newProps = {};
-  return newProps;
+  console.log("CIC state", state);
+  return {
+    deployed: state.bluegreen.deployed
+  };
 };
 
 const mapDispatchToProps = dispatch => {
