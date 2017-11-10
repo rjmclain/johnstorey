@@ -51,7 +51,7 @@ class App extends Component {
   };
 
   handleDeploy = event => {
-    this.props.history.push("/dashboard");
+    this.props.history.push("/blue-green");
   };
   render() {
     // Pass these to child containers.
