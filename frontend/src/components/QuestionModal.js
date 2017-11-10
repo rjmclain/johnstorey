@@ -5,8 +5,6 @@ class QuestionModalPresentation extends Component {
   constructor(props) {
     super(props);
 
-    console.log("props", props);
-
     this.onHandlePositive = this.onHandlePositive.bind(this);
     this.onHandleNegative = this.onHandleNegative.bind(this);
   }

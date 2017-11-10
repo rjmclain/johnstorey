@@ -22,15 +22,13 @@ class StartInstancePresentation extends Component {
     this.amiFilters = this.amiFilters.bind(this);
     this.handleName = this.handleName.bind(this);
     this.handleDescription = this.handleDescription.bind(this);
-    this.handleVersion = this.handleVersion.bind(this);
 
     this.state = {
       componentDidMount: false,
       showWarning: false,
       region: "us-east-1",
       name: "",
-      description: "",
-      version: ""
+      description: ""
     };
   }
 
@@ -53,14 +51,17 @@ class StartInstancePresentation extends Component {
     );
 
     // Trigger instance start.
+    const imageVersion = awsHelpers.findTag("Version", image.Images[0].Tags);
+    console.log("StartInstance image", image);
+    console.log("StartInstange imageVersion", imageVersion);
+
     const instance = await awsHelpers.startInstance(
       this.state.region,
       this.props.currentAMI,
       config.ec2.INSTANCE_SIZE,
       config.ec2.SUBNET_ID,
       this.state.name,
-      this.state.description,
-      awsHelpers.findTag("Version", image.Images[0].Tags)
+      imageVersion
     );
 
     const instanceId = instance.Instances[0].InstanceId;
@@ -137,10 +138,6 @@ class StartInstancePresentation extends Component {
     this.setState({ description: event.target.value });
   }
 
-  handleVersion(event) {
-    this.setState({ version: event.target.value });
-  }
-
   render() {
     let modal = null;
     if (this.state.showWarning === true) {
@@ -192,19 +189,6 @@ class StartInstancePresentation extends Component {
                 type="text"
                 value={this.state.name}
                 onChange={this.handleName}
-              />
-            </Col>
-          </Row>
-
-          <Row className="show-grid">
-            <Col xs={12} md={4} mdPush={2}>
-              Version Tag
-            </Col>
-            <Col xs={12} md={6}>
-              <input
-                type="text"
-                value={this.state.version}
-                onChange={this.handleVersion}
               />
             </Col>
           </Row>

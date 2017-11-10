@@ -176,15 +176,6 @@ class CopyImageComponentPresentation extends Component {
             </Row>
 
             <Row>
-              <Col xs={12} md={2}>
-                Destination Description
-              </Col>
-              <Col xs={12} md={10}>
-                <input type="text" onChange={this.handleDestDescription} />
-              </Col>
-            </Row>
-
-            <Row>
               <Col xs={12} md={12}>
                 <Button onClick={this.handleSubmit}>Copy</Button>
               </Col>

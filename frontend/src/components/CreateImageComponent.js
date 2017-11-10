@@ -111,8 +111,6 @@ class CreateImageComponentPresentation extends Component {
       this.state.name
     );
 
-    console.log("CreateImageComponent createImageResult", createImageResult);
-
     this.props.dispatch(
       messageBoxActions.message(
         "Creating image with AMI ID of " +

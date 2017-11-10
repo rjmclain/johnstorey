@@ -100,7 +100,6 @@ export async function startInstance(
   instanceSize,
   subnetId,
   instanceName,
-  description,
   version
 ) {
   const runningInstance = invokeApig({
@@ -114,7 +113,6 @@ export async function startInstance(
       instanceSize: instanceSize,
       subnetId: subnetId,
       instanceName: instanceName,
-      description: description,
       version: version
     }
   });

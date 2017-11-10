@@ -1,12 +1,10 @@
 import AWS from "aws-sdk";
-import {success, failure} from "./libs/response-lib";
+import { success, failure } from "./libs/response-lib";
 
 export function main(event, context, callback) {
   const data = JSON.parse(event.body);
 
-  AWS
-    .config
-    .update({region: data.region});
+  AWS.config.update({ region: data.region });
   const ec2 = new AWS.EC2();
 
   const params = {
@@ -17,35 +15,29 @@ export function main(event, context, callback) {
     SubnetId: data.subnetId,
     TagSpecifications: [
       {
-        ResourceType: 'instance',
+        ResourceType: "instance",
         Tags: [
           {
-            Key: 'Name',
-            Value: data.instanceName,
+            Key: "Name",
+            Value: data.instanceName
           },
           {
-            Key: 'Description',
-            Value: data.description,
-          },
-          {
-            Key: 'Version',
-            Value: data.version,
+            Key: "Version",
+            Value: data.version
           }
         ]
       }
     ]
   };
 
-  console.log('run-instances params', params);
+  console.log("run-instances params", params);
 
   // Stop the instance.
-  ec2.runInstances(
-    params,
-    function (err, data) {
-      if (err !== null) {
-        callback(null, failure({ status: false, error: err }));
-      } else {
-        callback(null, success(data));
-      }
-    });
+  ec2.runInstances(params, function(err, data) {
+    if (err !== null) {
+      callback(null, failure({ status: false, error: err }));
+    } else {
+      callback(null, success(data));
+    }
+  });
 }
