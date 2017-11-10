@@ -1,5 +1,4 @@
 import { invokeApig } from "./awsLib";
-import config from "../config";
 
 // Find the specified tag value in the array of tags.
 export function findTag(tagName, tags) {
@@ -32,7 +31,7 @@ export async function createTags(region, resource, tags) {
 }
 
 // Create an image.
-export async function createImage(region, instanceId, name, description) {
+export async function createImage(region, instanceId, name) {
   const createImageResult = await invokeApig({
     path: "/create-image",
     method: "POST",
@@ -41,7 +40,6 @@ export async function createImage(region, instanceId, name, description) {
     body: {
       instanceId: instanceId,
       amiName: name,
-      amiDescription: description,
       region: region
     }
   });

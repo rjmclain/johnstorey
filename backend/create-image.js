@@ -11,9 +11,9 @@ export function main(event, context, callback) {
   const params = {
     InstanceId: data.instanceId,
     /* required */
-    Name: data.amiName,
+    Name: data.amiName
     /* required */
-    Description: data.amiDescription
+    //Description: data.amiDescription
   };
 
   ec2.createImage(params, function(err, data) {

@@ -21,7 +21,6 @@ class CreateImageComponentPresentation extends Component {
     this.handleInstanceSelectChanged = this.handleInstanceSelectChanged.bind(
       this
     );
-    this.handleDescription = this.handleDescription.bind(this);
     this.handleName = this.handleName.bind(this);
     this.handleRegion = this.handleRegion.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -77,10 +76,6 @@ class CreateImageComponentPresentation extends Component {
     this.setState({ name: event.target.value });
   }
 
-  handleDescription(event) {
-    this.setState({ description: event.target.value });
-  }
-
   async handleSubmit(event) {
     this.props.dispatch(
       messageBoxActions.message(
@@ -113,8 +108,7 @@ class CreateImageComponentPresentation extends Component {
     const createImageResult = await awsHelpers.createImage(
       this.state.region,
       this.state.instanceId,
-      this.state.name,
-      this.state.description
+      this.state.name
     );
 
     console.log("CreateImageComponent createImageResult", createImageResult);
@@ -208,15 +202,6 @@ class CreateImageComponentPresentation extends Component {
             </Col>
             <Col xs={12} md={10}>
               <input type="text" onChange={this.handleName} />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col xs={12} md={2}>
-              Description
-            </Col>
-            <Col xs={12} md={10}>
-              <input type="text" onChange={this.handleDescription} />
             </Col>
           </Row>
 
