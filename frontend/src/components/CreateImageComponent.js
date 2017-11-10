@@ -15,7 +15,9 @@ class CreateImageComponentPresentation extends Component {
     super(props);
 
     this.state = {
-      region: "us-east-1"
+      region: "us-east-1",
+      name: "",
+      instanceId: ""
     };
 
     this.handleInstanceId = this.handleInstanceId.bind(this);
@@ -79,18 +81,22 @@ class CreateImageComponentPresentation extends Component {
   }
 
   async handleSubmit(event) {
-    // Guard against stopping the currently deployed instance.
-    console.log("props", this.props);
-    console.log("state", this.state);
-    console.log("length", this.props.deployed.length);
-    console.log("instanceId", this.props.deployed[0].instanceId);
-    console.log("instanceId", this.state.instanceId);
+    // Verify we have the necessary data.
+    if (this.state.instanceId === "" || this.state.name === "") {
+      this.props.dispatch(
+        messageBoxActions.message(
+          "We require both an instance and name before we can proceed.",
+          "createImage"
+        )
+      );
+      return;
+    }
 
+    // Guard against stopping the currently deployed instance.
     if (
       this.props.deployed.length !== 0 &&
       this.props.deployed[0].instanceId === this.state.instanceId
     ) {
-      console.log("Refusing to stop");
       this.props.dispatch(
         messageBoxActions.message(
           "Sorry! We cannot change the deployed instance. Please choose another.",
@@ -109,7 +115,7 @@ class CreateImageComponentPresentation extends Component {
       )
     );
 
-    awsHelpers.stopInstance(this.state.region, this.state.instanceid);
+    awsHelpers.stopInstance(this.state.region, this.state.instanceId);
 
     const instanceStopped = await waitFor.waitForStopped(
       this.state.instanceId,
@@ -242,7 +248,6 @@ class CreateImageComponentPresentation extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log("CIC state", state);
   return {
     deployed: state.bluegreen.deployed
   };
