@@ -50,3 +50,27 @@ export async function describeImage(region, amiId, filters) {
 
   return image;
 }
+
+// Copy image.
+export async function copyImage(
+  destinationName,
+  destinationRegion,
+  sourceRegion,
+  sourceAMI,
+  destinationDescription
+) {
+  const copyResults = await invokeApig({
+    path: "/copy-image-regions",
+    method: "POST",
+    headers: {},
+    queryParams: {},
+    body: {
+      destName: destinationName,
+      destRegion: destinationRegion,
+      srcRegion: sourceRegion,
+      srcAMI: sourceAMI
+    }
+  });
+
+  return copyResults;
+}

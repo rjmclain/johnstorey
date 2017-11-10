@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid, Row, Col, Button } from "react-bootstrap";
-import { invokeApig } from "../libs/awsLib";
 import * as awsHelpers from "../libs/awsHelpers";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
@@ -16,14 +15,12 @@ class CopyImageComponentPresentation extends Component {
     this.state = {
       destName: "",
       destRegion: "us-east-1",
-      srcRegion: "us-east-1",
-      destDescription: ""
+      srcRegion: "us-east-1"
     };
 
     this.handleSrcRegion = this.handleSrcRegion.bind(this);
     this.handleDestName = this.handleDestName.bind(this);
     this.handleDestRegion = this.handleDestRegion.bind(this);
-    this.handleDestDescription = this.handleDestDescription.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -47,10 +44,6 @@ class CopyImageComponentPresentation extends Component {
     this.setState({ srcRegion: event.target.value });
   }
 
-  handleDestDescription(event) {
-    this.setState({ destDescription: event.target.value });
-  }
-
   async handleSubmit(event) {
     this.props.dispatch(
       messageBoxActions.message(
@@ -63,22 +56,15 @@ class CopyImageComponentPresentation extends Component {
       )
     );
 
-    let copyResults = await invokeApig({
-      path: "/copy-image-regions",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {
-        destName: this.state.destName,
-        destRegion: this.state.destRegion,
-        srcRegion: this.state.srcRegion,
-        srcAMI: this.props.currentAMI,
-        destDescription: this.state.destDescription
-      }
-    });
+    let copyResults = await awsHelpers.copyImage(
+      this.state.destName,
+      this.state.destRegion,
+      this.state.srcRegion,
+      this.props.currentAMI
+    );
 
-    const data = copyResults;
-    const newImageId = data.ImageId;
+    console.log("CopyImageComponent copyResults", copyResults);
+    const newImageId = copyResults.ImageId;
 
     this.props.dispatch(
       messageBoxActions.message(
