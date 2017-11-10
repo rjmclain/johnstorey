@@ -1,5 +1,7 @@
 import { invokeApig } from "./awsLib";
+import config from "../config";
 
+// Find the specified tag value in the array of tags.
 export function findTag(tagName, tags) {
   let result = [];
   if (tags) {
@@ -27,6 +29,24 @@ export async function createTags(region, resource, tags) {
       tags: tags
     }
   });
+}
+
+// Create an image.
+export async function createImage(region, instanceId, name, description) {
+  const createImageResult = await invokeApig({
+    path: "/create-image",
+    method: "POST",
+    headers: {},
+    queryParams: {},
+    body: {
+      instanceId: instanceId,
+      amiName: name,
+      amiDescription: description,
+      region: region
+    }
+  });
+
+  return createImageResult;
 }
 
 // Describe an image.
@@ -73,4 +93,64 @@ export async function copyImage(
   });
 
   return copyResults;
+}
+
+// Start an EC2 instance.
+export async function startInstance(
+  region,
+  imageId,
+  instanceSize,
+  subnetId,
+  instanceName,
+  description,
+  version
+) {
+  const runningInstance = invokeApig({
+    path: "/run-instance",
+    method: "POST",
+    headers: {},
+    queryParams: {},
+    body: {
+      region: region,
+      imageId: imageId,
+      instanceSize: instanceSize,
+      subnetId: subnetId,
+      instanceName: instanceName,
+      description: description,
+      version: version
+    }
+  });
+
+  return runningInstance;
+}
+
+// Describe an instance.
+export function describeInstance(region, instanceId, filters) {
+  const instance = invokeApig({
+    path: "/describe-instance",
+    method: "POST",
+    headers: {},
+    queryParams: {},
+    body: {
+      region: region,
+      instanceId: instanceId,
+      filters: filters
+    }
+  });
+
+  return instance;
+}
+
+// Stop a running EC2 instance.
+export function stopInstance(region, instanceId) {
+  invokeApig({
+    path: "/stop-instance",
+    method: "POST",
+    headers: {},
+    queryParams: {},
+    body: {
+      region: region,
+      instanceId: instanceId
+    }
+  });
 }

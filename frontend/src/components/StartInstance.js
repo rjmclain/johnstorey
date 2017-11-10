@@ -7,7 +7,6 @@ import * as amiSelectActions from "../actions/amiSelectActions";
 import QuestionModal from "./QuestionModal";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
-import { invokeApig } from "../libs/awsLib";
 import * as waitFor from "../containers/waitFor";
 import config from "../config";
 import * as awsHelpers from "../libs/awsHelpers";
@@ -47,7 +46,6 @@ class StartInstancePresentation extends Component {
     );
 
     // Get AMI data for any version data.
-    this.state.amiId;
     const image = await awsHelpers.describeImage(
       this.state.region,
       this.props.currentAMI,
@@ -55,23 +53,17 @@ class StartInstancePresentation extends Component {
     );
 
     // Trigger instance start.
-    const invokeResponse = await invokeApig({
-      path: "/run-instance",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {
-        region: this.state.region,
-        imageId: this.props.currentAMI,
-        instanceSize: config.ec2.INSTANCE_SIZE,
-        subnetId: config.ec2.SUBNET_ID,
-        instanceName: this.state.name,
-        description: this.state.description,
-        version: awsHelpers.findTag("Version", image.Images[0].Tags)
-      }
-    });
+    const instance = await awsHelpers.startInstance(
+      this.state.region,
+      this.props.currentAMI,
+      config.ec2.INSTANCE_SIZE,
+      config.ec2.SUBNET_ID,
+      this.state.name,
+      this.state.description,
+      awsHelpers.findTag("Version", image.Images[0].Tags)
+    );
 
-    const instanceId = invokeResponse.Instances[0].InstanceId;
+    const instanceId = instance.Instances[0].InstanceId;
     this.props.dispatch(
       messageBoxActions.message(
         "New instance id is " +

@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "./containers/Home";
+import BlueGreenComponent from "./containers/BlueGreenComponent";
 import CopyImageComponent from "./components/CopyImageComponent";
 import CreateImageComponent from "./components/CreateImageComponent";
 import NotFound from "./containers/NotFound";
@@ -15,7 +15,7 @@ export default ({ childProps }) => (
     <AuthenticatedRoute
       path="/dashboard"
       exact
-      component={Home}
+      component={BlueGreenComponent}
       props={childProps}
     />
     <AuthenticatedRoute

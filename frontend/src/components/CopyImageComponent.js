@@ -63,7 +63,6 @@ class CopyImageComponentPresentation extends Component {
       this.props.currentAMI
     );
 
-    console.log("CopyImageComponent copyResults", copyResults);
     const newImageId = copyResults.ImageId;
 
     this.props.dispatch(

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
-import "./Home.css";
+import "./BlueGreenComponent.css";
 import Instances from "./Instances";
 import Deployed from "./Deployed";
 import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
 
-class HomePresentation extends Component {
+class BlueGreenPresentation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,5 +64,5 @@ class HomePresentation extends Component {
 const mapStateToProps = state => {
   return {};
 };
-const HomeContainer = connect(mapStateToProps)(HomePresentation);
-export default HomeContainer;
+const BlueGreenContainer = connect(mapStateToProps)(BlueGreenPresentation);
+export default BlueGreenContainer;

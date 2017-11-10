@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid, Row, Col, Button } from "react-bootstrap";
-import { invokeApig } from "../libs/awsLib";
 import RegionsSelect from "./RegionsSelect";
 import InstanceSelect from "./InstanceSelect";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
@@ -56,7 +55,7 @@ class CreateImageComponentPresentation extends Component {
       )
     );
 
-    this.setState({ instanceid: instanceId });
+    this.setState({ instanceId: instanceId });
   }
 
   handleRegion(event) {
@@ -86,24 +85,16 @@ class CreateImageComponentPresentation extends Component {
     this.props.dispatch(
       messageBoxActions.message(
         "Stopping instance " +
-          this.state.instanceid +
+          this.state.instanceId +
           ". This will take awhile.",
         "createImage"
       )
     );
 
-    invokeApig({
-      path: "/stop-instance",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {
-        instanceId: this.state.instanceid
-      }
-    });
+    awsHelpers.stopInstance(this.state.region, this.state.instanceId);
 
     const instanceStopped = await waitFor.waitForStopped(
-      this.state.instanceid,
+      this.state.instanceId,
       this.state.region
     );
 
@@ -114,23 +105,19 @@ class CreateImageComponentPresentation extends Component {
 
     this.props.dispatch(
       messageBoxActions.message(
-        "Creating image of instance " + this.state.instanceid,
+        "Creating image of instance " + this.state.instanceId,
         "createImage"
       )
     );
 
-    let createImageResult = await invokeApig({
-      path: "/create-image",
-      method: "POST",
-      headers: {},
-      queryParams: {},
-      body: {
-        instanceId: this.state.instanceid,
-        amiName: this.state.name,
-        amiDescription: this.state.description,
-        region: this.state.region
-      }
-    });
+    const createImageResult = await awsHelpers.createImage(
+      this.state.region,
+      this.state.instanceId,
+      this.state.name,
+      this.state.description
+    );
+
+    console.log("CreateImageComponent createImageResult", createImageResult);
 
     this.props.dispatch(
       messageBoxActions.message(
@@ -163,7 +150,7 @@ class CreateImageComponentPresentation extends Component {
       awsHelpers.createTags(this.state.region, createImageResult.ImageId, [
         {
           Key: "source-instance-id",
-          Value: this.state.instanceid
+          Value: this.state.instanceId
         },
         {
           Key: "source-region",
@@ -204,9 +191,6 @@ class CreateImageComponentPresentation extends Component {
           </Row>
 
           <Row>
-            <Col xs={12} md={2}>
-              Instance Id
-            </Col>
             <Col xs={12} md={10}>
               <InstanceSelect
                 onSelectHandler={this.handleInstanceId}
