@@ -10,7 +10,23 @@ class InstancesContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      instanceToDeploy: ""
+    };
+
     this.handleInstanceId = this.handleInstanceId.bind(this);
+    this.setInstanceId = this.setInstanceId.bind(this);
+    this.deployInstance = this.deployInstance.bind(this);
+  }
+
+  deployInstance(event) {
+    this.props.dispatch(
+      blueGreenActions.deployInstance(
+        this.props.dispatch,
+        this.props.instanceToDeploy,
+        this.props.deployed
+      )
+    );
   }
 
   handleInstanceId(event) {
@@ -22,20 +38,21 @@ class InstancesContainer extends Component {
     );
 
     this.props.dispatch(messageBoxActions.clear("blueGreen"));
-
-    if (this.props.instanceToDeploy !== this.props.deployed.instanceId) {
-      this.props.onDeployClick(
-        this.props.instanceToDeploy,
-        this.props.deployed
-      );
+    if (
+      this.props.instanceToDeploy !== "" &&
+      this.props.instanceToDeploy !== this.props.deployed.instanceId
+    ) {
+      this.deployInstance(this.props.instanceToDeploy, this.props.deployed);
     } else {
       this.props.dispatch(
-        messageBoxActions.message(
-          "Instance already deployed; doing nothing.",
-          "blueGreen"
-        )
+        messageBoxActions.message("Nothing to do.", "blueGreen")
       );
     }
+  }
+
+  // Callback for InstanceSelect component.
+  setInstanceId(instanceId) {
+    //    this.setState({ instanceToDeploy: instanceId });
   }
 
   // Filter the AMI instances we want.
@@ -55,7 +72,7 @@ class InstancesContainer extends Component {
           <Col xs={12} md={12}>
             <InstanceSelect
               onSelectHandler={this.handleInstanceId}
-              updateParent={() => {}}
+              updateParent={this.setInstanceId}
               uniqueId="deployCandidates"
               filters={this.instanceFilters()}
               region="us-east-1"
@@ -86,10 +103,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatch: dispatch,
-    onDeployClick: (instanceId, deployed) => {
-      dispatch(blueGreenActions.deployInstance(dispatch, instanceId, deployed));
-    }
+    dispatch: dispatch
   };
 };
 

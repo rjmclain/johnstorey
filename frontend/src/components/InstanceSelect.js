@@ -96,8 +96,7 @@ class InstanceSelectPresentation extends Component {
       const selectRowProp = {
         mode: "radio",
         clickToSelect: true,
-        onSelect: this.onRowSelect,
-        selected: [renderableInstances[0].id]
+        onSelect: this.onRowSelect
       };
 
       bootStrapTable = (
