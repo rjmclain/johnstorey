@@ -199,6 +199,13 @@ class CreateImageComponentPresentation extends Component {
   }
 
   render() {
+    // <InstanceSelect
+    //   onselecthandler={this.handleinstanceid}
+    //   updateparent={this.handleinstanceselectchanged}
+    //   filters={this.instancefilters()}
+    //   uniqueid="createimage_instances"
+    //   region={this.state.region}
+    // />
     return (
       <Grid>
         <form onSubmit={this.handleSubmit}>
@@ -213,13 +220,7 @@ class CreateImageComponentPresentation extends Component {
 
           <Row>
             <Col xs={12} md={10}>
-              <InstanceSelect
-                onSelectHandler={this.handleInstanceId}
-                updateParent={this.handleInstanceSelectChanged}
-                filters={this.instanceFilters()}
-                uniqueId="createimage_instances"
-                region={this.state.region}
-              />
+              // INSTANCESELECT HERE.
             </Col>
           </Row>
 
@@ -249,7 +250,8 @@ class CreateImageComponentPresentation extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    deployed: state.bluegreen.deployed
+    // TODO: Replace
+    //deployed: state.bluegreen.deployed
   };
 };
 

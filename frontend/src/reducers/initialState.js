@@ -1,11 +1,4 @@
 export default {
-  // Blue Green related state.
-  bluegreen: {
-    deployed: [],
-    instances: [],
-    instanceToDeploy: ""
-  },
-
   // Create image.
   createImage: {
     instanceid: "",
@@ -25,11 +18,18 @@ export default {
   // Instances select.
   instanceSelect: {
     createimage_instances: {
-      instances: [], // data from AWS.
-      filters: [] // filters on data for AWS.
+      loading: true,
+      instances: [],
+      error: null,
+      deployed: [],
+      filters: [],
+      toDeploy: ""
     },
     deployCandidates: {
+      loading: true,
       instances: [],
+      error: null,
+      deployed: [],
       filters: [],
       toDeploy: ""
     }

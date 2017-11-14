@@ -12,19 +12,9 @@ import * as instanceSelectActions from "../actions/instanceSelectActions";
 class InstanceSelectPresentation extends Component {
   constructor(props) {
     super(props);
+    console.log("InstanceSelectPresentation ctor props", props);
 
     this.onRowSelect = this.onRowSelect.bind(this);
-  }
-
-  componentDidMount() {
-    const filters = this.props.filters;
-    this.props.dispatch(
-      instanceSelectActions.fetchInstances(
-        "us-east-1",
-        this.props.namespace,
-        filters
-      )
-    );
   }
 
   componentDidUpdate() {
@@ -54,6 +44,8 @@ class InstanceSelectPresentation extends Component {
   }
 
   render() {
+    console.log("InstanceSelect render props", this.props);
+
     // Create table.
     let bootStrapTable = "No instances available.";
     let renderableInstances = [];
@@ -140,8 +132,9 @@ class InstanceSelectPresentation extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  console.log("instanceSelect mapStateToProps ownProps", ownProps);
   let newProps = {
-    deployed: state.bluegreen.deployed
+    deployed: state.instanceSelect[ownProps.namespace].deployed
   };
 
   newProps[ownProps.namespace] = state.instanceSelect[ownProps.namespace];

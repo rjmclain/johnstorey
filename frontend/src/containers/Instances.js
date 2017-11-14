@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Row, Col, Button } from "react-bootstrap";
 import "./Instances.css";
 import * as blueGreenActions from "../actions/blueGreenActions";
+import * as instanceSelectActions from "../actions/instanceSelectActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
 import ErrorView from "./common-views/error";
 import LoadingView from "./common-views/loading";
@@ -10,6 +11,7 @@ import InstancesGrid from "./instances-views/view.js";
 
 // Choose state to display.
 const StateToDisplay = state => {
+  console.log("StateToDisplay state", state);
   if (state.loading) {
     return <LoadingView />;
   } else if (state.instances) {
@@ -19,16 +21,8 @@ const StateToDisplay = state => {
         Values: ["running"]
       }
     ];
-    return (
-      <InstancesGrid
-        {...state}
-        filters={filters}
-        namespace={state.namespace}
-        handleInstanceId={e => {
-          console.log("handleInstanceId");
-        }}
-      />
-    );
+
+    return <InstancesGrid {...state} filters={filters} />;
   } else {
     return <ErrorView {...state} />;
   }
@@ -42,7 +36,26 @@ class InstancesView extends Component {
     this.deployInstance = this.deployInstance.bind(this);
   }
 
+  // Get initial values.
+  componentDidMount() {
+    console.log("Instances componentDidMount dispatching");
+    const filters = this.props.filters;
+    this.props.dispatch(
+      instanceSelectActions.fetchInstances(
+        "us-east-1",
+        this.props.namespace,
+        filters
+      )
+    );
+  }
+
   deployInstance(event) {
+    console.log("Instances deployInstance props", this.props);
+    console.log(
+      "Instances deployInstance event.target.value",
+      event.target.value
+    );
+
     this.props.dispatch(
       blueGreenActions.deployInstance(
         this.props.dispatch,
@@ -90,10 +103,10 @@ class InstancesView extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    loading: state.bluegreen.loading,
-    instances: state.bluegreen.instances,
-    error: state.bluegreen.error,
-    deployed: state.bluegreen.deployed,
+    loading: state.instanceSelect[props.namespace].loading,
+    instances: state.instanceSelect[props.namespace].instances,
+    error: state.instanceSelect[props.namespace].error,
+    deployed: state.instanceSelect[props.namespace].deployed,
     instanceToDeploy: state.instanceSelect[props.namespace].toDeploy
   };
 };

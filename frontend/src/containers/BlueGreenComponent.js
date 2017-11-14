@@ -10,21 +10,8 @@ import * as blueGreenActions from "../actions/blueGreenActions";
 const instancesNamespace = "deployCandidates";
 
 class BlueGreenPresentation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      deregister: this.deregister,
-      deployed: []
-    };
-  }
-
   componentDidMount() {
     this.props.dispatch(messageBoxActions.clear("blueGreen"));
-    this.props.dispatch(blueGreenActions.fetchDeployed());
-  }
-
-  setDeployed(deployedList) {
-    this.setState({ deployed: deployedList });
   }
 
   render() {
@@ -37,11 +24,7 @@ class BlueGreenPresentation extends Component {
         </Row>
         <Row>
           <Col xs={12} md={12}>
-            <Instances
-              deployed={this.state.deployed}
-              setDeployed={this.setDeployed.bind(this)}
-              namespace={instancesNamespace}
-            />
+            <Instances namespace={instancesNamespace} />
           </Col>
         </Row>
 
@@ -57,7 +40,7 @@ class BlueGreenPresentation extends Component {
 
 const mapStateToProps = state => {
   return {
-    instanceToDeploy: state.bluegreen.instanceToDeploy
+    // instanceToDeploy: state.bluegreen.instanceToDeploy
   };
 };
 
