@@ -3,25 +3,24 @@ import * as types from "../constants/eventTypes";
 // Fetch the instance list.
 export function fetchInstances() {
   return {
-    type: types.BLUEGREEN_FETCH_INSTANCES,
-  }
+    type: types.BLUEGREEN_FETCH_INSTANCES
+  };
 }
 
 // Update the available instances list.
 export function updateInstances(values) {
   return {
     type: types.BLUEGREEN_UPDATE_INSTANCES,
-    values    
-  }
+    values
+  };
 }
 
 // Fetch the currently registered targets.
 export function fetchDeployed() {
   return {
-    type: types.BLUEGREEN_FETCH_DEPLOYED,
-  }
+    type: types.BLUEGREEN_FETCH_DEPLOYED
+  };
 }
-
 
 // Deploy a new DNN.
 export function deployInstance(dispatch, idToDeploy, instancesToRemove = []) {

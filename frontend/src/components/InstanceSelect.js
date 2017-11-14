@@ -13,15 +13,7 @@ class InstanceSelectPresentation extends Component {
   constructor(props) {
     super(props);
 
-    let initialValues = {};
-    initialValues[props.uniqueId] = {
-      instances: [],
-      filters: []
-    };
-    this.state = initialValues;
-
     this.onRowSelect = this.onRowSelect.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   componentDidMount() {
@@ -29,7 +21,7 @@ class InstanceSelectPresentation extends Component {
     this.props.dispatch(
       instanceSelectActions.fetchInstances(
         "us-east-1",
-        this.props.uniqueId,
+        this.props.namespace,
         filters
       )
     );
@@ -38,24 +30,25 @@ class InstanceSelectPresentation extends Component {
   componentDidUpdate() {
     // Handle redux state changes needing propagation upstream.
     let newValue = "";
-    if (this.props[this.props.uniqueId].instances.length !== 0) {
-      newValue = this.props[this.props.uniqueId].instances[0].Instances[0]
+    if (this.props[this.props.namespace].instances.length !== 0) {
+      newValue = this.props[this.props.namespace].instances[0].Instances[0]
         .InstanceId;
-      this.props.updateParent(newValue);
+      this.props.dispatch(
+        instanceSelectActions.selected(newValue, this.props.namespace)
+      );
     }
   }
 
   onRowSelect(row, isSelect, e) {
     this.props.dispatch(
-      instanceSelectActions.selected(row.id, this.props.uniqueId)
+      instanceSelectActions.selected(row.id, this.props.namespace)
     );
-    this.props.updateParent(row.id);
   }
 
   handleOnChange(event) {
     instanceSelectActions.fetchInstances(
       this.props.region,
-      this.props.uniqueId,
+      this.props.namespace,
       this.props.filters
     );
   }
@@ -65,9 +58,9 @@ class InstanceSelectPresentation extends Component {
     let bootStrapTable = "No instances available.";
     let renderableInstances = [];
 
-    if (this.props[this.props.uniqueId].instances.length !== 0) {
+    if (this.props[this.props.namespace].instances.length !== 0) {
       renderableInstances = this.props[
-        this.props.uniqueId
+        this.props.namespace
       ].instances.map(instance => {
         // Determined if deployed.
         let deployedState = "";
@@ -91,7 +84,14 @@ class InstanceSelectPresentation extends Component {
       });
 
       // Notify the parent of the default.
-      this.props.updateParent(renderableInstances[0].id);
+      // TODO: Re-add this functionality.
+      //      this.props.updateParent(renderableInstances[0].id);
+      this.props.dispatch(
+        instanceSelectActions.selected(
+          renderableInstances[0].id,
+          this.props.namespace
+        )
+      );
 
       const selectRowProp = {
         mode: "radio",
@@ -144,7 +144,7 @@ const mapStateToProps = (state, ownProps) => {
     deployed: state.bluegreen.deployed
   };
 
-  newProps[ownProps.uniqueId] = state.instanceSelect[ownProps.uniqueId];
+  newProps[ownProps.namespace] = state.instanceSelect[ownProps.namespace];
 
   return newProps;
 };

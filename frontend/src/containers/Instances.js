@@ -2,20 +2,43 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "react-bootstrap";
 import "./Instances.css";
-import InstanceSelect from "../components/InstanceSelect";
 import * as blueGreenActions from "../actions/blueGreenActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
+import ErrorView from "./common-views/error";
+import LoadingView from "./common-views/loading";
+import InstancesGrid from "./instances-views/view.js";
 
-class InstancesContainer extends Component {
-  constructor(props) {
-    super(props);
+// Choose state to display.
+const StateToDisplay = state => {
+  if (state.loading) {
+    return <LoadingView />;
+  } else if (state.instances) {
+    const filters = [
+      {
+        Name: "instance-state-name",
+        Values: ["running"]
+      }
+    ];
+    return (
+      <InstancesGrid
+        {...state}
+        filters={filters}
+        namespace={state.namespace}
+        handleInstanceId={e => {
+          console.log("handleInstanceId");
+        }}
+      />
+    );
+  } else {
+    return <ErrorView {...state} />;
+  }
+};
 
-    this.state = {
-      instanceToDeploy: ""
-    };
+class InstancesView extends Component {
+  constructor() {
+    super();
 
     this.handleInstanceId = this.handleInstanceId.bind(this);
-    this.setInstanceId = this.setInstanceId.bind(this);
     this.deployInstance = this.deployInstance.bind(this);
   }
 
@@ -50,11 +73,6 @@ class InstancesContainer extends Component {
     }
   }
 
-  // Callback for InstanceSelect component.
-  setInstanceId(instanceId) {
-    //    this.setState({ instanceToDeploy: instanceId });
-  }
-
   // Filter the AMI instances we want.
   instanceFilters() {
     return [
@@ -66,38 +84,17 @@ class InstancesContainer extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <Row className="instance">
-          <Col xs={12} md={12}>
-            <InstanceSelect
-              onSelectHandler={this.handleInstanceId}
-              updateParent={this.setInstanceId}
-              uniqueId="deployCandidates"
-              filters={this.instanceFilters()}
-              region="us-east-1"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={9} md={9} />
-          <Col xs={3} md={3}>
-            <Button onClick={this.handleInstanceId} className="deploy-button">
-              Deploy Now
-            </Button>
-          </Col>
-          <Col xs={2} md={2} />
-        </Row>
-      </div>
-    );
+    return <StateToDisplay {...this.props} />;
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
   return {
+    loading: state.bluegreen.loading,
     instances: state.bluegreen.instances,
+    error: state.bluegreen.error,
     deployed: state.bluegreen.deployed,
-    instanceToDeploy: state.instanceSelect.deployCandidates.toDeploy
+    instanceToDeploy: state.instanceSelect[props.namespace].toDeploy
   };
 };
 
@@ -107,7 +104,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const Instances = connect(mapStateToProps, mapDispatchToProps)(
-  InstancesContainer
+const InstancesContainer = connect(mapStateToProps, mapDispatchToProps)(
+  InstancesView
 );
-export default Instances;
+export default InstancesContainer;

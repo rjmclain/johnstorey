@@ -3,9 +3,11 @@ import { Grid, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import "./BlueGreenComponent.css";
 import Instances from "./Instances";
-import Deployed from "./Deployed";
 import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
+import * as blueGreenActions from "../actions/blueGreenActions";
+
+const instancesNamespace = "deployCandidates";
 
 class BlueGreenPresentation extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class BlueGreenPresentation extends Component {
 
   componentDidMount() {
     this.props.dispatch(messageBoxActions.clear("blueGreen"));
+    this.props.dispatch(blueGreenActions.fetchDeployed());
   }
 
   setDeployed(deployedList) {
@@ -29,15 +32,6 @@ class BlueGreenPresentation extends Component {
       <Grid>
         <Row>
           <Col xs={12} md={12}>
-            <Deployed
-              deployed={this.state.deployed}
-              setDeployed={this.setDeployed.bind(this)}
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={12} md={12}>
             <h2>Deploy Candidates</h2>
           </Col>
         </Row>
@@ -46,7 +40,7 @@ class BlueGreenPresentation extends Component {
             <Instances
               deployed={this.state.deployed}
               setDeployed={this.setDeployed.bind(this)}
-              uniqueId="deployCandidates"
+              namespace={instancesNamespace}
             />
           </Col>
         </Row>
@@ -62,7 +56,10 @@ class BlueGreenPresentation extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    instanceToDeploy: state.bluegreen.instanceToDeploy
+  };
 };
+
 const BlueGreenContainer = connect(mapStateToProps)(BlueGreenPresentation);
 export default BlueGreenContainer;

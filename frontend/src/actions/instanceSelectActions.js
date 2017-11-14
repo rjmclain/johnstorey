@@ -1,22 +1,21 @@
-// @flow
 import * as types from "../constants/eventTypes";
 
 // Fetch the AMI list.
-export function fetchInstances(region, uniqueId, filters) {
+export function fetchInstances(region, namespace, filters) {
   return {
     type: types.INSTANCESELECT_FETCH_INSTANCES,
     values: region,
-    uniqueId: uniqueId,
+    namespace: namespace,
     filters: filters
   };
 }
 
 // AMIs fetched.
-export function instancesFetched(instances, uniqueId) {
+export function instancesFetched(instances, namespace) {
   return {
     type: types.INSTANCESELECT_INSTANCES_FETCHED,
     values: instances,
-    uniqueId: uniqueId
+    namespace: namespace
   };
 }
 
@@ -24,7 +23,7 @@ export function instancesFetched(instances, uniqueId) {
 export function currentlyDeployed(
   instanceId: string,
   region: string,
-  uniqueId: string
+  namespace: string
 ) {
   return {
     type: types.INSTANCESELECT_ISDEPLOYED,
@@ -32,14 +31,15 @@ export function currentlyDeployed(
       instanceId: instanceId,
       region: region
     },
-    uniqueId: uniqueId
+    namespace: namespace
   };
 }
+
 // Instance selected.
-export function selected(instanceId, uniqueId) {
+export function selected(instanceId, namespace) {
   return {
     type: types.INSTANCESELECT_SELECTED,
-    values: instanceId,
-    uniqueId: uniqueId
+    instanceId: instanceId,
+    namespace: namespace
   };
 }

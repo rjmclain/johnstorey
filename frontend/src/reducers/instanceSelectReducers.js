@@ -3,18 +3,18 @@ import initialState from "./initialState";
 
 export default function(state = initialState.instanceSelect, action) {
   let newValues = {};
-  const key = action.uniqueId;
+  const key = action.namespace;
   let newState = {};
 
   switch (action.type) {
     case types.INSTANCESELECT_INSTANCES_FETCHED:
-      newValues[action.uniqueId] = {};
-      newValues[action.uniqueId].instances = action.values;
+      newValues[action.namespace] = {};
+      newValues[action.namespace].instances = action.values;
       return Object.assign({}, state, newValues);
 
     case types.INSTANCESELECT_SELECTED:
       newValues[key] = state[key];
-      newValues[key].toDeploy = action.values;
+      newValues[key].toDeploy = action.instanceId;
       newState = Object.assign({}, state, newValues);
       return newState;
 
