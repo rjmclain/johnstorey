@@ -15,20 +15,19 @@ export function updateInstances(values) {
   };
 }
 
-// Fetch the currently registered targets.
-export function fetchDeployed() {
-  return {
-    type: types.BLUEGREEN_FETCH_DEPLOYED
-  };
-}
-
 // Deploy a new DNN.
-export function deployInstance(dispatch, idToDeploy, instancesToRemove = []) {
+export function deployInstance(
+  dispatch,
+  idToDeploy,
+  namespace,
+  instancesToRemove = []
+) {
   return {
     type: types.BLUEGREEN_DEPLOY_INSTANCE,
     values: idToDeploy,
     remove: instancesToRemove,
-    dispatch: dispatch
+    dispatch: dispatch,
+    namespace: namespace
   };
 }
 

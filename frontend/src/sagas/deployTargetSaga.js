@@ -1,11 +1,14 @@
 import { put } from "redux-saga/effects";
 import * as eventTypes from "../constants/eventTypes";
 import * as blueGreenActions from "../actions/blueGreenActions";
+import * as instanceSelectActions from "../actions/instanceSelectActions";
 import config from "../config";
 import { invokeApig } from "../libs/awsLib";
 import * as messageBoxActions from "../actions/messageBoxActions";
 
 export function* deployTargetSaga(action) {
+  console.log("deployTargetSaga action", action);
+
   try {
     // Undeploy existing targets.
     for (let defunctInstance of action.remove) {
@@ -48,7 +51,11 @@ export function* deployTargetSaga(action) {
     });
 
     yield put(
-      blueGreenActions.instanceDeployed([{ instanceId: action.values }])
+      instanceSelectActions.isDeployed(
+        action.values,
+        action.region,
+        action.namespace
+      )
     );
   } catch (e) {
     yield put({ type: eventTypes.BLUEGREEN_EC2_CALL_FAILED, error: e });

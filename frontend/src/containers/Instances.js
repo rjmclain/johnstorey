@@ -11,7 +11,6 @@ import InstancesGrid from "./instances-views/view.js";
 
 // Choose state to display.
 const StateToDisplay = state => {
-  console.log("StateToDisplay state", state);
   if (state.loading) {
     return <LoadingView />;
   } else if (state.instances) {
@@ -38,7 +37,6 @@ class InstancesView extends Component {
 
   // Get initial values.
   componentDidMount() {
-    console.log("Instances componentDidMount dispatching");
     const filters = this.props.filters;
     this.props.dispatch(
       instanceSelectActions.fetchInstances(
@@ -47,15 +45,13 @@ class InstancesView extends Component {
         filters
       )
     );
+
+    this.props.dispatch(
+      instanceSelectActions.fetchDeployed(this.props.namespace)
+    );
   }
 
   deployInstance(event) {
-    console.log("Instances deployInstance props", this.props);
-    console.log(
-      "Instances deployInstance event.target.value",
-      event.target.value
-    );
-
     this.props.dispatch(
       blueGreenActions.deployInstance(
         this.props.dispatch,

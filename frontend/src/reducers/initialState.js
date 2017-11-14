@@ -21,17 +21,17 @@ export default {
       loading: true,
       instances: [],
       error: null,
-      deployed: [],
       filters: [],
-      toDeploy: ""
+      toDeploy: "",
+      isDeployed: ""
     },
     deployCandidates: {
       loading: true,
       instances: [],
       error: null,
-      deployed: [],
       filters: [],
-      toDeploy: ""
+      toDeploy: "",
+      isDeployed: ""
     }
   },
 

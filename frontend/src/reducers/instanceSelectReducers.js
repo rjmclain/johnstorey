@@ -3,24 +3,32 @@ import initialState from "./initialState";
 
 export default function(state = initialState.instanceSelect, action) {
   let newValues = {};
-  const key = action.namespace;
+  const namespace = action.namespace;
   let newState = {};
 
   switch (action.type) {
     case types.INSTANCESELECT_INSTANCES_FETCHED:
-      newValues[action.namespace] = {};
-      newValues[action.namespace].instances = action.values;
-      return Object.assign({}, state, newValues);
-
-    case types.INSTANCESELECT_SELECTED:
-      newValues[key] = state[key];
-      newValues[key].toDeploy = action.instanceId;
+      newValues[namespace] = Object.assign({}, state[namespace]);
+      newValues[namespace].instances = action.values;
+      newValues[namespace].loading = false;
       newState = Object.assign({}, state, newValues);
       return newState;
 
+    case types.INSTANCESELECT_SELECTED:
+      newValues[namespace] = state[namespace];
+      newValues[namespace].toDeploy = action.instanceId;
+      newState = Object.assign({}, state, newValues);
+      return newState;
+
+    case types.INSTANCESELECT_RECORDDEPLOYED:
+      newValues[namespace] = state[namespace];
+      newValues[namespace].isDeployed = action.instances[0].instanceId;
+      newState = Object.assign({}, state, newValues);
+      return state;
+
     case types.INSTANCESELECT_ISDEPLOYED:
-      newValues[key] = state[key];
-      newValues[key].isDeployed = action.values;
+      newValues[namespace] = state[namespace];
+      newValues[namespace].isDeployed = action.instanceId;
       newState = Object.assign({}, state, newValues);
       return newState;
 

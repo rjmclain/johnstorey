@@ -36,7 +36,8 @@ class CreateImageComponentPresentation extends Component {
 
   componentDidMount() {
     this.props.dispatch(messageBoxActions.clear("createImage"));
-    this.props.dispatch(blueGreenActions.fetchDeployed());
+    // TODO: Replace this with new, namespaced code.
+    // this.props.dispatch(blueGreenActions.fetchDeployed());
   }
 
   handleInstanceId(event) {

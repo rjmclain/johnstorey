@@ -39,9 +39,7 @@ class BlueGreenPresentation extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    // instanceToDeploy: state.bluegreen.instanceToDeploy
-  };
+  return {};
 };
 
 const BlueGreenContainer = connect(mapStateToProps)(BlueGreenPresentation);

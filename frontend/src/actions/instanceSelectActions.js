@@ -20,21 +20,36 @@ export function instancesFetched(instances, namespace) {
 }
 
 // Currently deployed.
-export function currentlyDeployed(
+export function isDeployed(
   instanceId: string,
   region: string,
   namespace: string
 ) {
   return {
     type: types.INSTANCESELECT_ISDEPLOYED,
-    values: {
-      instanceId: instanceId,
-      region: region
-    },
+    instanceId: instanceId,
+    region: region,
     namespace: namespace
   };
 }
 
+// Get the currently deployed target.
+export function recordDeployedInstance(instances, region, namespace) {
+  return {
+    type: types.INSTANCESELECT_RECORDDEPLOYED,
+    instances: instances,
+    region: region,
+    namespace: namespace
+  };
+}
+
+// Fetch the currently registered targets.
+export function fetchDeployed(namespace) {
+  return {
+    type: types.INSTANCESELECT_FETCH_DEPLOYED,
+    namespace: namespace
+  };
+}
 // Instance selected.
 export function selected(instanceId, namespace) {
   return {

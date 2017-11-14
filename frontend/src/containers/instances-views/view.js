@@ -11,20 +11,18 @@ class ViewPresentation extends Component {
   }
 
   handleDeploy(event) {
-    console.log("handleDeploy props", this.props);
-    console.log("handleDeploy event", event);
-
     // TODO: These need real values from mapStateToProps.
     this.props.dispatch(
       blueGreenActions.deployInstance(
+        this.props.dispatch,
         this.props.idToDeploy,
-        this.props.instancesToRemove
+        this.props.namespace,
+        this.props.deployed
       )
     );
   }
 
   render() {
-    console.log("view.js props", this.props);
     return (
       <div>
         <Row className="instance">

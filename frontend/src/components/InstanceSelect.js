@@ -12,21 +12,24 @@ import * as instanceSelectActions from "../actions/instanceSelectActions";
 class InstanceSelectPresentation extends Component {
   constructor(props) {
     super(props);
-    console.log("InstanceSelectPresentation ctor props", props);
-
     this.onRowSelect = this.onRowSelect.bind(this);
   }
 
   componentDidUpdate() {
     // Handle redux state changes needing propagation upstream.
+    /*
     let newValue = "";
     if (this.props[this.props.namespace].instances.length !== 0) {
       newValue = this.props[this.props.namespace].instances[0].Instances[0]
         .InstanceId;
+
+      console.log("InstanceSelect componentDidUpdate newValue", newValue);
+
       this.props.dispatch(
         instanceSelectActions.selected(newValue, this.props.namespace)
       );
     }
+    */
   }
 
   onRowSelect(row, isSelect, e) {
@@ -44,23 +47,17 @@ class InstanceSelectPresentation extends Component {
   }
 
   render() {
-    console.log("InstanceSelect render props", this.props);
-
     // Create table.
     let bootStrapTable = "No instances available.";
     let renderableInstances = [];
 
-    if (this.props[this.props.namespace].instances.length !== 0) {
+    if (this.props.instances.length !== 0) {
       renderableInstances = this.props[
         this.props.namespace
       ].instances.map(instance => {
         // Determined if deployed.
         let deployedState = "";
-        if (
-          this.props.deployed &&
-          this.props.deployed.length !== 0 &&
-          this.props.deployed[0].instanceId === instance.Instances[0].InstanceId
-        ) {
+        if (this.props.isDeployed === instance.Instances[0].InstanceId) {
           deployedState = "Deployed";
         }
 
@@ -74,16 +71,6 @@ class InstanceSelectPresentation extends Component {
 
         return mapped;
       });
-
-      // Notify the parent of the default.
-      // TODO: Re-add this functionality.
-      //      this.props.updateParent(renderableInstances[0].id);
-      this.props.dispatch(
-        instanceSelectActions.selected(
-          renderableInstances[0].id,
-          this.props.namespace
-        )
-      );
 
       const selectRowProp = {
         mode: "radio",
@@ -132,9 +119,9 @@ class InstanceSelectPresentation extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log("instanceSelect mapStateToProps ownProps", ownProps);
   let newProps = {
-    deployed: state.instanceSelect[ownProps.namespace].deployed
+    instances: state.instanceSelect[ownProps.namespace].instances,
+    isDeployed: state.instanceSelect[ownProps.namespace].isDeployed
   };
 
   newProps[ownProps.namespace] = state.instanceSelect[ownProps.namespace];
