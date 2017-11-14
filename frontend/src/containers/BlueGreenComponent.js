@@ -5,7 +5,7 @@ import "./BlueGreenComponent.css";
 import Instances from "./Instances";
 import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
-import * as blueGreenActions from "../actions/blueGreenActions";
+import * as instanceSelectActions from "../actions/instanceSelectActions";
 
 const instancesNamespace = "deployCandidates";
 

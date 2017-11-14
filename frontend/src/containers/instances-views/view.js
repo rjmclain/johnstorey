@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import InstanceSelect from "../../components/InstanceSelect";
-import * as blueGreenActions from "../../actions/blueGreenActions";
+import * as instanceSelectActions from "../../actions/instanceSelectActions";
 
 class ViewPresentation extends Component {
   constructor() {
@@ -11,13 +11,12 @@ class ViewPresentation extends Component {
   }
 
   handleDeploy(event) {
-    // TODO: These need real values from mapStateToProps.
     this.props.dispatch(
-      blueGreenActions.deployInstance(
+      instanceSelectActions.deployInstance(
         this.props.dispatch,
         this.props.idToDeploy,
         this.props.namespace,
-        this.props.deployed
+        this.props.isDeployed
       )
     );
   }
@@ -53,6 +52,7 @@ class ViewPresentation extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     idToDeploy: state.instanceSelect[ownProps.namespace].toDeploy,
+    isDeployed: state.instanceSelect[ownProps.namespace].isDeployed,
     instancesToRemove:
       state.instanceSelect[ownProps.namespace].instancesToRemove
   };

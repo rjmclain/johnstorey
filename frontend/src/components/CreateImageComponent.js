@@ -6,7 +6,6 @@ import InstanceSelect from "./InstanceSelect";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 import MessageBox from "../containers/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
-import * as blueGreenActions from "../actions/blueGreenActions";
 import * as waitFor from "../containers/waitFor";
 import * as awsHelpers from "../libs/awsHelpers";
 
@@ -37,7 +36,7 @@ class CreateImageComponentPresentation extends Component {
   componentDidMount() {
     this.props.dispatch(messageBoxActions.clear("createImage"));
     // TODO: Replace this with new, namespaced code.
-    // this.props.dispatch(blueGreenActions.fetchDeployed());
+    // this.props.dispatch(instanceSelectActions.fetchDeployed());
   }
 
   handleInstanceId(event) {

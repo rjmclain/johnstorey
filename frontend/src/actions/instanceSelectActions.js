@@ -19,6 +19,23 @@ export function instancesFetched(instances, namespace) {
   };
 }
 
+// Deploy a new target for DNN.
+export function deployInstance(
+  dispatch,
+  idToDeploy,
+  namespace,
+  instanceToRemove
+) {
+  const action = {
+    type: types.INSTANCESELECT_DEPLOY_INSTANCE,
+    values: idToDeploy,
+    remove: instanceToRemove,
+    dispatch: dispatch,
+    namespace: namespace
+  };
+  return action;
+}
+
 // Currently deployed.
 export function isDeployed(
   instanceId: string,
@@ -50,6 +67,7 @@ export function fetchDeployed(namespace) {
     namespace: namespace
   };
 }
+
 // Instance selected.
 export function selected(instanceId, namespace) {
   return {

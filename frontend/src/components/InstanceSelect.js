@@ -72,6 +72,16 @@ class InstanceSelectPresentation extends Component {
         return mapped;
       });
 
+      /*
+      console.log('InstanceSelect render rederableInstances[0].id',
+        renderableInstances[])
+      this.props.dispatch(
+        instanceSelectActions.selected(
+          renderableInstances[0].id,
+          this.props.namespace
+        )
+      );
+      */
       const selectRowProp = {
         mode: "radio",
         clickToSelect: true,

@@ -9,23 +9,21 @@ export function* fetchEC2InstancesSaga(action) {
       method: "GET",
       header: {},
       queryParams: {},
-      body: {
-      },
+      body: {}
     });
 
-    const instanceList = instances.map( (instance) => {
+    const instanceList = instances.map(instance => {
       return {
         key: instance.Instances[0].InstanceId,
         instanceId: instance.Instances[0].InstanceId
-      }
+      };
     });
 
-    yield put({ 
-      type: eventTypes.BLUEGREEN_UPDATE_INSTANCES,
+    yield put({
+      type: eventTypes.INSTANCESELECT_UPDATE_INSTANCES,
       values: instanceList
     });
-
   } catch (e) {
-    yield put ({type: eventTypes.BLUEGREEN_EC2_CALL_FAILED, error: e});
+    yield put({ type: eventTypes.INSTANCESELECT_EC2_CALL_FAILED, error: e });
   }
 }

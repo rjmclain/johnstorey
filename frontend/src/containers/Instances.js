@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "react-bootstrap";
 import "./Instances.css";
-import * as blueGreenActions from "../actions/blueGreenActions";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
 import ErrorView from "./common-views/error";
@@ -53,10 +52,11 @@ class InstancesView extends Component {
 
   deployInstance(event) {
     this.props.dispatch(
-      blueGreenActions.deployInstance(
+      instanceSelectActions.deployInstance(
         this.props.dispatch,
         this.props.instanceToDeploy,
-        this.props.deployed
+        this.props.deployed,
+        this.props.isDeployed
       )
     );
   }
@@ -102,7 +102,7 @@ const mapStateToProps = (state, props) => {
     loading: state.instanceSelect[props.namespace].loading,
     instances: state.instanceSelect[props.namespace].instances,
     error: state.instanceSelect[props.namespace].error,
-    deployed: state.instanceSelect[props.namespace].deployed,
+    isDeployed: state.instanceSelect[props.namespace].isDeployed,
     instanceToDeploy: state.instanceSelect[props.namespace].toDeploy
   };
 };
