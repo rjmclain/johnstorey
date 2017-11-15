@@ -3,6 +3,7 @@ import { success, failure } from "./libs/response-lib";
 
 export function main(event, context, callback) {
   const data = JSON.parse(event.body);
+  console.log("describe-instance data", data);
 
   AWS.config.update({ region: data.region });
 

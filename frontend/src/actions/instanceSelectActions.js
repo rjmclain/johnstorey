@@ -4,7 +4,7 @@ import * as types from "../constants/eventTypes";
 export function fetchInstances(region, namespace, filters) {
   return {
     type: types.INSTANCESELECT_FETCH_INSTANCES,
-    values: region,
+    region: region,
     namespace: namespace,
     filters: filters
   };

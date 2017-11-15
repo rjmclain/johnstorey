@@ -122,6 +122,10 @@ export async function startInstance(
 
 // Describe an instance.
 export function describeInstance(region, instanceId, filters) {
+  console.log("describeInstance region", region);
+  console.log("describeInstance instanceId", instanceId);
+  console.log("describeInstance filters", filters);
+
   const instance = invokeApig({
     path: "/describe-instance",
     method: "POST",

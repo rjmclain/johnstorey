@@ -117,7 +117,7 @@ export async function invokeApig({
   }
 
   let data = await results.json();
-  // console.log("apiG returning ", data);
+  console.log("apiG returning ", data);
   return data;
   //return results.json();
 }

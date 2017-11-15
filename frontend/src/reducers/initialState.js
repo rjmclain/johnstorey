@@ -17,7 +17,7 @@ export default {
 
   // Instances select.
   instanceSelect: {
-    createimage_instances: {
+    createImage: {
       loading: true,
       instances: [],
       error: null,

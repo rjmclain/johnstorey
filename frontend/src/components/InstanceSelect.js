@@ -15,34 +15,9 @@ class InstanceSelectPresentation extends Component {
     this.onRowSelect = this.onRowSelect.bind(this);
   }
 
-  componentDidUpdate() {
-    // Handle redux state changes needing propagation upstream.
-    /*
-    let newValue = "";
-    if (this.props[this.props.namespace].instances.length !== 0) {
-      newValue = this.props[this.props.namespace].instances[0].Instances[0]
-        .InstanceId;
-
-      console.log("InstanceSelect componentDidUpdate newValue", newValue);
-
-      this.props.dispatch(
-        instanceSelectActions.selected(newValue, this.props.namespace)
-      );
-    }
-    */
-  }
-
   onRowSelect(row, isSelect, e) {
     this.props.dispatch(
       instanceSelectActions.selected(row.id, this.props.namespace)
-    );
-  }
-
-  handleOnChange(event) {
-    instanceSelectActions.fetchInstances(
-      this.props.region,
-      this.props.namespace,
-      this.props.filters
     );
   }
 
@@ -72,16 +47,6 @@ class InstanceSelectPresentation extends Component {
         return mapped;
       });
 
-      /*
-      console.log('InstanceSelect render rederableInstances[0].id',
-        renderableInstances[])
-      this.props.dispatch(
-        instanceSelectActions.selected(
-          renderableInstances[0].id,
-          this.props.namespace
-        )
-      );
-      */
       const selectRowProp = {
         mode: "radio",
         clickToSelect: true,

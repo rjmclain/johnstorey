@@ -3,13 +3,17 @@ import * as eventTypes from "../constants/eventTypes";
 import { invokeApig } from "../libs/awsLib";
 
 export function* fetchEC2InstancesSaga(action) {
+  console.log("fetchEC2InstancesSaga action", action);
+
   try {
     const instances = yield invokeApig({
       path: "/list-instances",
       method: "GET",
       header: {},
       queryParams: {},
-      body: {}
+      body: {
+        region: action.region
+      }
     });
 
     const instanceList = instances.map(instance => {
@@ -18,6 +22,8 @@ export function* fetchEC2InstancesSaga(action) {
         instanceId: instance.Instances[0].InstanceId
       };
     });
+
+    console.log("fetchEC2InstancesSaga instanceList", instanceList);
 
     yield put({
       type: eventTypes.INSTANCESELECT_UPDATE_INSTANCES,
