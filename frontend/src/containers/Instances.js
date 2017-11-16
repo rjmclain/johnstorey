@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Button } from "react-bootstrap";
 import "./Instances.css";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
