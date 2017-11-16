@@ -4,9 +4,9 @@ import { Grid, Row, Col, Button } from "react-bootstrap";
 import RegionsSelect from "../../components/RegionsSelect";
 import InstanceSelect from "../../components/InstanceSelect";
 import * as instanceSelectActions from "../../actions/instanceSelectActions";
-import MessageBox from "../../containers/MessageBox";
+import MessageBox from "../../components/MessageBox";
 import * as messageBoxActions from "../../actions/messageBoxActions";
-import * as waitFor from "../../containers/waitFor";
+import * as waitFor from "../../components/waitFor";
 import * as awsHelpers from "../../libs/awsHelpers";
 
 const namespace = "createImage";
@@ -35,7 +35,7 @@ class ViewPresentation extends Component {
     this.props.dispatch(
       instanceSelectActions.fetchInstances(
         event.target.value,
-        "createimage_instances",
+        namespace,
         this.instanceFilters()
       )
     );
@@ -56,7 +56,12 @@ class ViewPresentation extends Component {
 
       // Tag the image.
       if (imageResult !== "false") {
-        this.addTags(this.state.toDeploy, imageId, versionTag);
+        this.addTags(
+          this.state.region,
+          imageId,
+          this.props.toDeploy,
+          versionTag
+        );
       }
     }
     event.preventDefault();
@@ -95,7 +100,7 @@ class ViewPresentation extends Component {
       : (resultMessage =
           "Image " + createImageResult.ImageId + " is now in state available.");
 
-    this.message(resultMessage, "createImage");
+    this.message(resultMessage, namespace);
 
     return {
       imageResult: waitForImageResult,
@@ -183,6 +188,7 @@ class ViewPresentation extends Component {
     return filters;
   }
 
+  // Display a message to the user.
   message(message) {
     this.props.dispatch(messageBoxActions.message(message, namespace));
   }

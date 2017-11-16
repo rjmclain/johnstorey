@@ -79,6 +79,9 @@ export async function invokeApig({
     throw new Error("User is not logged in");
   }
 
+  // console.log("invokeApig path", path);
+  // console.log("invokeApig body", body);
+
   const newClient = sigV4Client.newClient({
     accessKey: AWS.config.credentials.accessKeyId,
     secretKey: AWS.config.credentials.secretAccessKey,
@@ -103,6 +106,8 @@ export async function invokeApig({
     headers,
     body
   });
+
+  // console.log("apig results", results);
 
   if (results.status !== 200) {
     throw new Error(await results.text());

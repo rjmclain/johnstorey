@@ -5,9 +5,9 @@ import * as awsHelpers from "../libs/awsHelpers";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
 import * as amiSelectActions from "../actions/amiSelectActions";
-import MessageBox from "../containers/MessageBox";
+import MessageBox from "../components/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
-import * as waitFor from "../containers/waitFor";
+import * as waitFor from "../components/waitFor";
 
 class CopyImageComponentPresentation extends Component {
   constructor(props) {

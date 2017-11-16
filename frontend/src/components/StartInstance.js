@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid, Row, Col, Button } from "react-bootstrap";
-import MessageBox from "../containers/MessageBox";
+import MessageBox from "../components/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
 import * as amiSelectActions from "../actions/amiSelectActions";
 import QuestionModal from "./QuestionModal";
 import RegionsSelect from "./RegionsSelect";
 import AMISelect from "./AMISelect";
-import * as waitFor from "../containers/waitFor";
+import * as waitFor from "../components/waitFor";
 import config from "../config";
 import * as awsHelpers from "../libs/awsHelpers";
 
@@ -52,9 +52,6 @@ class StartInstancePresentation extends Component {
 
     // Trigger instance start.
     const imageVersion = awsHelpers.findTag("Version", image.Images[0].Tags);
-    console.log("StartInstance image", image);
-    console.log("StartInstange imageVersion", imageVersion);
-
     const instance = await awsHelpers.startInstance(
       this.state.region,
       this.props.currentAMI,

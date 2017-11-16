@@ -8,7 +8,7 @@ export default function(state = initialState.instanceSelect, action) {
 
   switch (action.type) {
     case types.INSTANCESELECT_INSTANCES_FETCHED:
-      newValues[namespace] = Object.assign({}, state[namespace]);
+      newValues[namespace] = state[namespace];
       newValues[namespace].instances = action.values;
       newValues[namespace].loading = false;
       newState = Object.assign({}, state, newValues);

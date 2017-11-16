@@ -3,7 +3,7 @@ import { Grid, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import "./BlueGreenComponent.css";
 import Instances from "./Instances";
-import MessageBox from "../containers/MessageBox";
+import MessageBox from "../components/MessageBox";
 import * as messageBoxActions from "../actions/messageBoxActions";
 
 const instancesNamespace = "deployCandidates";

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as instanceSelectActions from "../actions/instanceSelectActions";
 import * as messageBoxActions from "../actions/messageBoxActions";
-import ErrorView from "../containers/common-views/error";
-import LoadingView from "../containers/common-views/loading";
-import InstancesGrid from "../containers/create-image-view/view";
+import ErrorView from "../components/common-views/error";
+import LoadingView from "../components/common-views/loading";
+import InstancesGrid from "../components/create-image-view/view";
 
 const namespace = "createImage";
 
