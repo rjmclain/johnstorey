@@ -144,7 +144,7 @@ functions:
     events:
       - http:
           path: target-health
-          method: GET
+          method: POST
           cors: true
           authorizer: aws_iam
   describe-regions:
